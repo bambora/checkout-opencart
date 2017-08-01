@@ -1,0 +1,247 @@
+﻿{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-payment" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid"> {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+
+
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-bambora_online_checkout" class="form-horizontal">
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general"><a href="https://bambora.com" target="_blank" style="float: right;"><img src="view/image/payment/bambora_online_checkout_logo.png" /></a>
+        </div>
+         <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status"><span data-toggle="tooltip" title="{{ help_status }}">{{ entry_status }}</span></label>
+            <div class="col-sm-10">
+              <select name="bambora_online_checkout_status" id="input-status" class="form-control">
+                
+                {% if bambora_online_checkout_status %}
+                
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                
+                {% else %}
+                
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                
+                {% endif %}
+              
+              </select>
+            </div>
+          </div>      
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-merchant"><span data-toggle="tooltip" title="{{ help_merchant }}">{{ entry_merchant }}</span></label>
+            <div class="col-sm-10">
+              <input type="text" name="bambora_online_checkout_merchant" value="{{ bambora_online_checkout_merchant }}" placeholder="{{ entry_merchant }}" id="input-merchant" class="form-control" />
+              {% if error_merchant %}
+              <div class="text-danger">{{ error_merchant }}</div>
+              {% endif %} 
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-accesstoken"><span data-toggle="tooltip" title="{{ help_accesstoken }}">{{ entry_accesstoken }}</span></label>
+            <div class="col-sm-10">
+              <input type="text" name="bambora_online_checkout_accesstoken" value="{{ bambora_online_checkout_accesstoken }}" placeholder="{{ entry_accesstoken }}" id="input-accesstoken" class="form-control" />
+              {% if error_accesstoken %}
+              <div class="text-danger">{{ error_accesstoken }}</div>
+              {% endif %} 
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-secrettoken"><span data-toggle="tooltip" title="{{ help_secrettoken }}">{{ entry_secrettoken }}</span></label>
+            <div class="col-sm-10">
+              <input type="password" name="bambora_online_checkout_secrettoken" value="{{ bambora_online_checkout_secrettoken }}" placeholder="{{ entry_secrettoken }}" id="input-secrettoken" class="form-control" />
+              {% if error_secrettoken %}
+              <div class="text-danger">{{ error_secrettoken }}</div>
+              {% endif %} 
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-md5"><span data-toggle="tooltip" title="{{ help_md5 }}">{{ entry_md5 }}</span></label>
+            <div class="col-sm-10">
+              <input type="password" name="bambora_online_checkout_md5" value="{{ bambora_online_checkout_md5 }}" placeholder="{{ entry_md5 }}" id="input-md5" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-windowstate"><span data-toggle="tooltip" title="{{ help_windowstate }}">{{ entry_windowstate }}</span></label>
+            <div class="col-sm-10">
+                <select name="bambora_online_checkout_windowstate" id="input-windowstate" class="form-control">
+                
+                {% if bambora_online_checkout_windowstate == 1 %}
+                
+                <option value="1" selected="selected">{{ text_windowstate_fullscreen }}</option>
+                <option value="2">{{ text_windowstate_overlay }}</option>
+                
+                {% else %}
+                
+                <option value="1">{{ text_windowstate_fullscreen }}</option>
+                <option value="2" selected="selected">{{ text_windowstate_overlay }}</option>
+                
+                {% endif %}
+              
+              </select>
+            </div>
+          </div>
+            <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-windowid"><span data-toggle="tooltip" title="{{ help_windowid }}">{{ entry_windowid }}</span></label>
+            <div class="col-sm-10">
+              <input type="text" name="bambora_online_checkout_windowid" value="{{ bambora_online_checkout_windowid }}" placeholder="{{ entry_windowid }}" id="input-windowid" class="form-control" />
+            </div>
+            <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-instantcapture"><span data-toggle="tooltip" title="{{ help_instantcapture }}">{{ entry_instantcapture }}</span></label>
+            <div class="col-sm-10">
+              <select name="bambora_online_checkout_instantcapture" id="input-instantcapture" class="form-control">
+                
+                {% if bambora_online_checkout_instantcapture %}
+                
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                
+                {% else %}
+                
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                
+                {% endif %}
+              
+              </select>
+            </div>
+          </div>     
+            <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-immediateredirecttoaccept"><span data-toggle="tooltip" title="{{ help_immediateredirecttoaccept }}">{{ entry_immediateredirecttoaccept }}</span></label>
+            <div class="col-sm-10">
+              <select name="bambora_online_checkout_immediateredirecttoaccept" id="input-immediateredirecttoaccept" class="form-control">
+                
+                {% if bambora_online_checkout_immediateredirecttoaccept %}
+                
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                
+                {% else %}
+                
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                
+                {% endif %}
+              
+              </select>
+            </div>
+          </div>     
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-roundingmode"><span data-toggle="tooltip" title="{{ help_roundingmode }}">{{ entry_roundingmode }}</span></label>
+            <div class="col-sm-10">
+                <select name="bambora_online_checkout_roundingmode" id="input-roundingmode" class="form-control">
+                
+                {% if bambora_online_checkout_roundingmode == 1 %}
+                
+                <option value="1" selected="selected">{{ text_roundingmode_default }}</option>
+                <option value="2">{{ text_roundingmode_alwaysup }}</option>
+                <option value="3">{{ text_roundingmode_alwaysdown }}</option>
+                
+                {% elseif bambora_online_checkout_roundingmode == 2 %}
+
+                <option value="1">{{ text_roundingmode_default }}</option>
+                <option value="2" selected="selected">{{ text_roundingmode_alwaysup }}</option>
+                <option value="3">{{ text_roundingmode_alwaysdown }}</option>
+
+                {% elseif bambora_online_checkout_roundingmode == 3 %}
+
+                <option value="1">{{ text_roundingmode_default }}</option>
+                <option value="2">{{ text_roundingmode_alwaysup }}</option>
+                <option value="3" selected="selected">{{ text_roundingmode_alwaysdown }}</option>
+
+                {% else %}
+                
+                <option value="1" selected="selected">{{ text_roundingmode_default }}</option>
+                <option value="2">{{ text_roundingmode_alwaysup }}</option>
+                <option value="3">{{ text_roundingmode_alwaysdown }}</option>
+                
+                {% endif %}
+              
+              </select>
+            </div>
+          </div>
+            <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-paymentmethodtitle"><span data-toggle="tooltip" title="{{ help_paymentmethodtitle }}">{{ entry_paymentmethodtitle }}</span></label>
+            <div class="col-sm-10">
+              <input type="text" name="bambora_online_checkout_paymentmethodtitle" value="{{ bambora_online_checkout_paymentmethodtitle }}" placeholder="{{ entry_paymentmethodtitle }}" id="input-paymentmethodtitle" class="form-control" />
+            </div>
+            <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-total"><span data-toggle="tooltip" title="{{ help_total }}">{{ entry_total }}</span></label>
+            <div class="col-sm-10">
+              <input type="text" name="bambora_online_checkout_total" value="{{ bambora_online_checkout_total }}" placeholder="{{ entry_total }}" id="input-total" class="form-control" />
+            </div>
+          </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-order-status">{{ entry_order_status }}</label>
+            <div class="col-sm-10">
+              <select name="bambora_online_checkout_order_status_id" id="input-order-status" class="form-control">
+                
+                {% for order_status in order_statuses %}
+                {% if order_status.order_status_id == bambora_online_checkout_order_status_id %}
+                
+                <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                
+                {% else %}
+                
+                <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                
+                {% endif %}
+                {% endfor %}
+              
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-geo-zone">{{ entry_geo_zone }}</label>
+            <div class="col-sm-10">
+              <select name="bambora_online_checkout_order_status_id_geo_zone_id" id="input-geo-zone" class="form-control">
+                <option value="0">{{ text_all_zones }}</option>
+                
+                {% for geo_zone in geo_zones %}
+                {% if geo_zone.geo_zone_id == bambora_online_checkout_order_status_id_geo_zone_id %}
+                
+                <option value="{{ geo_zone.geo_zone_id }}" selected="selected">{{ geo_zone.name }}</option>
+                
+                {% else %}
+                
+                <option value="{{ geo_zone.geo_zone_id }}">{{ geo_zone.name }}</option>
+                
+                {% endif %}
+                {% endfor %}
+              
+              </select>
+            </div>
+          </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="bambora_online_checkout_sort_order" value="{{ bambora_online_checkout_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}
