@@ -13,18 +13,30 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     /**
      * @var string
      */
-    protected $module_name = '';
+    private $module_version = '0.1.0';
+
+    /**
+     * @var string
+     */
+    private $module_name = 'bambora_online_checkout';
 
     /**
      * @var array
      */
-    protected $data = array();
+    private $data = array();
 
-    protected $errorFields = array('permissions', 'merchant', 'accesstoken', 'secrettoken');
+    /**
+     * @var array
+     */
+    private $errors = array();
+
+    /**
+     * @var array();
+     */
+    private $errorFields = array('merchant', 'access_token', 'secret_token');
 
     public function index()
     {
-        $this->module_name = 'bambora_online_checkout';
         $this->language->load('extension/payment/'.$this->module_name);
 
         $this->document->setTitle($this->language->get('heading_title'));
@@ -32,11 +44,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $this->load->model('setting/setting');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
-            $this->model_setting_setting->editSetting($this->module_name, $this->request->post);
-
+            $this->model_setting_setting->editSetting('payment_'.$this->module_name, $this->request->post);
             $this->session->data['success'] = $this->language->get('text_success');
-
-            $this->response->redirect($this->url->link('extension/payment/' . $this->module_name, 'token=' . $this->session->data['token'], 'SSL'));
+            $this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true));
         }
 
         $this->initSettings();
@@ -45,7 +55,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $this->populateSettingValues();
         $this->populateErrorMessages();
 
-        $this->response->setOutput($this->load->view('extension/payment/'.$this->module_name.'.twig', $this->data));
+        $this->response->setOutput($this->load->view('extension/payment/'.$this->module_name, $this->data));
     }
 
     protected function populateSettingValues()
@@ -53,16 +63,16 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $fields = array(
             'status',
             'merchant',
-            'accesstoken',
-            'secrettoken',
+            'access_token',
+            'secret_token',
             'md5',
-            'windowstate',
-            'windowid',
+            'window_state',
+            'window_id',
             'surcharge',
-            'instantcapture',
-            'immediateredirecttoaccept',
-            'roundingmode',
-            'paymentmethodtitle',
+            'instant_capture',
+            'immediate_redirect_to_accept',
+            'rounding_mode',
+            'payment_method_title',
             'total',
             'order_status_completed',
             'geo_zone',
@@ -70,19 +80,19 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
          );
         $defaultValues = array(
             'status' => '0',
-            'windowstate' => '1',
-            'windowid' => '1',
+            'window_state' => '1',
+            'window_id' => '1',
             'surcharge' => '0',
-            'instantcapture' => '0',
-            'immediateredirecttoaccept' => '0',
-            'roundingmode' => '1',
-            'paymentmethodtitle' => 'Bambora Online Checkout',
+            'instant_capture' => '0',
+            'immediate_redirect_to_accept' => '0',
+            'rounding_mode' => '1',
+            'payment_method_title' => 'Bambora Online Checkout',
             'order_status_completed' => '5'
         );
 
         // Loop through configuration fields and populate them
         foreach ($fields as $field) {
-            $field = $this->module_name . '_' . $field;
+            $field = 'payment_' . $this->module_name . '_' . $field;
             if (isset($this->request->post[$field])) {
                 $this->data[$field] = $this->request->post[$field];
             } else {
@@ -92,12 +102,11 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         // Check if fields with required default data is set. If not, we will populate default data to them.
         foreach ($defaultValues as $field => $default_value) {
-            $field = $this->module_name . '_' . $field;
+            $field = 'payment_' . $this->module_name . '_' . $field;
             if (!isset($this->data[$field])) {
                 $this->data[$field] = $default_value;
             }
         }
-
     }
 
     protected function initSettings()
@@ -106,16 +115,16 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             //Entry
             'entry_status',
             'entry_merchant',
-            'entry_accesstoken',
-            'entry_secrettoken',
+            'entry_access_token',
+            'entry_secret_token',
             'entry_md5',
-            'entry_windowstate',
-            'entry_windowid',
+            'entry_window_state',
+            'entry_window_id',
             'entry_surcharge',
-            'entry_instantcapture',
-            'entry_immediateredirecttoaccept',
-            'entry_roundingmode',
-            'entry_paymentmethodtitle',
+            'entry_instant_capture',
+            'entry_immediate_redirect_to_accept',
+            'entry_rounding_mode',
+            'entry_payment_method_title',
             'entry_total',
             'entry_order_status_completed',
             'entry_geo_zone',
@@ -123,24 +132,20 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
            //Help
             'help_status',
             'help_merchant',
-            'help_accesstoken',
-            'help_secrettoken',
+            'help_access_token',
+            'help_secret_token',
             'help_md5',
-            'help_windowstate',
+            'help_window_state',
             'help_windowid',
             'help_surcharge',
-            'help_instantcapture',
-            'help_immediateredirecttoaccept',
-            'help_roundingmode',
-            'help_paymentmethodtitle',
+            'help_instant_capture',
+            'help_immediate_redirect_to_accept',
+            'help_rounding_mode',
+            'help_payment_method_title',
             'help_total',
             'help_order_status_completed',
             'help_geo_zone',
             'help_sort_order',
-            ////Error
-            //'error_merchant',
-            //'error_accesstoken',
-            //'error_secrettoken',
         );
         foreach ($keys as $key) {
             $this->data[$key] = $this->language->get($key);
@@ -158,11 +163,11 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'text_enabled',
             'text_disabled',
             'text_all_zones',
-            'text_windowstate_fullscreen',
-            'text_windowstate_overlay',
-            'text_roundingmode_default',
-            'text_roundingmode_alwaysup',
-            'text_roundingmode_alwaysdown'
+            'text_window_state_fullscreen',
+            'text_window_state_overlay',
+            'text_rounding_mode_default',
+            'text_rounding_mode_always_up',
+            'text_rounding_mode_always_down'
         );
         foreach ($keys as $key) {
             $this->data[$key] = $this->language->get($key);
@@ -171,45 +176,44 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $this->load->model('localisation/order_status');
         $this->data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
         $this->load->model('localisation/geo_zone');
-        $data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
+        $this->data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
 
         $this->data['header'] = $this->load->controller('common/header');
         $this->data['column_left'] = $this->load->controller('common/column_left');
         $this->data['footer'] = $this->load->controller('common/footer');
+        $this->data['module_version'] = $this->module_version;
     }
 
     protected function populateBreadcrums()
     {
         $this->data['breadcrumbs'] = array();
 
-        $this->data['breadcrumbs'][] = array(
-            'text' => $this->language->get('text_home'),
-            'href' => $this->url->link('common/home', 'token=' . $this->session->data['token'], 'SSL'),
-            'separator' => false
-        );
+		$this->data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true)
+		);
 
-        $this->data['breadcrumbs'][] = array(
-            'text' => $this->language->get('text_payment'),
-            'href' => $this->url->link('extension/extension', 'token=' . $this->session->data['token'], 'SSL'),
-            'separator' => ' :: '
-        );
+		$this->data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_extension'),
+			'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true)
+		);
 
-        $this->data['breadcrumbs'][] = array(
-            'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('extension/payment/' . $this->module_name, 'token=' . $this->session->data['token'], 'SSL'),
-            'separator' => ' :: '
-        );
+		$this->data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('extension/payment/'.$this->module_name, 'user_token=' . $this->session->data['user_token'], true)
+		);
 
-        $this->data['action'] = $this->url->link('extension/payment/' . $this->module_name, 'token=' . $this->session->data['token'], 'SSL');
+		$this->data['action'] = $this->url->link('extension/payment/'.$this->module_name, 'user_token=' . $this->session->data['user_token'], true);
 
-        $this->data['cancel'] = $this->url->link('extension/extension', 'token=' . $this->session->data['token'], 'SSL');
+		$this->data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true);
+
     }
 
     protected function populateErrorMessages()
     {
         foreach ($this->errorFields as $error) {
-            if (isset($this->error[$error])) {
-                $this->data['error_' . $error] = $this->error[$error];
+            if (isset($this->errors[$error])) {
+                $this->data['error_' . $error] = $this->errors[$error];
             } else {
                 $this->data['error_' . $error] = '';
             }
@@ -219,17 +223,16 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
     protected function validate()
     {
-        if(!$this->user->hasPermission('modify', "extension/payment/{$this->module_name}")) {
-            $this->error['warning'] = $this->language->get('error_permission');
+        if(!$this->user->hasPermission('modify', 'extension/payment/'.$this->module_name)) {
+            $this->errors['warning'] = $this->language->get('error_permission');
         }
 
         foreach ($this->errorFields as $error) {
-            if (!$this->request->post[$this->module_name . '_' . $error]) {
-                $this->error[$error] = $this->language->get('error_' . $error);
+            if (!$this->request->post['payment_'.$this->module_name . '_' . $error]) {
+                $this->errors[$error] = $this->language->get('error_' . $error);
             }
         }
 
-        return !$this->error;
+        return !$this->errors;
     }
-
 }
