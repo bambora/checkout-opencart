@@ -1,6 +1,23 @@
 <?php
+/**
+ * Copyright (c) 2017. All rights reserved Bambora Online.
+ *
+ * This program is free software. You are allowed to use the software but NOT allowed to modify the software.
+ * It is also not legal to do any changes to the software and distribute it in your own name / brand.
+ *
+ * All use of the payment modules happens at your own risk. We offer a free test account that you can use to test the module.
+ *
+ * @author    Bambora Online
+ * @copyright Bambora Online (https://bambora.com)
+ * @license   Bambora Online
+ *
+ */
+
 // Heading
 $_['heading_title'] = 'Bambora Online Checkout';
+
+// Image
+$_['text_bambora_online_checkout'] = '<a href="https://bambora.com" target="blank"><img src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/bambora-logo.svg" alt="Bambora" title="Bambora" style="max-width:100px; max-height:46px;" /></a>';
 
 //Text
 $_['text_edit'] = 'Edit Bambora Online Checkout';
@@ -16,7 +33,7 @@ $_['text_rounding_mode_always_down'] = 'Always down';
 
 //Entry
 $_['entry_status'] = 'Status';
-$_['entry_merchant'] = 'Merchant';
+$_['entry_merchant'] = 'Merchant number';
 $_['entry_access_token'] = 'Access token';
 $_['entry_secret_token'] = 'Secret token';
 $_['entry_md5'] = 'MD5 Key';
