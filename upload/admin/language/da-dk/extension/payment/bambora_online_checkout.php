@@ -27,6 +27,38 @@ $_['text_window_state_overlay'] = 'Overlay';
 $_['text_rounding_mode_default'] = 'Default';
 $_['text_rounding_mode_always_up'] = 'Always up';
 $_['text_rounding_mode_always_down'] = 'Always down';
+$_['text_payment_info']    = 'Betalings informationer';
+$_['text_transaction_id'] = 'Transaktions ID';
+$_['text_transaction_authorized'] = 'Bel&oslashb';
+$_['text_transaction_date'] = 'Betalingsdato';
+$_['text_transaction_payment_type'] = 'Betalingstype';
+$_['text_transaction_card_number'] = 'Kortnummer';
+$_['text_transaction_surcharge_fee'] = 'Betalings gebyr';
+$_['text_transaction_captured'] = 'H&aelig;vet';
+$_['text_transaction_refunded'] = 'Refunderet';
+$_['text_transaction_acquirer'] = 'Indl&oslashser';
+$_['text_transaction_status'] = 'Status';
+$_['text_transaction_operations'] = 'Transaktions operationer';
+$_['text_transaction_operations_date'] = 'Dato';
+$_['text_transaction_operations_action'] = 'Handling';
+$_['text_transaction_operations_amount'] = 'Bel&oslashb';
+$_['text_transaction_operations_eci'] = 'Sikkerhedsniveau';
+$_['text_transaction_operations_id'] = 'Operations ID';
+$_['text_transaction_operations_parent_id'] = 'Oprindelig Operations ID';
+$_['text_btn_capture'] = 'H&aelig;v';
+$_['text_btn_refund'] = 'Krediter';
+$_['text_btn_void'] = 'Annuller';
+$_['text_capture_payment_header'] = 'H&aelig;v betalingen?';
+$_['text_capture_payment_body'] = 'Er du sikker p&aring; at du vil h&aelig;ve';
+$_['text_refund_payment_header'] = 'Krediter betalingen?';
+$_['text_refund_payment_body'] = 'Er du sikker p&aring; at du vil kreditere';
+$_['text_void_payment_header'] = 'Annuller betalingen?';
+$_['text_void_payment_body'] = 'Er du sikker p&aring; at du vil annullere betalingen';
+$_['text_no'] = 'Nej';
+$_['text_yes'] = 'Ja';
+$_['text_tooltip'] = 'Eksempel: 1234.56';
+$_['text_goto_bambora_admin'] = 'G&aring; til Bambora Online Merchant Administration';
+
 
 //Entry
 $_['entry_status'] = 'Status';
@@ -69,3 +101,14 @@ $_['error_permission'] = 'Warning You do not have permission to modify Bambora O
 $_['error_merchant'] = 'The Merchant number is required!';
 $_['error_access_token'] = 'The Access token is required!';
 $_['error_secret_token'] = 'The Secret token is required!';
+$_['error_get_transaction_db'] = 'Transaktionen kunne ikke findes i databasen';
+$_['error_get_api_error'] = 'Kunne ikke forbinde til Bambora';
+$_['error_amount_format'] = 'Bel&oslashbet du har indtastet er forkert formateret. Pr&oslashv igen!';
+$_['error_action_base'] = 'Handlingen kunne ikke udf&oslashres';
+$_['error_module_not_loaded'] = 'Aktiver venligst modulet';
+$_['error_order_id_not_supplied'] = 'Order id mangler';
+
+//Format
+$_['date_format'] = 'd/m/Y';
+$_['currency_decimal_point'] = ',';
+$_['currency_thousand_separator'] = '.';

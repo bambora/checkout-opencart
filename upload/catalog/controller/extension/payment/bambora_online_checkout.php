@@ -14,14 +14,6 @@
  */
 class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 {
-    const CHECKOUT_API_ENDPOINT = 'https://api.v1.checkout.bambora.com/sessions';
-    const ZERO_API_MERCHANT_ENDPOINT = 'https://merchant-v1.api-eu.bambora.com';
-
-    /**
-     * @var string
-     */
-    private $module_version = '0.1.0';
-
     /**
      * @var string
      */
@@ -56,14 +48,16 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     public function confirm()
     {
         $this->load->model('checkout/order');
+        $this->load->model('extension/payment/bambora_online_checkout');
         $this->load->language('extension/payment/' . $this->module_name);
-        $json = array();
 
         $checkoutSessionRequest = $this->createCheckoutSessionRequest();
-        $checkoutSessionResponse = $this->sendApiRequest($checkoutSessionRequest, $this::CHECKOUT_API_ENDPOINT, 'POST');
+        $checkoutSessionResponse = $this->model_extension_payment_bambora_online_checkout->setCheckoutSession($checkoutSessionRequest);
+
+        $json = array();
         if (!$checkoutSessionResponse || $checkoutSessionResponse->meta->result == false) {
-            //Do error stuff
             $json['error'] = $this->language->get('error_payment_window') . ' ' . $checkoutSessionResponse->meta->message->enduser;
+            $this->model_extension_payment_bambora_online_checkout->bamboraLog($this->language->get('error_payment_window') . ' ' . $checkoutSessionResponse->meta->message->merchant);
         } else {
             $json['url'] = $checkoutSessionResponse->url;
         }
@@ -99,6 +93,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     {
         $this->language->load('extension/payment/bambora_online_checkout');
         $this->load->model('checkout/order');
+        $this->load->model('extension/payment/bambora_online_checkout');
 
         $getParameteres = $_GET;
         $message = "";
@@ -106,46 +101,50 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         if (!$this->validateCallback($getParameteres, $message, $transaction)) {
             $orderId = array_key_exists('orderid', $getParameteres) ? $getParameteres['orderid'] : -1;
             $errorMessage = "Callback failed for order: {$orderId}. Reason: {$message}";
-            $this->log->write($errorMessage);
+
             if ($orderId != -1) {
                 $this->model_checkout_order->addOrderHistory($orderId, 1, $errorMessage);
             }
-            $this->setResponseHeaders(500);
+            $this->model_extension_payment_bambora_online_checkout->bamboraLog($errorMessage);
+            header('X-EPay-System: ' . $this->model_extension_payment_bambora_online_checkout->getModuleHeaderInformation(), true, 500);
             die($errorMessage);
         }
 
         //Lock for multiple callbacks on already confirmed payment
         $orderInfo = $this->model_checkout_order->getOrder($transaction->orderid);
         if ($orderInfo['order_status_id'] === $this->config->get('payment_' . $this->module_name . '_order_status_completed')) {
-            $this->setResponseHeaders(200);
+            header('X-EPay-System: ' . $this->model_extension_payment_bambora_online_checkout->getModuleHeaderInformation(), true, 200);
             die("The callback was a success - Order already created");
         }
 
+        $decimalPoint = $this->language->get('currency_decimal_point');
+        $thousandSeparator = $this->language->get('currency_thousand_separator');
         $minorunits = $transaction->currency->minorunits;
-        $amount = $this->convertPriceFromMinorUnits($transaction->total->authorized, $minorunits);
+        $amount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($transaction->total->authorized, $minorunits, $decimalPoint, $thousandSeparator);
 
         // Add surcharge fee to the order
         if ($this->config->get('payment_' . $this->module_name . '_surcharge') == 1 && $transaction->total->feeamount > 0) {
             $this->addSurchargeToOrderTotals($transaction, $orderInfo['order_status_id']);
         }
 
-        $amountFormatted = $this->currency->format($amount, $transaction->currency->code, false, true);
+        // Add transaction to database
+        $this->model_extension_payment_bambora_online_checkout->addDbTransaction($transaction->orderid, $transaction->id, $transaction->total->authorized, $transaction->currency->code);
+
         $paymentInfo = $transaction->information->paymenttypes[0]->displayname . ' ' . $transaction->information->primaryaccountnumbers[0]->number;
         $comment = '<table style="width: 60%"><tbody>';
-        $comment .= '<tr><td>'. '<b>'.$this->language->get('payment_process') . '</b></td><td>' . $amountFormatted . '</td></tr>';
+        $comment .= '<tr><td>'. '<b>'.$this->language->get('payment_process') . '</b></td><td>' . $transaction->currency->code . ' ' . $amount . '</td></tr>';
         $comment .= '<tr><td>'. '<b>'.$this->language->get('payment_with_transactionid') . '</b></td><td>' . $transaction->id . '</td></tr>';
         $comment .= '<tr><td>'. '<b>'.$this->language->get('payment_card') . '</b></td><td>' . $paymentInfo . '</td></tr>';
         $comment .= '</tbody></table>';
 
         $this->model_checkout_order->addOrderHistory($transaction->orderid, $this->config->get('payment_' . $this->module_name . '_order_status_completed'), $comment, true);
 
-        $this->setResponseHeaders(200);
+        header('X-EPay-System: ' . $this->model_extension_payment_bambora_online_checkout->getModuleHeaderInformation(), true, 200);
         die("The callback was a success");
     }
 
     #endregion
 
-    #region Methodes
     /**
      * Returns an array of allowed payment type id's
      *
@@ -156,16 +155,17 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
      */
     protected function getAllowedPaymentTypeIds($currency, $amount, $orderId)
     {
+        $this->load->model('extension/payment/bambora_online_checkout');
+
         $paymentCardIdsArray = array();
-        $minorunits = $this->getCurrencyMinorunits($currency);
-        $amountInMinorunits = $this->convertPriceToMinorunits($amount, $minorunits);
+        $minorunits = $this->model_extension_payment_bambora_online_checkout->getCurrencyMinorunits($currency);
+        $amountInMinorunits = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($amount, $minorunits);
+        $paymentTypeResponse = $this->model_extension_payment_bambora_online_checkout->getPaymentTypeIds($currency, $amountInMinorunits);
 
-        $endpoint = $this::ZERO_API_MERCHANT_ENDPOINT . "/paymenttypes?currency={$currency}&amount={$amountInMinorunits}";
-
-        $paymentTypeResponse = $this->sendApiRequest(null, $endpoint, 'GET');
         if (!isset($paymentTypeResponse) || $paymentTypeResponse->meta->result == false) {
-            $errorMessage = isset($paymentTypeResponse) ? $paymentTypeResponse->meta->message->merchant : "Could not connect to Bambora";
-            $this->log->write("Get allowed payment types failed for order: {$orderId} Reason: {$errorMessage}");
+            $errorMessage = "Get allowed payment types failed for order: {$orderId} Reason: ";
+            $errorMessage .= isset($paymentTypeResponse) ? $paymentTypeResponse->meta->message->merchant : "Could not connect to Bambora";
+            $this->model_extension_payment_bambora_online_checkout->bamboraLog($errorMessage);
         } else {
             foreach ($paymentTypeResponse->paymentcollections as $payment) {
                 foreach ($payment->paymentgroups as $group) {
@@ -186,7 +186,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     {
         $orderInfo = $this->model_checkout_order->getOrder($this->session->data['order_id']);
         $orderTotals = $this->model_checkout_order->getOrderTotals($this->session->data['order_id']);
-        $minorunits = $this->getCurrencyMinorunits($orderInfo['currency_code']);
+        $minorunits = $this->model_extension_payment_bambora_online_checkout->getCurrencyMinorunits($orderInfo['currency_code']);
         $orderTotalAmount = 0;
         $orderTaxAmount = 0;
         foreach ($orderTotals as $total) {
@@ -199,7 +199,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         $params = array();
         $params['language'] = $this->language->get('code');
-        $params['instantcaptureamount'] = $this->config->get('payment_'.$this->module_name.'_instant_capture') === 1 ? $this->convertPriceToMinorunits($orderTotalAmount, $minorunits)  : 0;
+        $params['instantcaptureamount'] = $this->config->get('payment_'.$this->module_name.'_instant_capture') === "1" ? $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotalAmount, $minorunits)  : 0;
         $params['paymentwindowid'] = $this->config->get('payment_' . $this->module_name . '_payment_window_id');
 
         $params['customer'] = array();
@@ -209,9 +209,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         $params['order'] = array();
         $params['order']['id'] = $orderInfo['order_id'];
-        $params['order']['amount'] = $this->convertPriceToMinorunits($orderTotalAmount, $minorunits);
-        $params['order']['vatamount'] = $this->convertPriceToMinorunits($orderTaxAmount, $minorunits);
-        ;
+        $params['order']['amount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotalAmount, $minorunits);
+        $params['order']['vatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTaxAmount, $minorunits);
+
         $params['order']['currency'] = $orderInfo['currency_code'];
         $params['order']['shippingaddress'] = $this->createCustomerAddress($orderInfo, 'shipping');
         $params['order']['billingaddress'] = $this->createCustomerAddress($orderInfo, 'payment');
@@ -269,9 +269,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $line['text'] = $product['name'];
             $line['quantity'] = $product['quantity'];
             $line['unit'] = $this->language->get('pcs');
-            $line['totalprice'] = $this->convertPriceToMinorunits($product['total'], $minorunits);
-            $line['totalpriceinclvat'] = $this->convertPriceToMinorunits($product['total'] + ($product['tax'] * $product['quantity']), $minorunits);
-            $line['totalpricevatamount'] = $this->convertPriceToMinorunits($product['tax'], $minorunits);
+            $line['totalprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($product['total'], $minorunits);
+            $line['totalpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($product['total'] + ($product['tax'] * $product['quantity']), $minorunits);
+            $line['totalpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($product['tax'], $minorunits);
             $line['vat'] = $product['tax'] > 0 ? round((($product['tax'] * $product['quantity']) / $product['total']) * 100) : 0;
 
             $params[] = $line;
@@ -313,9 +313,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
                 $shippingWithTax = $shippingMethod['cost'] + $shippingTaxAmount;
 
-                $shipping['totalprice'] = $this->convertPriceToMinorunits($shippingMethod['cost'], $minorunits);
-                $shipping['totalpriceinclvat'] = $this->convertPriceToMinorunits($shippingWithTax, $minorunits);
-                $shipping['totalpricevatamount'] = $this->convertPriceToMinorunits($shippingTaxAmount, $minorunits);
+                $shipping['totalprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingMethod['cost'], $minorunits);
+                $shipping['totalpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingWithTax, $minorunits);
+                $shipping['totalpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingTaxAmount, $minorunits);
                 $shipping['vat'] = $shippingTaxRate;
 
                 $params[] = $shipping;
@@ -331,9 +331,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $coupon['text'] = $orderTotalDiscount['title'];
             $coupon['quantity'] = 1;
             $coupon['unit'] = $this->language->get('pcs');
-            $coupon['totalprice'] = $this->convertPriceToMinorunits($orderTotalDiscount['value'], $minorunits);
-            ;
-            $coupon['totalpriceinclvat'] = $this->convertPriceToMinorunits($orderTotalDiscount['value'], $minorunits);
+            $coupon['totalprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotalDiscount['value'], $minorunits);
+            $coupon['totalpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotalDiscount['value'], $minorunits);
             $coupon['totalpricevatamount'] = 0;
             $coupon['vat'] = 0;
             $params[] = $coupon;
@@ -348,9 +347,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $voucher['text'] = $orderTotalVoucher['title'];
             $voucher['quantity'] = 1;
             $voucher['unit'] = $this->language->get('pcs');
-            $voucher['totalprice'] = $this->convertPriceToMinorunits($orderTotalVoucher['value'], $minorunits);
-            ;
-            $voucher['totalpriceinclvat'] = $this->convertPriceToMinorunits($orderTotalVoucher['value'], $minorunits);
+            $voucher['totalprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotalVoucher['value'], $minorunits);
+            $voucher['totalpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotalVoucher['value'], $minorunits);
             $voucher['totalpricevatamount'] = 0;
             $voucher['vat'] = 0;
             $params[] = $voucher;
@@ -415,8 +413,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         }
 
         $transactionId = $getParameteres["txnid"];
-        $endpoint = $this::ZERO_API_MERCHANT_ENDPOINT . '/transactions/' . $transactionId;
-        $transactionResponse = $this->sendApiRequest(null, $endpoint, 'GET');
+        $transactionResponse = $this->model_extension_payment_bambora_online_checkout->getTransaction($transactionId);
 
         if (!isset($transactionResponse) || !$transactionResponse->meta->result) {
             $message = isset($transactionResponse) ? $transactionResponse->meta->message->merchant : "Connection to Bambora Failed";
@@ -436,7 +433,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     protected function addSurchargeToOrderTotals($transaction, $currentStatusId)
     {
         $this->load->language('extension/total/bambora_online_checkout_fee');
-        $transactionFee = $this->convertPriceFromMinorunits($transaction->total->feeamount, $transaction->currency->minorunits);
+        $transactionFee = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($transaction->total->feeamount, $transaction->currency->minorunits);
         $orderTotals = $this->model_checkout_order->getOrderTotals($transaction->orderid);
         $orderTotals[] = array(
         'order_id' => $transaction->orderid,
@@ -465,137 +462,4 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $this->model_checkout_order->addOrderHistory($transaction->orderid, $currentStatusId, $message);
         }
     }
-
-    /**
-     * Send the API request to Bambora
-     *
-     * @param mixed $request
-     * @param mixed $endpoint
-     * @param mixed $type
-     * @return mixed
-     */
-    protected function sendApiRequest($request, $endpoint, $type)
-    {
-        $requestJson = json_encode($request);
-        $contentLength = strlen($requestJson);
-        $headers = array(
-            'Content-Type: application/json',
-            'Content-Length: ' . $contentLength,
-            'Accept: application/json',
-            'Authorization: ' . $this->getApiKey(),
-            'X-EPay-System: ' . $this->getModuleHeaderInformation(),
-        );
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $type);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $requestJson);
-        curl_setopt($curl, CURLOPT_URL, $endpoint);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_FAILONERROR, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        $responseJson = curl_exec($curl);
-
-        return json_decode($responseJson);
-    }
-
-    /**
-     * Get the Bambora API key based on access token, merchant number and secret token
-     *
-     * @return string
-     */
-    protected function getApiKey()
-    {
-        $accesstoken = $this->config->get('payment_'.$this->module_name.'_access_token');
-        $merchantNumber = $this->config->get('payment_'.$this->module_name.'_merchant');
-        ;
-        $secretToken = $this->config->get('payment_'.$this->module_name.'_secret_token');
-
-        $combined = $accesstoken . '@' . $merchantNumber . ':' . $secretToken;
-        $encoded_key = base64_encode($combined);
-        $api_key = 'Basic ' . $encoded_key;
-        return $api_key;
-    }
-
-    /**
-     * Returns the module header information
-     *
-     * @return string
-     */
-    protected function getModuleHeaderInformation()
-    {
-        $headerInformation = 'OpenCart/' . VERSION . ' Module/' . $this->module_version . ' PHP/'. phpversion();
-
-        return $headerInformation;
-    }
-
-    /**
-     * Sets the response headers
-     *
-     * @param mixed $responseCode
-     */
-    protected function setResponseHeaders($responseCode)
-    {
-        header('X-EPay-System: ' . $this->getModuleHeaderInformation(), true, $responseCode);
-    }
-
-    /**
-     * Convert Price To MinorUnits
-     *
-     * @param mixed $amount
-     * @param mixed $minorunits
-     * @return double|integer
-     */
-    protected function convertPriceToMinorunits($amount, $minorunits)
-    {
-        if ($amount == "" || $amount == null) {
-            return 0;
-        }
-        $roundingMode = $this->config->get('payment_'.$this->module_name.'_rounding_mode');
-        switch ($roundingMode) {
-            case 'up':
-                $amount = ceil($amount * pow(10, $minorunits));
-                break;
-            case 'down':
-                $amount = floor($amount * pow(10, $minorunits));
-                break;
-            default:
-                $amount = round($amount * pow(10, $minorunits));
-                break;
-        }
-        return $amount;
-    }
-
-    /**
-     * Convert Price From MinorUnits
-     *
-     * @param mixed $amount
-     * @param mixed $minorunits
-     * @return string
-     */
-    protected function convertPriceFromMinorunits($amount, $minorunits, $decimal_seperator = '.')
-    {
-        if (!isset($amount)) {
-            return 0;
-        }
-        return number_format($amount / pow(10, $minorunits), $minorunits, $decimal_seperator, '');
-    }
-
-    /**
-     * Get Currency Minorunits
-     *
-     * @param mixed $currencyCode
-     * @return integer
-     */
-    protected function getCurrencyMinorunits($currencyCode)
-    {
-        $currencyArray = array(
-        'TTD' => 0, 'KMF' => 0, 'ADP' => 0, 'TPE' => 0, 'BIF' => 0,
-        'DJF' => 0, 'MGF' => 0, 'XPF' => 0, 'GNF' => 0, 'BYR' => 0,
-        'PYG' => 0, 'JPY' => 0, 'CLP' => 0, 'XAF' => 0, 'TRL' => 0,
-        'VUV' => 0, 'CLF' => 0, 'KRW' => 0, 'XOF' => 0, 'RWF' => 0,
-        'IQD' => 3, 'TND' => 3, 'BHD' => 3, 'JOD' => 3, 'OMR' => 3,
-        'KWD' => 3, 'LYD' => 3);
-        return key_exists($currencyCode, $currencyArray) ? $currencyArray[$currencyCode] : 2;
-    }
-    #endregion
 }

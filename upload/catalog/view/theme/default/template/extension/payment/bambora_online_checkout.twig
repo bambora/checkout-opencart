@@ -6,9 +6,9 @@
     <h3>{{ text_title }}</h3>
     <p>{{ text_payment }}</p>
     <div class="bambora-online-checkout-paymentlogos col-sm-9 col-xs-12">
-	    {% for paymentTypeId in bambora_online_checkout_allowed_payment_type_ids %}
-	        <img src="https://d3r1pwhfz7unl9.cloudfront.net/paymentlogos/{{ paymentTypeId }}.svg"/>
-	    {% endfor %}
+        {% for paymentTypeId in bambora_online_checkout_allowed_payment_type_ids %}
+            <img src="https://d3r1pwhfz7unl9.cloudfront.net/paymentlogos/{{ paymentTypeId }}.svg"/>
+        {% endfor %}
         </div>
     <div class="buttons">
       <div class="pull-right">
@@ -19,18 +19,18 @@
         (function (n, t, i, r, u, f, e) { n[u] = n[u] || function() {
         (n[u].q = n[u].q || []).push(arguments)}; f = t.createElement(i);
         e = t.getElementsByTagName(i)[0]; f.async = 1; f.src = r;
-	    e.parentNode.insertBefore(f, e)})(window, document, "script", "https://v1.checkout.bambora.com/assets/paymentwindow-v1.min.js", "bam");
+        e.parentNode.insertBefore(f, e)})(window, document, "script", "https://v1.checkout.bambora.com/assets/paymentwindow-v1.min.js", "bam");
     </script>
     <script type="text/javascript">
     $('#button-confirm').on('click', function() {
-	    $.ajax({
-		    url: 'index.php?route=extension/payment/bambora_online_checkout/confirm',
+        $.ajax({
+            url: 'index.php?route=extension/payment/bambora_online_checkout/confirm',
             dataType: 'json',
-		    beforeSend: function() {
-			    $('#button-confirm').button('loading');
-		    },
-		    success: function(json) {
-			    if(json['error']) {
+            beforeSend: function() {
+                $('#button-confirm').button('loading');
+            },
+            success: function(json) {
+                if(json['error']) {
                     $('#bambora-online-checkout-error_text').text(json['error']);
                     $('#bambora-online-checkout-error').css('display','block');
                     $('#button-confirm').button('reset');
@@ -44,12 +44,12 @@
                     }  
                 }
                 bam("open", json['url'], options);           
-		    },
-		    error: function(xhr, ajaxOptions, thrownError) {
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
                 xhr.responseText;
                 $('#button-confirm').button('reset');
-		    }
-	    });
+            }
+        });
     });
     </script>
     <style>

@@ -22,6 +22,7 @@ $_['text_bambora_online_checkout'] = '<a href="https://bambora.com" target="blan
 //Text
 $_['text_edit'] = 'Edit Bambora Online Checkout';
 $_['text_extension'] = 'Extensions';
+$_['text_home'] = 'Home';
 $_['text_success'] = 'Success: You have modified Bambora Online Checkout settings!';
 $_['text_enabled'] = 'Enabled';
 $_['text_disabled'] = 'Disabled';
@@ -30,6 +31,38 @@ $_['text_window_state_overlay'] = 'Overlay';
 $_['text_rounding_mode_default'] = 'Default';
 $_['text_rounding_mode_always_up'] = 'Always up';
 $_['text_rounding_mode_always_down'] = 'Always down';
+$_['text_payment_info']    = 'Payment information';
+$_['text_all_zones'] = 'All Zones';
+$_['text_transaction_id'] = 'Transaction ID';
+$_['text_transaction_authorized'] = 'Amount';
+$_['text_transaction_date'] = 'Transaction date';
+$_['text_transaction_payment_type'] = 'Payment type';
+$_['text_transaction_card_number'] = 'Card number';
+$_['text_transaction_surcharge_fee'] = 'Surcharge fee';
+$_['text_transaction_captured'] = 'Captured';
+$_['text_transaction_refunded'] = 'Refunded';
+$_['text_transaction_acquirer'] = 'Acquirer';
+$_['text_transaction_status'] = 'Status';
+$_['text_transaction_operations'] = 'Transaction Operations';
+$_['text_transaction_operations_date'] = 'Date';
+$_['text_transaction_operations_action'] = 'Action';
+$_['text_transaction_operations_amount'] = 'Amount';
+$_['text_transaction_operations_eci'] = 'ECI';
+$_['text_transaction_operations_id'] = 'Operation ID';
+$_['text_transaction_operations_parent_id'] = 'Parent Operation ID';
+$_['text_btn_capture'] = 'Capture';
+$_['text_btn_refund'] = 'Refund';
+$_['text_btn_void'] = 'Void';
+$_['text_tooltip'] = 'Example: 1234.56';
+$_['text_capture_payment_header'] = 'Capture payment?';
+$_['text_capture_payment_body'] = 'Are you sure you want to capture';
+$_['text_refund_payment_header'] = 'Refund payment?';
+$_['text_refund_payment_body'] = 'Are you sure you want to refund';
+$_['text_void_payment_header'] = 'Void payment?';
+$_['text_void_payment_body'] = 'Are you sure you want to void the payment';
+$_['text_no'] = 'No';
+$_['text_yes'] = 'Yes';
+$_['text_goto_bambora_admin'] = 'Go to Bambora Online Merchant Administration';
 
 //Entry
 $_['entry_status'] = 'Status';
@@ -72,3 +105,15 @@ $_['error_permission'] = 'Warning You do not have permission to modify Bambora O
 $_['error_merchant'] = 'The Merchant number is required!';
 $_['error_access_token'] = 'The Access token is required!';
 $_['error_secret_token'] = 'The Secret token is required!';
+$_['error_get_transaction_db'] = 'Could not retrive the transaction from the database!';
+$_['error_get_api_error'] = 'No connection to Bambora';
+$_['error_amount_format'] = 'The amount you entered is in the wrong format. Please try again!';
+$_['error_action_base'] = 'The action could not be perform';
+$_['error_module_not_loaded'] = 'Please enable the module';
+$_['error_order_id_not_supplied'] = 'Order id not supplied to method';
+
+
+//Format
+$_['date_format'] = 'm/d/Y';
+$_['currency_decimal_point'] = '.';
+$_['currency_thousand_separator'] = ',';

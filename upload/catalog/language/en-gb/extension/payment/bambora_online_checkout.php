@@ -26,3 +26,8 @@ $_['payment_card']   = "Payment type:";
 $_['pcs'] = "pcs.";
 $_['surcharge_fee'] = "Surcharge fee:";
 $_['accept_order_text'] = "Awaiting payment confirmation from Bambora";
+
+//Format
+$_['date_format'] = 'm/d/Y';
+$_['currency_decimal_point'] = '.';
+$_['currency_thousand_separator'] = ',';

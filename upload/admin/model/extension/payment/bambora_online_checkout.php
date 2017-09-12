@@ -14,13 +14,8 @@
  */
 class ModelExtensionPaymentBamboraOnlineCheckout extends Model
 {
-    const CHECKOUT_API_ENDPOINT = 'https://api.v1.checkout.bambora.com/sessions';
+    const ZERO_API_TRANSACTION_ENDPOINT = 'https://transaction-v1.api-eu.bambora.com';
     const ZERO_API_MERCHANT_ENDPOINT = 'https://merchant-v1.api-eu.bambora.com';
-
-    /**
-     * @var string
-     */
-    private $module_name = 'bambora_online_checkout';
 
     /**
      * @var string
@@ -28,95 +23,97 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     private $module_version = '1.0.0';
 
     /**
-     * Returns method data
-     *
-     * @param mixed $address
-     * @param mixed $total
-     * @return array
+     * @var string
      */
-    public function getMethod($address, $total)
+    private $module_name = 'bambora_online_checkout';
+
+    /**
+     * Install and create Bambora Online Checkout Transaction table
+     */
+    public function install()
     {
-        $this->load->language('extension/payment/'.$this->module_name);
-
-        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get($this->module_name . '_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
-
-        if ($this->config->get($this->module_name . '_total') > 0 && $this->config->get($this->module_name . '_total') > $total) {
-            $status = false;
-        } elseif (!$this->config->get($this->module_name . '_geo_zone_id')) {
-            $status = true;
-        } elseif ($query->num_rows) {
-            $status = true;
-        } else {
-            $status = false;
-        }
-
-        $method_data = array();
-
-        if ($status) {
-            $method_data = array(
-                'code'       => $this->module_name,
-                'title'      => $this->config->get('payment_'.$this->module_name .'_payment_method_title'),
-                'terms'      => '',
-                'sort_order' => $this->config->get($this->module_name . '_sort_order')
-            );
-        }
-
-        return $method_data;
+        $this->db->query("
+            CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "bambora_online_checkout_transaction` (
+                `order_id` int(11) NOT NULL,
+                `transaction_id` VARCHAR(45) NOT NULL,
+                `amount` VARCHAR(45) NOT NULL,
+                `currency` VARCHAR(4) NOT NULL,
+                `module_version` VARCHAR(10) NOT NULL,
+                `created` DATETIME NOT NULL,
+                PRIMARY KEY (`order_id`)
+                ) ENGINE=MyISAM DEFAULT COLLATE=utf8_general_ci;
+         ");
     }
 
     /**
-     * Add transaction to database
+     * Get transaction from database
      *
      * @param mixed $orderId
-     * @param mixed $transactionId
-     * @param mixed $amount
-     * @param mixed $currency
      * @return mixed
      */
-    public function addDbTransaction($orderId, $transactionId, $amount, $currency)
+    public function getDbTransaction($orderId)
     {
-        $result = $this->db->query("INSERT INTO " . DB_PREFIX . "bambora_online_checkout_transaction SET
-            order_id = " . (int)$this->db->escape($orderId) . ",
-            transaction_id = '" . $this->db->escape($transactionId) . "',
-            amount = '" . $this->db->escape($amount) . "',
-            currency = '" . $this->db->escape($currency) . "',
-            module_version = '" . $this->db->escape($this->module_version) . "',
-            created = NOW()
-         ");
+        $result = $this->db->query("SELECT * FROM " . DB_PREFIX . "bambora_online_checkout_transaction WHERE order_id = " . (int)$this->db->escape($orderId));
 
-        return $result;
+        if ($result->num_rows) {
+            return $result->row;
+        } else {
+            return false;
+        }
     }
 
     /**
-     * Create a checkout session
+     * Capture a payment
      *
-     * @param mixed $checkoutRequest
+     * @param string $transactionId
+     * @param int|long $amountInMinorunits
+     * @param string $currencyCode
      * @return mixed
      */
-    public function setCheckoutSession($checkoutRequest)
+    public function capture($transactionId, $amountInMinorunits, $currencyCode)
     {
-        $endpoint = $this::CHECKOUT_API_ENDPOINT;
-        $response = $this->sendApiRequest($checkoutRequest, $endpoint, 'POST');
-
-        return $response;
-    }
-
-    /**
-     * Get allowed paymenttype ids
-     *
-     * @param mixed $currency
-     * @param mixed $amountInMinorunits
-     * @return mixed
-     */
-    public function getPaymentTypeIds($currency, $amountInMinorunits)
-    {
-        $endpoint = $this::ZERO_API_MERCHANT_ENDPOINT . "/paymenttypes?currency={$currency}&amount={$amountInMinorunits}";
+        $endpoint = $this::ZERO_API_TRANSACTION_ENDPOINT . "/transactions/{$transactionId}/capture";
         $request = array();
-        $response = $this->sendApiRequest($request, $endpoint, 'GET');
+        $request['amount'] = $amountInMinorunits;
+        $request['currency'] = $currencyCode;
+        $response = $this->sendApiRequest($request, $endpoint, 'POST');
 
         return $response;
     }
 
+    /**
+     * Refund a payment
+     *
+     * @param string $transactionId
+     * @param int|long $amountInMinorunits
+     * @param string $currencyCode
+     * @return mixed
+     */
+    public function refund($transactionId, $amountInMinorunits, $currencyCode)
+    {
+        $endpoint = $this::ZERO_API_TRANSACTION_ENDPOINT . "/transactions/{$transactionId}/credit";
+        $request = array();
+        $request['amount'] = $amountInMinorunits;
+        $request['currency'] = $currencyCode;
+        $response = $this->sendApiRequest($request, $endpoint, 'POST');
+
+        return $response;
+    }
+
+    /**
+     * Void a payment
+     *
+     * @param string $transactionId
+     * @return mixed
+     */
+    public function void($transactionId)
+    {
+        $endpoint = $this::ZERO_API_TRANSACTION_ENDPOINT . "/transactions/{$transactionId}/delete";
+        $request = array();
+        $response = $this->sendApiRequest($request, $endpoint, 'POST');
+
+        return $response;
+    }
 
     /**
      * Get a transaction
@@ -127,6 +124,21 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     public function getTransaction($transactionId)
     {
         $endpoint = $this::ZERO_API_MERCHANT_ENDPOINT . "/transactions/{$transactionId}";
+        $request = array();
+        $response = $this->sendApiRequest($request, $endpoint, 'GET');
+
+        return $response;
+    }
+
+    /**
+     * Get a transaction operations
+     *
+     * @param string $transactionId
+     * @return mixed
+     */
+    public function getTransactionOperations($transactionId)
+    {
+        $endpoint = $this::ZERO_API_MERCHANT_ENDPOINT . "/transactions/{$transactionId}/transactionoperations";
         $request = array();
         $response = $this->sendApiRequest($request, $endpoint, 'GET');
 
@@ -257,7 +269,7 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     public function bamboraLog($logContent)
     {
         $log = new Log('bambora_online_checkout.log');
-        $logMessage = "\r\n Shop information: " . $this->getModuleHeaderInformation() . "\r\n Area: Catalog" . "\r\n Message: " . $logContent;
+        $logMessage = "\r\n Shop information: " . $this->getModuleHeaderInformation() . "\r\n Area: Admin" . "\r\n Message: " . $logContent;
         $log->write($logMessage);
     }
 }
