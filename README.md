@@ -7,7 +7,9 @@
  * Bambora Online Checkout
 
 ## Installation instructions
- * Download the latest module from here: https://github.com/bambora/checkout-opencart/releases/latest 
+ * Download the latest module from:
+   * OpenCart Market: https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=31882&filter_search=bambora&filter_license=0
+   * Github: https://github.com/bambora/checkout-opencart/releases/latest 
  * Go to Extensions->Installer in the OpenCart backoffice.
  * Upload the module
  * When done go to Extensions->Extensions and install the Bambora Online Checkout module.
