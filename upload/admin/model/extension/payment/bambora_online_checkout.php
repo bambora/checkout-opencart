@@ -20,7 +20,7 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     /**
      * @var string
      */
-    private $module_version = '1.0.0';
+    private $module_version = '1.1.0';
 
     /**
      * @var string
@@ -184,9 +184,9 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
      */
     protected function getApiKey()
     {
-        $accesstoken = $this->config->get('payment_'.$this->module_name.'_access_token');
-        $merchantNumber = $this->config->get('payment_'.$this->module_name.'_merchant');
-        $secretToken = $this->config->get('payment_'.$this->module_name.'_secret_token');
+        $accesstoken = $this->config->get($this->getConfigBaseName() . '_access_token');
+        $merchantNumber = $this->config->get($this->getConfigBaseName() . '_merchant');
+        $secretToken = $this->config->get($this->getConfigBaseName() . '_secret_token');
 
         $combined = $accesstoken . '@' . $merchantNumber . ':' . $secretToken;
         $encoded_key = base64_encode($combined);
@@ -218,7 +218,7 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
         if ($amount == "" || $amount == null) {
             return 0;
         }
-        $roundingMode = $this->config->get('payment_'.$this->module_name.'_rounding_mode');
+        $roundingMode = $this->config->get($this->getConfigBaseName() . '_rounding_mode');
         switch ($roundingMode) {
             case 'up':
                 $amount = ceil($amount * pow(10, $minorunits));
@@ -271,5 +271,19 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
         $log = new Log('bambora_online_checkout.log');
         $logMessage = "\r\n Shop information: " . $this->getModuleHeaderInformation() . "\r\n Area: Admin" . "\r\n Message: " . $logContent;
         $log->write($logMessage);
+    }
+
+    public function getConfigBaseName()
+    {
+        if($this->is_oc_3()) {
+            return "payment_{$this->module_name}";
+        } else {
+            return $this->module_name;
+        }
+    }
+
+    public function is_oc_3()
+    {
+        return !version_compare(VERSION, '3', '<');
     }
 }

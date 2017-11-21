@@ -1,104 +1,103 @@
-{% if getPaymentTransaction_success == true %}
+<?php if($getPaymentTransaction_success == true) { ?>
 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-    <h3>{{ text_payment_info }}</h3>    
+    <h3><?php echo $text_payment_info; ?></h3>    
     <table class="table table-striped">
         <tr>
-            <td>{{ text_transaction_id }}</td>
-            <td class="text-right">{{ transaction.id }}</td>
+            <td><?php echo $text_transaction_id; ?></td>
+            <td class="text-right"><?php echo $transaction['id']; ?></td>
         </tr>
         <tr>
-            <td>{{ text_transaction_authorized }}</td>
-            <td class="text-right">{{ transaction.authorized }}</td>
+            <td><?php echo $text_transaction_authorized; ?></td>
+            <td class="text-right"><?php echo $transaction['authorized']; ?></td>
         </tr>
         <tr>
-            <td>{{ text_transaction_date }}</td>
-            <td class="text-right">{{ transaction.date|date(date_format) }}</td>
+            <td><?php echo $text_transaction_date; ?></td>
+            <td class="text-right"><?php echo $transaction['date']; ?></td>
         </tr>
         <tr>
-            <td>{{ text_transaction_payment_type }}</td>
-            <td class="text-right">{{ transaction.paymentType }}</td>
+            <td><?php echo $text_transaction_payment_type; ?></td>
+            <td class="text-right"><?php echo $transaction['paymentType']; ?></td>
         </tr>
         <tr>
-            <td>{{ text_transaction_card_number }}</td>
-            <td class="text-right">{{ transaction.cardNumber }}</td>
+            <td><?php echo $text_transaction_card_number; ?></td>
+            <td class="text-right"><?php echo $transaction['cardNumber']; ?></td>
         </tr>
         <tr>
-            <td>{{ text_transaction_surcharge_fee }}</td>
-            <td class="text-right">{{ transaction.surchargeFee }}</td>
+            <td><?php echo $text_transaction_surcharge_fee; ?></td>
+            <td class="text-right"><?php echo $transaction['surchargeFee']; ?></td>
         </tr>
         <tr>
-            <td>{{ text_transaction_captured }}</td>
-            <td class="text-right">{{ transaction.captured }}</td>
+            <td><?php echo $text_transaction_captured; ?></td>
+            <td class="text-right"><?php echo $transaction['captured']; ?></td>
         </tr>
         <tr>
-            <td>{{ text_transaction_refunded }}</td>
-            <td class="text-right">{{ transaction.refunded }}</td>
+            <td><?php echo $text_transaction_refunded; ?></td>
+            <td class="text-right"><?php echo $transaction['refunded']; ?></td>
         </tr>
         <tr>
-            <td>{{ text_transaction_acquirer }}</td>
-            <td class="text-right">{{ transaction.acquirer }}</td>
+            <td><?php echo $text_transaction_acquirer; ?></td>
+            <td class="text-right"><?php echo $transaction['acquirer']; ?></td>
         </tr>
         <tr>
-            <td>{{ text_transaction_status }}</td>
-            <td class="text-right">{{ transaction.status }}</td>
+            <td><?php echo $text_transaction_status; ?></td>
+            <td class="text-right"><?php echo $transaction['status']; ?></td>
         </tr>
     </table>
 
-    {% if showActions == true  %}
+    <?php if($showActions == true) { ?>
         <div class="bambora_online_checkout_action_container">   
             <div class="input-group">
-                <div class="input-group-addon">{{ transaction.currencyCode }}</div>
-                {% if transaction.availableForCapture > 0 %}
-                    <input type="text" data-toggle="tooltip" title="{{ text_tooltip }}" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForCapture }}" />
-                {% else %}
-                    <input type="text" data-toggle="tooltip" title="{{ text_tooltip }}" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForRefund }}" />
-                {% endif %}
+                <div class="input-group-addon"><?php echo $transaction['currencyCode']; ?></div>
+                <?php if($transaction['availableForCapture'] > 0) { ?>
+                    <input type="text" data-toggle="tooltip" title="<?php echo $text_tooltip; ?>" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="<?php echo $transaction['availableForCapture']; ?>" />
+                <?php } else { ?>
+                    <input type="text" data-toggle="tooltip" title="<?php echo $text_tooltip; ?>" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="<?php echo $transaction['availableForRefund']; ?>" />
+                <?php } ?>
             </div>
-            <div id="bambora_online_checkout_format_error" class="alert alert-danger" style="display:none">{{ error_amount_format }}</div>
-            {% if transaction.availableForCapture > 0 %}              
-                <a class="bambora-button btn btn-success" id="btn-bambora-online-checkout-capture">{{ text_btn_capture }}</a>
+            <div id="bambora_online_checkout_format_error" class="alert alert-danger" style="display:none"><?php echo $error_amount_format; ?></div>
+            <?php if($transaction['availableForCapture'] > 0) { ?>              
+                <a class="bambora-button btn btn-success" id="btn-bambora-online-checkout-capture"><?php echo $text_btn_capture; ?></a>
                 <span class="bambora-button btn btn-success" id="img-loading-capture" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
-            {% endif %}
-            {% if transaction.availableForRefund > 0 %}
-                <a class="bambora-button btn btn-warning" id="btn-bambora-online-checkout-refund">{{ text_btn_refund }}</a>
+            <?php } ?>
+            <?php if($transaction['availableForRefund'] > 0) { ?>
+                <a class="bambora-button btn btn-warning" id="btn-bambora-online-checkout-refund"><?php echo $text_btn_refund; ?></a>
                 <span class="bambora-button btn btn-warning" id="img-loading-refund" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
-            {% endif %}
-            {% if transaction.canVoid == true %}
-                <a class="bambora-button btn btn-danger" id="btn-bambora-online-checkout-void">{{ text_btn_void }}</a>
+            <?php } ?>
+            <?php if($transaction['canVoid'] == true) { ?>
+                <a class="bambora-button btn btn-danger" id="btn-bambora-online-checkout-void"><?php echo $text_btn_void; ?></a>
                 <span class="bambora-button btn btn-danger" id="img-loading-void" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
-            {% endif %}
+            <?php } ?>
         </div>
-    {% endif %}
+    <?php } ?>
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
-<h3>{{ text_transaction_operations }}</h3>
+<h3><?php echo $text_transaction_operations; ?></h3>
     <table class="table table-striped">
         <tr>
-            <th>{{ text_transaction_operations_date }}</th>
-            <th>{{ text_transaction_operations_action }}</th>
-            <th>{{ text_transaction_operations_amount }}</th>
-            <th>{{ text_transaction_operations_eci }}</th>
+            <th><?php echo $text_transaction_operations_date; ?></th>
+            <th><?php echo $text_transaction_operations_action; ?></th>
+            <th><?php echo $text_transaction_operations_amount; ?></th>
+            <th><?php echo $text_transaction_operations_eci; ?></th>
         </tr>
-{% if transaction.operations|length > 0 %}
-        {% for operation in transaction.operations %}
+<?php if(count($transaction['operations']) > 0) {
+        foreach($transaction['operations'] as $operation) { ?>
             <tr>
-                <td>{{ operation.createdDate|date(date_format) }}</td>
-                <td>{{ operation.action }}</td>
-                <td>{{ operation.amount }}</td>
-                <td>{{ operation.eci }}</td>
+                <td><?php echo $operation['createdDate']; ?></td>
+                <td><?php echo $operation['action']; ?></td>
+                <td><?php echo $operation['amount']; ?></td>
+                <td><?php echo $operation['eci']; ?></td>
             </tr>
-        {% endfor %}
-{% endif %}
+<?php } } ?>
     </table>
 </div>
 
 <div class="col-lg-3 text-center hidden-xs hidden-sm hidden-md">
-    <a href="https://admin.epay.eu/Account/Login" title="{{ text_goto_bambora_admin }}" target="_blank">
+    <a href="https://admin.epay.eu/Account/Login" title="<?php echo $text_goto_bambora_admin; ?>" target="_blank">
         <img class="bambora-logo" src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/bambora-logo.svg" />
     </a>
     <div>
-        <a href="https://admin.epay.eu/Account/Login"  title="{{ text_goto_bambora_admin }}" target="_blank">{{ text_goto_bambora_admin }}</a>
+        <a href="https://admin.epay.eu/Account/Login"  title="<?php echo $text_goto_bambora_admin; ?>" target="_blank"><?php echo $text_goto_bambora_admin; ?></a>
     </div>
 </div>
 
@@ -106,17 +105,17 @@
     var amountInputField = $("#bambora_online_checkout_amount");
     $("#btn-bambora-online-checkout-capture").bind('click', function() {
         if (validateInputField()) {
-            var confirmBodyText = '{{ text_capture_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
-            confirm('{{ text_capture_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() {  
+            var confirmBodyText = '<?php echo $text_capture_payment_body . " " . $transaction["currencyCode"]; ?>' + amountInputField.val() + ' ? ';
+            confirm('<?php echo $text_capture_payment_header; ?>', confirmBodyText, '<?php echo $text_no; ?>', '<?php echo $text_yes; ?>', function() {  
                 $.ajax({
                     type:'POST',
                     dataType: 'html',
                     data: {
-                        'transactionId': '{{ transaction.id }}',
+                        'transactionId': '<?php echo $transaction["id"];?>',
                         'captureAmount': amountInputField.val(),
-                        'currencyCode': '{{ transaction.currencyCode }}'
+                        'currencyCode': '<?php echo $transaction["currencyCode"]; ?>'
                     },
-                    url: 'index.php?route=extension/payment/bambora_online_checkout/capture&user_token={{ user_token }}',
+                    url: 'index.php?route=extension/payment/bambora_online_checkout/capture&token=<?php echo $token; ?>',
                     beforeSend: handleBeforeSend('capture'),
                     success: function(json) {
                         handleSuccess('capture', json);
@@ -130,17 +129,17 @@
     
     $("#btn-bambora-online-checkout-refund").bind('click', function() {
         if (validateInputField()) {
-            var confirmBodyText = '{{ text_refund_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
-            confirm('{{ text_refund_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() { 
+            var confirmBodyText = '<?php echo $text_refund_payment_body . " " . $transaction["currencyCode"]; ?>' + ' ' + amountInputField.val() + ' ? ';
+            confirm('<?php echo $text_refund_payment_header; ?>', confirmBodyText, '<?php echo $text_no; ?>', '<?php echo $text_yes; ?>', function() { 
                 $.ajax({
                     type:'POST',
                     dataType: 'html',
                     data: {
-                        'transactionId': '{{ transaction.id }}',
+                        'transactionId': '<?php echo $transaction["id"]; ?>',
                         'refundAmount': amountInputField.val(),
-                        'currencyCode': '{{ transaction.currencyCode }}'
+                        'currencyCode': '<?php echo $transaction["currencyCode"]; ?>'
                     },
-                    url: 'index.php?route=extension/payment/bambora_online_checkout/refund&user_token={{ user_token }}',
+                    url: 'index.php?route=extension/payment/bambora_online_checkout/refund&token=<?php echo $token; ?>',
                     beforeSend: handleBeforeSend('refund'),
                     success: function(json) {
                         handleSuccess('refund', json);
@@ -153,14 +152,14 @@
     });
 
     $("#btn-bambora-online-checkout-void").bind('click', function() {
-        confirm('{{ text_void_payment_header }}', '{{ text_void_payment_body }}', '{{ text_no }}', '{{ text_yes }}', function() {
+        confirm('<?php echo $text_void_payment_header; ?>', '<?php echo $text_void_payment_body; ?>', '<?php echo $text_no; ?>', '<?php echo $text_yes; ?>', function() {
             $.ajax({
                 type:'POST',
                 dataType: 'html',
                 data: {
-                    'transactionId': '{{ transaction.id }}',
+                    'transactionId': '<?php echo $transaction["id"]; ?>',
                 },
-                url: 'index.php?route=extension/payment/bambora_online_checkout/void&user_token={{ user_token }}',
+                url: 'index.php?route=extension/payment/bambora_online_checkout/void&token=<?php echo $token; ?>',
                 beforeSend: handleBeforeSend('void'),
                 success: function(json) {
                     handleSuccess('void', json);
@@ -191,7 +190,7 @@
             getTransactionInformation();
         } else {
             $('#btn-bambora-online-checkout-' + type).show();
-            $('#bambora-online-checkout-error-message').text('{{ error_action_base }}'+ ': ' + data.meta.message.merchant);
+            $('#bambora-online-checkout-error-message').text('<?php echo $error_action_base; ?>'+ ': ' + data.meta.message.merchant);
             $('#bambora-online-checkout-error-message').show();
         }
     }
@@ -254,7 +253,6 @@
     $('[data-toggle="tooltip"]').tooltip();
 //-->
 </script>
-
-{% else %}
-<div class="alert alert-danger" style="margin-left:10px; margin-right:10px;">{{ text_getPaymentTransaction_error }}</div>
-{% endif %}
+<?php }else { ?>
+<div class="alert alert-danger" style="margin-left:10px; margin-right:10px;"><?php echo $text_getPaymentTransaction_error; ?></div>
+<?php } ?>

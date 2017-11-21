@@ -25,7 +25,7 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     /**
      * @var string
      */
-    private $module_version = '1.0.0';
+    private $module_version = '1.1.0';
 
     /**
      * Returns method data
@@ -38,11 +38,11 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     {
         $this->load->language('extension/payment/'.$this->module_name);
 
-        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get($this->module_name . '_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get($this->getConfigBaseName() . '_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 
-        if ($this->config->get($this->module_name . '_total') > 0 && $this->config->get($this->module_name . '_total') > $total) {
+        if ($this->config->get($this->getConfigBaseName() . '_total') > 0 && $this->config->get($this->getConfigBaseName() . '_total') > $total) {
             $status = false;
-        } elseif (!$this->config->get($this->module_name . '_geo_zone_id')) {
+        } elseif (!$this->config->get($this->getConfigBaseName() . '_geo_zone_id')) {
             $status = true;
         } elseif ($query->num_rows) {
             $status = true;
@@ -55,9 +55,9 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
         if ($status) {
             $method_data = array(
                 'code'       => $this->module_name,
-                'title'      => $this->config->get('payment_'.$this->module_name .'_payment_method_title'),
+                'title'      => $this->config->get($this->getConfigBaseName() .'_payment_method_title'),
                 'terms'      => '',
-                'sort_order' => $this->config->get($this->module_name . '_sort_order')
+                'sort_order' => $this->config->get($this->getConfigBaseName() . '_sort_order')
             );
         }
 
@@ -75,7 +75,8 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
      */
     public function addDbTransaction($orderId, $transactionId, $amount, $currency)
     {
-        $result = $this->db->query("INSERT INTO " . DB_PREFIX . "bambora_online_checkout_transaction SET
+        try {
+            $this->db->query("INSERT INTO " . DB_PREFIX . "bambora_online_checkout_transaction SET
             order_id = " . (int)$this->db->escape($orderId) . ",
             transaction_id = '" . $this->db->escape($transactionId) . "',
             amount = '" . $this->db->escape($amount) . "',
@@ -83,8 +84,11 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
             module_version = '" . $this->db->escape($this->module_version) . "',
             created = NOW()
          ");
+        }
+        catch(Exception $ex) {
+            throw new Exception("Could not add the transaction to the database. Possible dublicate entry txnid: {$transactionId} and orderId: {$orderId}");
+        }
 
-        return $result;
     }
 
     /**
@@ -172,9 +176,9 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
      */
     protected function getApiKey()
     {
-        $accesstoken = $this->config->get('payment_'.$this->module_name.'_access_token');
-        $merchantNumber = $this->config->get('payment_'.$this->module_name.'_merchant');
-        $secretToken = $this->config->get('payment_'.$this->module_name.'_secret_token');
+        $accesstoken = $this->config->get($this->getConfigBaseName() . '_access_token');
+        $merchantNumber = $this->config->get($this->getConfigBaseName() . '_merchant');
+        $secretToken = $this->config->get($this->getConfigBaseName() . '_secret_token');
 
         $combined = $accesstoken . '@' . $merchantNumber . ':' . $secretToken;
         $encoded_key = base64_encode($combined);
@@ -206,7 +210,7 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
         if ($amount == "" || $amount == null) {
             return 0;
         }
-        $roundingMode = $this->config->get('payment_'.$this->module_name.'_rounding_mode');
+        $roundingMode = $this->config->get($this->getConfigBaseName() . '_rounding_mode');
         switch ($roundingMode) {
             case 'up':
                 $amount = ceil($amount * pow(10, $minorunits));
@@ -259,5 +263,19 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
         $log = new Log('bambora_online_checkout.log');
         $logMessage = "\r\n Shop information: " . $this->getModuleHeaderInformation() . "\r\n Area: Catalog" . "\r\n Message: " . $logContent;
         $log->write($logMessage);
+    }
+
+    public function getConfigBaseName()
+    {
+        if($this->is_oc_3()) {
+            return "payment_{$this->module_name}";
+        } else {
+            return $this->module_name;
+        }
+    }
+
+    public function is_oc_3()
+    {
+        return !version_compare(VERSION, '3', '<');
     }
 }

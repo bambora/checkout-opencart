@@ -22,7 +22,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     /**
      * @var string
      */
-    private $module_version = '1.0.0';
+    private $module_version = '1.1.0';
 
     /**
      * @var array
@@ -49,9 +49,15 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $this->load->model('setting/setting');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
-            $this->model_setting_setting->editSetting('payment_'.$this->module_name, $this->request->post);
+
             $this->session->data['success'] = $this->language->get('text_success');
-            $this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true));
+            $this->model_setting_setting->editSetting($this->getConfigBaseName(), $this->request->post);
+            if($this->is_oc_3()) {
+                $this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true));
+            } else {
+                $this->response->redirect($this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=payment', true));
+            }
+
         }
 
         $this->initSettings();
@@ -59,8 +65,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $this->populateBreadcrums();
         $this->populateSettingValues();
         $this->populateErrorMessages();
-
         $this->response->setOutput($this->load->view('extension/payment/'.$this->module_name, $this->data));
+
     }
 
     /**
@@ -149,20 +155,37 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     protected function populateBreadcrums()
     {
         $this->data['breadcrumbs'] = array();
-        $this->data['breadcrumbs'][] = array(
-            'text' => $this->language->get('text_home'),
-            'href' => $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true)
-        );
-        $this->data['breadcrumbs'][] = array(
-            'text' => $this->language->get('text_extension'),
-            'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true)
-        );
-        $this->data['breadcrumbs'][] = array(
-            'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('extension/payment/'.$this->module_name, 'user_token=' . $this->session->data['user_token'], true)
-        );
-        $this->data['action'] = $this->url->link('extension/payment/'.$this->module_name, 'user_token=' . $this->session->data['user_token'], true);
-        $this->data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true);
+        if($this->is_oc_3()) {
+            $this->data['breadcrumbs'][] = array(
+                'text' => $this->language->get('text_home'),
+                'href' => $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true)
+            );
+            $this->data['breadcrumbs'][] = array(
+                'text' => $this->language->get('text_extension'),
+                'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true)
+            );
+            $this->data['breadcrumbs'][] = array(
+                'text' => $this->language->get('heading_title'),
+                'href' => $this->url->link('extension/payment/'.$this->module_name, 'user_token=' . $this->session->data['user_token'], true)
+            );
+            $this->data['action'] = $this->url->link('extension/payment/'.$this->module_name, 'user_token=' . $this->session->data['user_token'], true);
+            $this->data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true);
+        } else {
+            $this->data['breadcrumbs'][] = array(
+              'text' => $this->language->get('text_home'),
+              'href' => $this->url->link('common/home', 'token=' . $this->session->data['token'], true)
+          );
+            $this->data['breadcrumbs'][] = array(
+                'text' => $this->language->get('text_extension'),
+                'href' => $this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=payment', true)
+            );
+            $this->data['breadcrumbs'][] = array(
+                'text' => $this->language->get('heading_title'),
+                'href' => $this->url->link('extension/payment/'.$this->module_name, 'token=' . $this->session->data['token'], true)
+            );
+            $this->data['action'] = $this->url->link('extension/payment/'.$this->module_name, 'token=' . $this->session->data['token'], true);
+            $this->data['cancel'] = $this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=payment', true);
+        }
     }
 
     /**
@@ -203,7 +226,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         // Loop through configuration fields and populate them
         foreach ($fields as $field) {
-            $field = 'payment_' . $this->module_name . '_' . $field;
+            $field = $this->getConfigBaseName() . '_' . $field;
             if (isset($this->request->post[$field])) {
                 $this->data[$field] = $this->request->post[$field];
             } else {
@@ -213,7 +236,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         // Check if fields with required default data is set. If not, we will populate default data to them.
         foreach ($defaultValues as $field => $default_value) {
-            $field = 'payment_' . $this->module_name . '_' . $field;
+            $field = $this->getConfigBaseName() . '_' . $field;
             if (!isset($this->data[$field])) {
                 $this->data[$field] = $default_value;
             }
@@ -245,7 +268,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $this->errors['permission'] = $this->language->get('error_permission');
         } else {
             foreach ($this->errorFields as $error) {
-                if ($error != 'permission' && !$this->request->post['payment_'.$this->module_name . '_' . $error]) {
+                if ($error != 'permission' && !$this->request->post[$this->getConfigBaseName() . '_' . $error]) {
                     $this->errors[$error] = $this->language->get('error_' . $error);
                 }
             }
@@ -280,7 +303,12 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     public function order()
     {
         $this->load->language('extension/payment/'.$this->module_name);
-        $data['user_token'] = $this->session->data['user_token'];
+        if($this->is_oc_3()){
+            $data['user_token'] = $this->session->data['user_token'];
+        } else {
+            $data['token'] = $this->session->data['token'];
+        }
+
         $data['order_id'] = $this->request->get['order_id'];
 
         return $this->load->view('extension/payment/' . $this->module_name . '_order', $data);
@@ -295,13 +323,19 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     {
         $this->load->language('extension/payment/'.$this->module_name);
         $data = array();
-        if ($this->config->get('payment_' . $this->module_name . '_status') && isset($this->request->get['order_id'])) {
+        $moduleStatus = $this->config->get($this->getConfigBaseName() . '_status');
+        if ($moduleStatus && isset($this->request->get['order_id'])) {
             $this->load->model('extension/payment/'.$this->module_name);
             $this->load->model('sale/order');
 
             $orderId = $this->request->get['order_id'];
             $dbTransaction = $this->model_extension_payment_bambora_online_checkout->getDbTransaction($orderId);
-            $data['user_token'] = $this->request->get['user_token'];
+            if($this->is_oc_3()) {
+                $data['user_token'] = $this->request->get['user_token'];
+            } else {
+                $data['token'] = $this->request->get['token'];
+            }
+
             if ($dbTransaction && !empty($dbTransaction['transaction_id'])) {
                 $transactionResponse = $this->model_extension_payment_bambora_online_checkout->getTransaction($dbTransaction['transaction_id']);
 
@@ -351,7 +385,12 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                     $authorizedAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($transaction->total->authorized, $transaction->currency->minorunits, $decimalPoint, $thousandSeparator);
                     $data['transaction']['authorized'] = "{$transaction->currency->code} {$authorizedAmount}";
 
-                    $data['transaction']['date'] = $transaction->createddate;
+                    if($this->is_oc_3()) {
+                        $data['transaction']['date'] = $transaction->createddate;
+                    } else {
+                        $data['transaction']['date'] = date($this->language->get('date_format'), strtotime($transaction->createddate));
+                    }
+
                     $data['transaction']['paymentType'] = $transaction->information->paymenttypes[0]->displayname;
                     $data['transaction']['cardNumber'] = $transaction->information->primaryaccountnumbers[0]->number;
 
@@ -400,7 +439,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             }
         } else {
             $data['getPaymentTransaction_success'] = false;
-            if(!$this->config->get('payment_' . $this->module_name . '_status')) {
+            if(!$moduleStatus) {
                 $errorMessage = $this->language->get('error_module_not_loaded');
             } else {
                 $errorMessage =  $this->language->get('error_order_id_not_supplied');
@@ -424,7 +463,12 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $result = array();
         foreach ($transactionOperation as $operation) {
             $ope = array();
-            $ope['createdDate'] = $operation->createddate;
+            if($this->is_oc_3()) {
+                $ope['createdDate'] = $operation->createddate;
+            } else {
+                $ope['createdDate'] = date($this->language->get('date_format'), strtotime($operation->createddate));
+            }
+
             $ope['action'] = $operation->action;
 
             $operationAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($operation->amount, $operation->currency->minorunits, $decimalPoint, $thousandSeparator);
@@ -562,5 +606,19 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         }
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
+    }
+
+    protected function getConfigBaseName()
+    {
+        if($this->is_oc_3()) {
+            return "payment_{$this->module_name}";
+        } else {
+            return $this->module_name;
+        }
+    }
+
+    protected function is_oc_3()
+    {
+        return !version_compare(VERSION, '3', '<');
     }
 }
