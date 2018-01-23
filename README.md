@@ -1,6 +1,6 @@
 # Bambora Online Checkout - OpenCart
 
-## Supported Magento OpenCart versions
+## Supported OpenCart versions
  * The module is only tested on OpenCart 2.3.x and 3.0.x
 
 ## Supported Payment Gateways
