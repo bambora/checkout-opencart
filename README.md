@@ -15,5 +15,9 @@
  * When done go to Extensions->Extensions and install the Bambora Online Checkout module.
  * When done go to the module configuration page and enter your merchant credentials.
  
-
 Documentation: http://dev.bambora.com/shopping-carts/guides/shopping-carts/opencart
+
+## License
+
+[GNU General Public License version 3 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
