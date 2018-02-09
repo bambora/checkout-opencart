@@ -11,7 +11,7 @@ echo $column_left;
       <h1><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach($breadcrumbs as $breadcrumb) { ?>
-        <li><a href="<?php echo $breadcrum['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
         <?php }?>
       </ul>
     </div>
@@ -104,7 +104,7 @@ echo $column_left;
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-window-id"><span data-toggle="tooltip" title="<?php echo $help_window_id; ?>"><?php echo $entry_window_id; ?></span></label>
                 <div class="col-sm-10">
-                  <input type="text" name="bambora_online_checkout_window_id" value="<?php echo $bambora_online_checkout_window_id; ?>" placeholder="<?php echo $entry_windowid; ?>" id="input-windowid" class="form-control" />
+                  <input type="text" name="bambora_online_checkout_window_id" value="<?php echo $bambora_online_checkout_window_id; ?>" placeholder="<?php echo $entry_window_id; ?>" id="input-windowid" class="form-control" />
                 </div>
             </div>
             <div class="form-group">

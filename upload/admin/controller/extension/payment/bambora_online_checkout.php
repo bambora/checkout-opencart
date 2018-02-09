@@ -99,7 +99,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'help_secret_token',
             'help_md5',
             'help_window_state',
-            'help_windowid',
+            'help_window_id',
             'help_surcharge',
             'help_instant_capture',
             'help_immediate_redirect_to_accept',
