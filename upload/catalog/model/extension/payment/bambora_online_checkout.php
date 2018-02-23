@@ -92,6 +92,23 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     }
 
     /**
+     * Get transaction from database
+     *
+     * @param mixed $orderId
+     * @return mixed
+     */
+    public function getDbTransaction($orderId)
+    {
+        $result = $this->db->query("SELECT * FROM " . DB_PREFIX . "bambora_online_checkout_transaction WHERE order_id = " . (int)$this->db->escape($orderId));
+
+        if ($result->num_rows) {
+            return $result->row;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Create a checkout session
      *
      * @param mixed $checkoutRequest

@@ -94,7 +94,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     {
         $this->language->load('extension/payment/bambora_online_checkout');
         $this->load->model('checkout/order');
-        $this->load->model('extension/payment/bambora_online_checkout');
+        $this->load->model('extension/payment/'.$this->module_name);
 
         $getParameteres = $_GET;
         try {
@@ -113,8 +113,10 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             }
 
             //Lock for multiple callbacks on already confirmed payment
-            $orderInfo = $this->model_checkout_order->getOrder($transaction->orderid);
-            if ($orderInfo['order_status_id'] === $this->config->get($this->getConfigBaseName() . '_order_status_completed')) {
+            $orderId = $transaction->orderid;
+            $dbTransaction = $this->model_extension_payment_bambora_online_checkout->getDbTransaction($orderId);
+            $orderInfo = $this->model_checkout_order->getOrder($orderId);
+            if (($dbTransaction && !empty($dbTransaction['transaction_id'])) || $orderInfo['order_status_id'] === $this->config->get($this->getConfigBaseName() . '_order_status_completed')) {
                 header('X-EPay-System: ' . $this->model_extension_payment_bambora_online_checkout->getModuleHeaderInformation(), true, 200);
                 die("The callback was a success - Order already created");
             }
@@ -130,7 +132,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             }
 
             // Add transaction to database
-            $this->model_extension_payment_bambora_online_checkout->addDbTransaction($transaction->orderid, $transaction->id, $transaction->total->authorized, $transaction->currency->code);
+            $this->model_extension_payment_bambora_online_checkout->addDbTransaction($orderId, $transaction->id, $transaction->total->authorized, $transaction->currency->code);
 
             $paymentInfo = $transaction->information->paymenttypes[0]->displayname . ' ' . $transaction->information->primaryaccountnumbers[0]->number;
             $comment = '<table style="width: 60%"><tbody>';
@@ -139,7 +141,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $comment .= '<tr><td>'. '<b>'.$this->language->get('payment_card') . '</b></td><td>' . $paymentInfo . '</td></tr>';
             $comment .= '</tbody></table>';
 
-            $this->model_checkout_order->addOrderHistory($transaction->orderid, $this->config->get($this->getConfigBaseName() . '_order_status_completed'), $comment, true);
+            $this->model_checkout_order->addOrderHistory($orderId, $this->config->get($this->getConfigBaseName() . '_order_status_completed'), $comment, true);
 
             header('X-EPay-System: ' . $this->model_extension_payment_bambora_online_checkout->getModuleHeaderInformation(), true, 200);
             die("The callback was a success");
