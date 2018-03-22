@@ -60,7 +60,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $json['error'] = $this->language->get('error_payment_window') . ' ' . $checkoutSessionResponse->meta->message->enduser;
             $this->model_extension_payment_bambora_online_checkout->bamboraLog($this->language->get('error_payment_window') . ' ' . $checkoutSessionResponse->meta->message->merchant);
         } else {
-            $json['url'] = $checkoutSessionResponse->url;
+            $json['token'] = $checkoutSessionResponse->token;
         }
 
         $this->response->addHeader('Content-Type: application/json');
@@ -134,7 +134,17 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             // Add transaction to database
             $this->model_extension_payment_bambora_online_checkout->addDbTransaction($orderId, $transaction->id, $transaction->total->authorized, $transaction->currency->code);
 
-            $paymentInfo = $transaction->information->paymenttypes[0]->displayname . ' ' . $transaction->information->primaryaccountnumbers[0]->number;
+            $paymentType = "";
+            if(is_array($transaction->information->paymenttypes) && count($transaction->information->paymenttypes) > 0) {
+                $paymentType = $transaction->information->paymenttypes[0]->displayname;
+            }
+
+            $accountNumber = "";
+            if(is_array($transaction->information->primaryaccountnumbers) && count($transaction->information->primaryaccountnumbers) > 0) {
+                $accountNumber = $transaction->information->primaryaccountnumbers[0]->number;
+            }
+
+            $paymentInfo = $paymentType . ' ' . $accountNumber;
             $comment = '<table style="width: 60%"><tbody>';
             $comment .= '<tr><td>'. '<b>'.$this->language->get('payment_process') . '</b></td><td>' . $transaction->currency->code . ' ' . $amount . '</td></tr>';
             $comment .= '<tr><td>'. '<b>'.$this->language->get('payment_with_transactionid') . '</b></td><td>' . $transaction->id . '</td></tr>';

@@ -22,7 +22,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     /**
      * @var string
      */
-    private $module_version = '1.1.1';
+    private $module_version = '1.2.0';
 
     /**
      * @var array
@@ -391,8 +391,17 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                         $data['transaction']['date'] = date($this->language->get('date_format'), strtotime($transaction->createddate));
                     }
 
-                    $data['transaction']['paymentType'] = $transaction->information->paymenttypes[0]->displayname;
-                    $data['transaction']['cardNumber'] = $transaction->information->primaryaccountnumbers[0]->number;
+                    if(is_array($transaction->information->paymenttypes) && count($transaction->information->paymenttypes) > 0) {
+                        $data['transaction']['paymentType'] = $transaction->information->paymenttypes[0]->displayname;
+                    } else {
+                        $data['transaction']['paymentType'] = "";
+                    }
+
+                    if(is_array($transaction->information->primaryaccountnumbers) && count($transaction->information->primaryaccountnumbers) > 0) {
+                        $data['transaction']['cardNumber'] = $transaction->information->primaryaccountnumbers[0]->number;
+                    } else {
+                        $data['transaction']['cardNumber'] = "";
+                    }
 
                     $surchargeFeeAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($transaction->total->feeamount, $transaction->currency->minorunits, $decimalPoint, $thousandSeparator);
                     $data['transaction']['surchargeFee'] = "{$transaction->currency->code} {$surchargeFeeAmount}";
@@ -402,7 +411,13 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
                     $redundedAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($transaction->total->credited, $transaction->currency->minorunits, $decimalPoint, $thousandSeparator);
                     $data['transaction']['refunded'] = "{$transaction->currency->code} {$redundedAmount}";
-                    $data['transaction']['acquirer'] = $transaction->information->acquirers[0]->name;
+
+                    if(is_array($transaction->information->acquirers) && count($transaction->information->acquirers) > 0) {
+                        $data['transaction']['acquirer'] = $transaction->information->acquirers[0]->name;
+                    } else {
+                         $data['transaction']['acquirer'] = "";
+                    }
+
                     $data['transaction']['status'] = $this->checkoutStatus($transaction->status);
                     $data['transaction']['currencyCode'] = $transaction->currency->code;
                     $data['transaction']['orderId'] = $orderId;

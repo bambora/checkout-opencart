@@ -15,12 +15,10 @@
         <input type="button" value="<?php echo $button_confirm; ?>" id="button-confirm" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary" />
       </div>
     </div>
-    <script type="text/javascript">
-        (function (n, t, i, r, u, f, e) { n[u] = n[u] || function() {
-        (n[u].q = n[u].q || []).push(arguments)}; f = t.createElement(i);
-        e = t.getElementsByTagName(i)[0]; f.async = 1; f.src = r;
-        e.parentNode.insertBefore(f, e)})(window, document, "script", "https://v1.checkout.bambora.com/assets/paymentwindow-v1.min.js", "bam");
-    </script>
+    
+    <script src="https://static.bambora.com/checkout-sdk-web/latest/checkout-sdk-web.min.js"></script>
+    
+    
     <script type="text/javascript">
     $('#button-confirm').on('click', function() {
         $.ajax({
@@ -37,13 +35,20 @@
                     return false;
                 } 
 
-                var options = {
-                    windowstate: <?php echo $bambora_online_checkout_window_state; ?>,
-                    onClose: function(){ 
-                      $('#button-confirm').button('reset');
-                    }  
-                }
-                bam("open", json['url'], options);           
+                var checkoutToken = json['token'];
+                var windowState = <?php echo $bambora_online_checkout_window_state; ?>;
+                if(windowState === 1) {
+                    new Bambora.RedirectCheckout(checkoutToken);    
+                } else {
+                    var checkout = new Bambora.ModalCheckout(checkoutToken);
+                    checkout.on(Bambora.Event.Cancel, function(payload){
+                        $('#button-confirm').button('reset');
+                    });
+                    checkout.on(Bambora.Event.Close, function (payload){
+                        window.location.href = payload.acceptUrl;
+                    });
+                    checkout.show();
+                }        
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 xhr.responseText;
