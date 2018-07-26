@@ -40,14 +40,16 @@
                 if(windowState === 1) {
                     new Bambora.RedirectCheckout(checkoutToken);    
                 } else {
-                    var checkout = new Bambora.ModalCheckout(checkoutToken);
+                    var checkout = new Bambora.ModalCheckout(null);
                     checkout.on(Bambora.Event.Cancel, function(payload){
                         $('#button-confirm').button('reset');
                     });
                     checkout.on(Bambora.Event.Close, function (payload){
                         window.location.href = payload.acceptUrl;
                     });
-                    checkout.show();
+                    checkout.initialize(checkoutToken).then(()=> {
+                        checkout.show();
+                    });
                 }        
             },
             error: function(xhr, ajaxOptions, thrownError) {
