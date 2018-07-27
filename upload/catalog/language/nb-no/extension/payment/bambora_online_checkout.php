@@ -15,11 +15,12 @@
 
 // Text
 $_['text_title'] = "Bambora Online Checkout";
+$_['text_loading'] = "Laster ...";
 $_['text_payment'] = "Ved å klikke på <b>Betal nå</b> vil du bli videresendt til betalingsvinduet for Bambora Online Checkout";
 $_['button_confirm'] = "Betal nå";
-$_['text_shipping_id'] = "frakt";
-$_['text_coupon_id'] = "kupong";
-$_['text_voucher_id'] = "kupong";
+$_['text_shipping_id'] = "levering";
+$_['text_coupon_id'] = "rabattkode";
+$_['text_voucher_id'] = "gavekortkode";
 $_['error_payment_window'] = "En feil har oppstått under åpning av betalingsvinduet. Årsak:";
 
 $_['payment_process']   = "Betalingen er godkjent med beløpet:";
