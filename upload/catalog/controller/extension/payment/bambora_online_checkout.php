@@ -209,6 +209,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
      */
     protected function createCheckoutSessionRequest()
     {
+        $this->language->load('extension/payment/bambora_online_checkout');
+
         $orderInfo = $this->model_checkout_order->getOrder($this->session->data['order_id']);
         $minorunits = $this->model_extension_payment_bambora_online_checkout->getCurrencyMinorunits($orderInfo['currency_code']);
         $orderTotalAmount = 0;
@@ -234,9 +236,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $orderTotalAmount = $this->formatForCurrency($orderTotalAmount);
 
         $params = array();
-        $params['language'] = $this->language->get('code');
+        $params['language'] = $this->session->data['language'];
         $params['instantcaptureamount'] = $this->config->get($this->getConfigBaseName() .'_instant_capture') === "1" ? $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotalAmount, $minorunits)  : 0;
-        $params['paymentwindowid'] = $this->config->get($this->getConfigBaseName() . '_payment_window_id');
+        $params['paymentwindowid'] = $this->config->get($this->getConfigBaseName() . '_window_id');
 
         $params['customer'] = array();
         $params['customer']['phonenumbercountrycode'] = html_entity_decode($orderInfo['payment_iso_code_2'], ENT_QUOTES, 'UTF-8');
@@ -351,7 +353,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             if (!empty($shippingMethod['cost']) && $shippingMethod['cost'] > 0) {
                 //Add shipping
                 $shipping = array();
-                $shipping['id'] = $shippingMethod['code'];
+                $shipping['id'] = $this->language->get('text_shipping_id');
                 $shipping['linenumber'] = $lineNumber;
                 $shipping['description'] = $shippingMethod['title'];
                 $shipping['text'] = $shippingMethod['title'];
@@ -382,7 +384,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         if (!empty($orderTotalDiscount) && (float)$orderTotalDiscount['value'] < 0) {
             $coupon = array();
-            $coupon['id'] = $orderTotalDiscount['code'];
+            $coupon['id'] = $this->language->get('text_coupon_id');
             $coupon['linenumber'] = $lineNumber;
             $coupon['description'] = $orderTotalDiscount['title'];
             $coupon['text'] = $orderTotalDiscount['title'];
@@ -402,7 +404,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         if (!empty($orderTotalVoucher) && (float)$orderTotalVoucher['value'] < 0) {
             $voucher = array();
-            $voucher['id'] = $orderTotalVoucher['code'];
+            $voucher['id'] = $this->language->get('text_voucher_id');//$orderTotalVoucher['code'];
             $voucher['linenumber'] = $lineNumber;
             $voucher['description'] = $orderTotalVoucher['title'];
             $voucher['text'] = $orderTotalVoucher['title'];

@@ -15,8 +15,12 @@
 
 // Text
 $_['text_title'] = "Bambora Online Checkout";
+$_['text_loading'] = "Indl&aelig;ser...";
 $_['text_payment'] = "Ved at klikke p&aring; <b>Betal nu</b> vil du blive videre f&oslashrt til Bambora Online Checkout betalingsvinduet";
 $_['button_confirm'] = "Betal nu";
+$_['text_shipping_id'] = "forsendelse";
+$_['text_coupon_id'] = "kupon";
+$_['text_voucher_id'] = "rabatkupon";
 $_['error_payment_window'] = "En fejl er opst&aring;et ved &aring;bning af betalingsvinduet. &aring;rsag:";
 
 $_['payment_process']   = "Betalingen er godkendt med bel&oslashbet:";
