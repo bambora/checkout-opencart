@@ -484,9 +484,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         if(!empty($merchantMd5Key)) {
             $concatenatedValues  = '';
             foreach ($getParameteres as $key => $value) {
-                if ('hash' !== $key) {
-                    $concatenatedValues .= $value;
-                }
+                if ('hash' === $key) break;
+                $concatenatedValues .= $value;
             }
             $genstamp = md5($concatenatedValues . $merchantMd5Key);
             if (!hash_equals($genstamp, $getParameteres["hash"])) {
