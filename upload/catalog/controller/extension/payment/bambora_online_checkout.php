@@ -153,6 +153,11 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
             $this->model_checkout_order->addOrderHistory($orderId, $this->config->get($this->getConfigBaseName() . '_order_status_completed'), $comment, true);
 
+            // Update payment method title on order
+            if ($this->config->get($this->getConfigBaseName() .'_payment_method_update') === "1") {
+                $this->db->query("UPDATE `" . DB_PREFIX . "order` SET `payment_method` = 'Bambora - " . $this->db->escape($transaction->information->paymenttypes[0]->displayname) . "' WHERE `order_id` = '" . $transaction->orderid . "';");
+            }
+
             header('X-EPay-System: ' . $this->model_extension_payment_bambora_online_checkout->getModuleHeaderInformation(), true, 200);
             die("The callback was a success");
         }
