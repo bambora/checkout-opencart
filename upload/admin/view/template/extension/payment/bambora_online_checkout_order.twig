@@ -58,6 +58,7 @@ getTransactionInformation();
     margin: 3px 3px 3px 0;
 }
 .bambora-logo {
-    max-width:300px;
+    width:300px;
+    max-width:100%;
 }
 </style>
