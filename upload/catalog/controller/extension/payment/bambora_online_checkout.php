@@ -134,9 +134,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             // Add transaction to database
             $this->model_extension_payment_bambora_online_checkout->addDbTransaction($orderId, $transaction->id, $transaction->total->authorized, $transaction->currency->code);
 
-            $paymentType = "";
+            $paymentTypeDisplayName = "";
             if(is_array($transaction->information->paymenttypes) && count($transaction->information->paymenttypes) > 0) {
-                $paymentType = $transaction->information->paymenttypes[0]->displayname;
+                $paymentTypeDisplayName = $transaction->information->paymenttypes[0]->displayname;
             }
 
             $accountNumber = "";
@@ -144,7 +144,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 $accountNumber = $transaction->information->primaryaccountnumbers[0]->number;
             }
 
-            $paymentInfo = $paymentType . ' ' . $accountNumber;
+            $paymentInfo = $paymentTypeDisplayName . ' ' . $accountNumber;
             $comment = '<table style="width: 60%"><tbody>';
             $comment .= '<tr><td>'. '<b>'.$this->language->get('payment_process') . '</b></td><td>' . $transaction->currency->code . ' ' . $amount . '</td></tr>';
             $comment .= '<tr><td>'. '<b>'.$this->language->get('payment_with_transactionid') . '</b></td><td>' . $transaction->id . '</td></tr>';
@@ -154,8 +154,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $this->model_checkout_order->addOrderHistory($orderId, $this->config->get($this->getConfigBaseName() . '_order_status_completed'), $comment, true);
 
             // Update payment method title on order
-            if ($this->config->get($this->getConfigBaseName() .'_payment_method_update') === "1") {
-                $this->db->query("UPDATE `" . DB_PREFIX . "order` SET `payment_method` = 'Bambora - " . $this->db->escape($transaction->information->paymenttypes[0]->displayname) . "' WHERE `order_id` = '" . $transaction->orderid . "';");
+            if ($this->config->get($this->getConfigBaseName() .'_payment_method_update') === "1" && !empty($paymentTypeDisplayName)) {
+                $this->db->query("UPDATE `" . DB_PREFIX . "order` SET `payment_method` = 'Bambora Online Checkout - " . $this->db->escape($paymentTypeDisplayName) . "' WHERE `order_id` = '" . $orderId . "';");
             }
 
             header('X-EPay-System: ' . $this->model_extension_payment_bambora_online_checkout->getModuleHeaderInformation(), true, 200);
