@@ -88,6 +88,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'entry_immediate_redirect_to_accept',
             'entry_rounding_mode',
             'entry_payment_method_title',
+            'entry_payment_method_update',
             'entry_total',
             'entry_order_status_completed',
             'entry_geo_zone',
@@ -105,6 +106,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'help_immediate_redirect_to_accept',
             'help_rounding_mode',
             'help_payment_method_title',
+            'help_payment_method_update',
             'help_total',
             'help_order_status_completed',
             'help_geo_zone',
@@ -206,6 +208,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'immediate_redirect_to_accept',
             'rounding_mode',
             'payment_method_title',
+            'payment_method_update',
             'total',
             'order_status_completed',
             'geo_zone',
@@ -221,6 +224,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'immediate_redirect_to_accept' => '0',
             'rounding_mode' => '1',
             'payment_method_title' => 'Bambora Online Checkout',
+            'payment_method_update' => '0',
             'order_status_completed' => '5'
         );
 

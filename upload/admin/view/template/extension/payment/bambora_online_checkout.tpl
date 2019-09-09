@@ -187,6 +187,26 @@ echo $column_left;
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-payment-method-update"><span data-toggle="tooltip" title="<?php echo $help_payment_method_update; ?>"><?php echo $entry_payment_method_update; ?></span></label>
+                <div class="col-sm-10">
+                  <select name="payment_bambora_online_checkout_payment_method_update" id="input-payment-method-update" class="form-control">
+
+                      <?php if ($payment_bambora_online_checkout_payment_method_update) { ?>
+
+                      <option value="1" selected="selected"><?php echo $text_yes; ?></option>
+                      <option value="0"><?php echo $text_no; ?></option>
+
+                      <?php }else { ?>
+
+                      <option value="1"><?php echo $text_yes; ?></option>
+                      <option value="0" selected="selected"><?php echo $text_no; ?></option>
+
+                      <?php } ?>
+
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-total"><span data-toggle="tooltip" title="<?php echo $help_total; ?>"><?php echo $entry_total; ?></span></label>
                 <div class="col-sm-10">
                   <input type="text" name="bambora_online_checkout_total" value="<?php echo $bambora_online_checkout_total; ?>" placeholder="<?php echo $entry_total; ?>" id="input-total" class="form-control" />
