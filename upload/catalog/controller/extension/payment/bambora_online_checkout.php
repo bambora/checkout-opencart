@@ -29,7 +29,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     public function index()
     {
         $this->load->language('extension/payment/' . $this->module_name);
-
+        $this->load->model('checkout/order');
+        
         $data = array();
         $data['text_title'] = $this->config->get($this->getConfigBaseName() .'_payment_method_title');
         $data['text_loading'] = $this->language->get('text_loading');
