@@ -189,9 +189,9 @@ echo $column_left;
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-payment-method-update"><span data-toggle="tooltip" title="<?php echo $help_payment_method_update; ?>"><?php echo $entry_payment_method_update; ?></span></label>
                 <div class="col-sm-10">
-                  <select name="payment_bambora_online_checkout_payment_method_update" id="input-payment-method-update" class="form-control">
+                  <select name="bambora_online_checkout_payment_method_update" id="input-payment-method-update" class="form-control">
 
-                      <?php if ($payment_bambora_online_checkout_payment_method_update) { ?>
+                      <?php if ($bambora_online_checkout_payment_method_update) { ?>
 
                       <option value="1" selected="selected"><?php echo $text_yes; ?></option>
                       <option value="0"><?php echo $text_no; ?></option>

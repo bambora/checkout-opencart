@@ -111,6 +111,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'help_order_status_completed',
             'help_geo_zone',
             'help_sort_order',
+           //Common
+            'text_yes',
+            'text_no',
         );
         foreach ($keys as $key) {
             $this->data[$key] = $this->language->get($key);
