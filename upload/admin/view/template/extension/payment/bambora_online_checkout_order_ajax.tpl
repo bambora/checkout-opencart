@@ -93,11 +93,11 @@
 </div>
 
 <div class="col-lg-3 text-center hidden-xs hidden-sm hidden-md">
-    <a href="https://admin.epay.eu/Account/Login" title="<?php echo $text_goto_bambora_admin; ?>" target="_blank">
+    <a href="https://merchant.bambora.com/auth/signin" title="<?php echo $text_goto_bambora_admin; ?>" target="_blank">
         <img class="bambora-logo" src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/bambora-logo.svg" />
     </a>
     <div>
-        <a href="https://admin.epay.eu/Account/Login"  title="<?php echo $text_goto_bambora_admin; ?>" target="_blank"><?php echo $text_goto_bambora_admin; ?></a>
+        <a href="https://merchant.bambora.com/auth/signin"  title="<?php echo $text_goto_bambora_admin; ?>" target="_blank"><?php echo $text_goto_bambora_admin; ?></a>
     </div>
 </div>
 
