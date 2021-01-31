@@ -62,7 +62,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         $this->initSettings();
         $this->initSettingsContent();
-        $this->populateBreadcrums();
+        $this->populateBreadcrumbs();
         $this->populateSettingValues();
         $this->populateErrorMessages();
         $this->response->setOutput($this->load->view('extension/payment/'.$this->module_name, $this->data));
@@ -152,9 +152,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     }
 
     /**
-     * Populates the page breadcrums
+     * Populates the page breadcrumbs
      */
-    protected function populateBreadcrums()
+    protected function populateBreadcrumbs()
     {
         $this->data['breadcrumbs'] = array();
         if($this->is_oc_3()) {

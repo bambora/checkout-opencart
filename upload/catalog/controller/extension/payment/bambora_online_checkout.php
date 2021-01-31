@@ -69,7 +69,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     }
 
     /**
-     * When a customer returns from a successfull payment
+     * When a customer returns from a successful payment
      */
     public function accept()
     {
@@ -89,7 +89,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     }
 
     /**
-     * Handles the callback comming from Bambora
+     * Handles the callback coming from Bambora
      */
     public function callback()
     {
@@ -272,7 +272,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     }
 
     /**
-     * Create the custommer shipping or billing address for the payment request
+     * Create the customer shipping or billing address for the payment request
      *
      * @param mixed $orderInfo
      * @param mixed $type
@@ -577,7 +577,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 $this->model_checkout_order->addOrderHistory($transaction->orderid, $currentStatusId, $message);
             }
         } else {
-            $message = "Could not add surchage to the order";
+            $message = "Could not add surcharge to the order";
             $this->model_checkout_order->addOrderHistory($transaction->orderid, $currentStatusId, $message);
         }
 
