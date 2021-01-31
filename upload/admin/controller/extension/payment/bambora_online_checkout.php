@@ -505,14 +505,14 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $operationAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($operation->amount, $operation->currency->minorunits, $decimalPoint, $thousandSeparator);
             $ope['amount'] =  "{$operation->currency->code} {$operationAmount}";
 
-            if (array_key_exists('eci', $operation) && isset($operation->eci)) {
+            if (isset($operation->eci)) {
                 $ope['eci'] = $operation->eci->value;
             } else {
                 $ope['eci'] = "-";
             }
 
             $result[] = $ope;
-            if (array_key_exists('transactionoperations', $operation) && count($operation->transactionoperations) > 0) {
+            if (isset($operation->transactionoperations) && count($operation->transactionoperations) > 0) {
                 $result = array_merge($result, $this->createTransactionOperations($operation->transactionoperations, $decimalPoint, $thousandSeparator));
             }
         }
