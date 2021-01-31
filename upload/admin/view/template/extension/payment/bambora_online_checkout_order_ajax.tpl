@@ -1,6 +1,6 @@
 <?php if($getPaymentTransaction_success == true) { ?>
 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-    <h3><?php echo $text_payment_info; ?></h3>    
+    <h3><?php echo $text_payment_info; ?></h3>
     <table class="table table-striped">
         <tr>
             <td><?php echo $text_transaction_id; ?></td>
@@ -45,7 +45,7 @@
     </table>
 
     <?php if($showActions == true) { ?>
-        <div class="bambora_online_checkout_action_container">   
+        <div class="bambora_online_checkout_action_container">
             <div class="input-group">
                 <div class="input-group-addon"><?php echo $transaction['currencyCode']; ?></div>
                 <?php if($transaction['availableForCapture'] > 0) { ?>
@@ -55,7 +55,7 @@
                 <?php } ?>
             </div>
             <div id="bambora_online_checkout_format_error" class="alert alert-danger" style="display:none"><?php echo $error_amount_format; ?></div>
-            <?php if($transaction['availableForCapture'] > 0) { ?>              
+            <?php if($transaction['availableForCapture'] > 0) { ?>
                 <a class="bambora-button btn btn-success" id="btn-bambora-online-checkout-capture"><?php echo $text_btn_capture; ?></a>
                 <span class="bambora-button btn btn-success" id="img-loading-capture" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
             <?php } ?>
@@ -94,10 +94,11 @@
 
 <div class="col-lg-3 text-center hidden-xs hidden-sm hidden-md">
     <a href="https://merchant.bambora.com" title="<?php echo $text_goto_bambora_admin; ?>" target="_blank">
-        <img class="bambora-logo" src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/bambora-logo.svg" />
+        <img class="bambora-logo" src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/bambora-logo.svg" style="padding-bottom: 10px;" />
+
     </a>
     <div>
-        <a href=https://merchant.bambora.com"  title="<?php echo $text_goto_bambora_admin; ?>" target="_blank"><?php echo $text_goto_bambora_admin; ?></a>
+        <a href="https://merchant.bambora.com"  title="<?php echo $text_goto_bambora_admin; ?>" target="_blank"><?php echo $text_goto_bambora_admin; ?></a>
     </div>
 </div>
 
@@ -106,7 +107,7 @@
     $("#btn-bambora-online-checkout-capture").bind('click', function() {
         if (validateInputField()) {
             var confirmBodyText = '<?php echo $text_capture_payment_body . " " . $transaction["currencyCode"]; ?>' + amountInputField.val() + ' ? ';
-            confirm('<?php echo $text_capture_payment_header; ?>', confirmBodyText, '<?php echo $text_no; ?>', '<?php echo $text_yes; ?>', function() {  
+            confirm('<?php echo $text_capture_payment_header; ?>', confirmBodyText, '<?php echo $text_no; ?>', '<?php echo $text_yes; ?>', function() {
                 $.ajax({
                     type:'POST',
                     dataType: 'html',
@@ -126,11 +127,11 @@
             $("#bambora_online_checkout_format_error").toggle();
         }
     });
-    
+
     $("#btn-bambora-online-checkout-refund").bind('click', function() {
         if (validateInputField()) {
             var confirmBodyText = '<?php echo $text_refund_payment_body . " " . $transaction["currencyCode"]; ?>' + ' ' + amountInputField.val() + ' ? ';
-            confirm('<?php echo $text_refund_payment_header; ?>', confirmBodyText, '<?php echo $text_no; ?>', '<?php echo $text_yes; ?>', function() { 
+            confirm('<?php echo $text_refund_payment_header; ?>', confirmBodyText, '<?php echo $text_no; ?>', '<?php echo $text_yes; ?>', function() {
                 $.ajax({
                     type:'POST',
                     dataType: 'html',
@@ -174,9 +175,9 @@
             return false;
         }
 
-        return true;        
+        return true;
     }
-    
+
     function handleBeforeSend(type) {
         $('#btn-bambora-online-checkout-' + type).hide();
         $('#img-loading-' + type).show();
@@ -196,8 +197,8 @@
     }
 
     function confirm(heading, body, btnNoText, btnYesText, callback) {
-        var confirmModal = 
-          $('<div class="modal fade">' +        
+        var confirmModal =
+          $('<div class="modal fade">' +
               '<div class="modal-dialog">' +
               '<div class="modal-content">' +
               '<div class="modal-header">' +
@@ -210,11 +211,11 @@
               '</div>' +
 
               '<div class="modal-footer">' +
-                '<a class="btn" data-dismiss="modal">' + 
-                  btnNoText + 
+                '<a class="btn" data-dismiss="modal">' +
+                  btnNoText +
                 '</a>' +
-                '<a id="btnYes" class="btn btn-success">' + 
-                  btnYesText + 
+                '<a id="btnYes" class="btn btn-success">' +
+                  btnYesText +
                 '</a>' +
               '</div>' +
               '</div>' +
@@ -224,10 +225,10 @@
         confirmModal.find('#btnYes').click(function(event) {
             callback();
             confirmModal.modal('hide');
-        }); 
-        confirmModal.modal('show');    
-    };  
-    
+        });
+        confirmModal.modal('show');
+    };
+
     $("#bambora_online_checkout_amount").keydown(function (e) {
         var digit = String.fromCharCode(e.which || e.keyCode);
         if (e.which !== 8 && e.which !== 46 && !(e.which >= 37 && e.which <= 40) && e.which !== 110 && e.which !== 188
@@ -246,7 +247,7 @@
             $("#bambora_online_checkout_format_error").fadeOut('slow');
         }
     });
-    $('#bambora-online-checkout-error-message').click(function(){ 
+    $('#bambora-online-checkout-error-message').click(function(){
         $('#bambora-online-checkout-error-message').fadeOut('slow');
     });
 
