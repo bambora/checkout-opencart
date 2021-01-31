@@ -1,6 +1,6 @@
 {% if getPaymentTransaction_success == true %}
 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-    <h3>{{ text_payment_info }}</h3>    
+    <h3>{{ text_payment_info }}</h3>
     <table class="table table-striped">
         <tr>
             <td>{{ text_transaction_id }}</td>
@@ -45,7 +45,7 @@
     </table>
 
     {% if showActions == true  %}
-        <div class="bambora_online_checkout_action_container">   
+        <div class="bambora_online_checkout_action_container">
             <div class="input-group">
                 <div class="input-group-addon">{{ transaction.currencyCode }}</div>
                 {% if transaction.availableForCapture > 0 %}
@@ -110,7 +110,7 @@
     $("#btn-bambora-online-checkout-capture").bind('click', function() {
         if (validateInputField()) {
             var confirmBodyText = '{{ text_capture_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
-            confirm('{{ text_capture_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() {  
+            confirm('{{ text_capture_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() {
                 $.ajax({
                     type:'POST',
                     dataType: 'html',
@@ -130,11 +130,11 @@
             $("#bambora_online_checkout_format_error").toggle();
         }
     });
-    
+
     $("#btn-bambora-online-checkout-refund").bind('click', function() {
         if (validateInputField()) {
             var confirmBodyText = '{{ text_refund_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
-            confirm('{{ text_refund_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() { 
+            confirm('{{ text_refund_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() {
                 $.ajax({
                     type:'POST',
                     dataType: 'html',
@@ -178,9 +178,9 @@
             return false;
         }
 
-        return true;        
+        return true;
     }
-    
+
     function handleBeforeSend(type) {
         $('#btn-bambora-online-checkout-' + type).hide();
         $('#img-loading-' + type).show();
@@ -200,8 +200,8 @@
     }
 
     function confirm(heading, body, btnNoText, btnYesText, callback) {
-        var confirmModal = 
-          $('<div class="modal fade">' +        
+        var confirmModal =
+          $('<div class="modal fade">' +
               '<div class="modal-dialog">' +
               '<div class="modal-content">' +
               '<div class="modal-header">' +
@@ -214,11 +214,11 @@
               '</div>' +
 
               '<div class="modal-footer">' +
-                '<a class="btn" data-dismiss="modal">' + 
-                  btnNoText + 
+                '<a class="btn" data-dismiss="modal">' +
+                  btnNoText +
                 '</a>' +
-                '<a id="btnYes" class="btn btn-success">' + 
-                  btnYesText + 
+                '<a id="btnYes" class="btn btn-success">' +
+                  btnYesText +
                 '</a>' +
               '</div>' +
               '</div>' +
@@ -238,7 +238,7 @@
             && e.which !== 190 && e.which !== 35 && e.which !== 36 && !(e.which >= 96 && e.which <= 106)) {
             var reg = new RegExp(/^(?:\d+(?:,\d{0,3})*(?:\.\d{0,2})?|\d+(?:\.\d{0,3})*(?:,\d{0,2})?)$/);
             if (reg.test(digit)) {
-
+                return;
             } else {
                 return false;
             }
@@ -250,7 +250,7 @@
             $("#bambora_online_checkout_format_error").fadeOut('slow');
         }
     });
-    $('#bambora-online-checkout-error-message').click(function(){ 
+    $('#bambora-online-checkout-error-message').click(function(){
         $('#bambora-online-checkout-error-message').fadeOut('slow');
     });
 
