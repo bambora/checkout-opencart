@@ -49,17 +49,19 @@
             <div class="input-group">
                 <div class="input-group-addon">{{ transaction.currencyCode }}</div>
                 {% if transaction.availableForCapture > 0 %}
-                    <input type="text" data-toggle="tooltip" title="{{ text_tooltip }}" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForCapture }}" />
+                    <input type="text" data-toggle="tooltip" {% if transaction.isCollector  == true %} readonly {% endif %} title="{{ text_tooltip }}" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForCapture }}" />
                 {% else %}
-                    <input type="text" data-toggle="tooltip" title="{{ text_tooltip }}" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForRefund }}" />
+                    <input type="text" data-toggle="tooltip" title="{{ text_tooltip }}"   {% if transaction.isCollector  %} readonly {% endif %} id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForRefund }}" />
                 {% endif %}
             </div>
             <div id="bambora_online_checkout_format_error" class="alert alert-danger" style="display:none">{{ error_amount_format }}</div>
-            {% if transaction.availableForCapture > 0 %}              
+            {% if transaction.availableForCapture > 0 %}
+                {% if transaction.isCollector  == true %} {{ text_capture_info_collector }} <br />{% endif %}
                 <a class="bambora-button btn btn-success" id="btn-bambora-online-checkout-capture">{{ text_btn_capture }}</a>
                 <span class="bambora-button btn btn-success" id="img-loading-capture" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
             {% endif %}
             {% if transaction.availableForRefund > 0 %}
+                {% if transaction.isCollector  == true %} {{ text_refund_info_collector }} <br />{% endif %}
                 <a class="bambora-button btn btn-warning" id="btn-bambora-online-checkout-refund">{{ text_btn_refund }}</a>
                 <span class="bambora-button btn btn-warning" id="img-loading-refund" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
             {% endif %}

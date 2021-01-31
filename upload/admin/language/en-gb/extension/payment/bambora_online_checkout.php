@@ -63,6 +63,8 @@ $_['text_void_payment_body'] = 'Are you sure you want to void the payment';
 $_['text_no'] = 'No';
 $_['text_yes'] = 'Yes';
 $_['text_goto_bambora_admin'] = 'Go to Bambora Online Merchant Administration';
+$_['text_capture_info_collector'] = 'With Payment Provider Collector bank only full capture is possible here. For partial capture, please use Bambora Online Merchant Portal.';
+$_['text_refund_info_collector'] = 'With Payment Provider Collector bank only full refund is possible here. For partial refund, please use Bambora Online Merchant Portal.';
 
 //Entry
 $_['entry_status'] = 'Status';

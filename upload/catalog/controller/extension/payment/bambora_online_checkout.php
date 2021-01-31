@@ -30,7 +30,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     {
         $this->load->language('extension/payment/' . $this->module_name);
         $this->load->model('checkout/order');
-        
+
         $data = array();
         $data['text_title'] = $this->config->get($this->getConfigBaseName() .'_payment_method_title');
         $data['text_loading'] = $this->language->get('text_loading');
@@ -336,6 +336,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $line['totalprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($lineTotalPrice, $minorunits);
             $line['totalpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($lineTotalPriceInclVat, $minorunits);
             $line['totalpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($lineTaxAmount, $minorunits);
+            $line['unitprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($lineTotalPrice/$product['quantity'], $minorunits);
+            $line['unitpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($lineTotalPriceInclVat/$product['quantity'], $minorunits);
+            $line['unitpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($lineTaxAmount/$product['quantity'], $minorunits);
             $line['vat'] = $lineTaxAmount > 0 ? ($lineTaxAmount / $product['total']) * 100 : 0;
             $params[] = $line;
             $lineNumber++;
@@ -381,6 +384,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 $shipping['totalprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippintTotalPrice, $minorunits);
                 $shipping['totalpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingWithTax, $minorunits);
                 $shipping['totalpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingTaxAmount, $minorunits);
+                $shipping['unitprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippintTotalPrice, $minorunits);
+                $shipping['unitpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingWithTax, $minorunits);
+                $shipping['unitpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingTaxAmount, $minorunits);
                 $shipping['vat'] = $shippingTaxAmount > 0 ? ($shippingTaxAmount / $shippingMethod['cost']) * 100 : 0;
 
                 $params[] = $shipping;
@@ -403,6 +409,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $coupon['totalprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($cuponTotalPrice, $minorunits);
             $coupon['totalpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($cuponTotalPrice, $minorunits);
             $coupon['totalpricevatamount'] = 0;
+            $coupon['unitprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($cuponTotalPrice, $minorunits);
+            $coupon['unitpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($cuponTotalPrice, $minorunits);
+            $coupon['unitpricevatamount'] = 0;
             $coupon['vat'] = 0;
             $params[] = $coupon;
             $lineNumber++;
@@ -423,6 +432,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $voucher['totalprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($voucherTotalPrice, $minorunits);
             $voucher['totalpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($voucherTotalPrice, $minorunits);
             $voucher['totalpricevatamount'] = 0;
+            $voucher['unitprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($voucherTotalPrice, $minorunits);
+            $voucher['unitpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($voucherTotalPrice, $minorunits);
+            $voucher['unitpricevatamount'] = 0;
             $voucher['vat'] = 0;
             $params[] = $voucher;
         }

@@ -383,6 +383,18 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                     $data['transaction'] = array();
                     $data['transaction']['id'] = $transaction->id;
 
+                    $paymentTypesGroupId = $transaction->information->paymenttypes[0]->groupid;
+                    $paymentTypesId = $transaction->information->paymenttypes[0]->id;
+                    if ($paymentTypesGroupId  == 19 && $paymentTypesId == 40 ){ //Collector Bank
+                        $isCollector = true;
+                    } else {
+                        $isCollector = false;
+                    }
+
+                    $data['transaction']['isCollector'] = $isCollector;
+                    $data['text_capture_info_collector'] = $this->language->get('text_capture_info_collector');
+                    $data['text_refund_info_collector'] = $this->language->get('text_refund_info_collector');
+
                     $decimalPoint = $this->language->get('currency_decimal_point');
                     $thousandSeparator = $this->language->get('currency_thousand_separator');
 
