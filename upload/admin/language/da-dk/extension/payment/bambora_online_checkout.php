@@ -58,8 +58,8 @@ $_['text_no'] = 'Nej';
 $_['text_yes'] = 'Ja';
 $_['text_tooltip'] = 'Eksempel: 1234.56';
 $_['text_goto_bambora_admin'] = 'G&aring; til Bambora Online Merchant Administration';
-$_['text_capture_info_collector'] = 'Med Collector bank er kun fuld h&aelig;ve mulig her. For delvis h&aelig;ve, s&aring; benyt Bambora Online Merchant Portal.';
-$_['text_refund_info_collector'] = 'Med Collector bank er kun fuld kreditering mulig her. For delvis h&aelig;ve, s&aring; benyt Bambora Online Merchant Portal.';
+$_['text_capture_info_collector'] = 'Med Collector Bank er kun fuld h&aelig;vning muligt. For delvis h&aelig;vning, benyt Bambora Online Merchant Portal.';
+$_['text_refund_info_collector'] = 'Med Collector bank er kun fuld kreditering mulig. For delvis kreditering, benyt Bambora Online Merchant Portal.';
 
 
 //Entry
