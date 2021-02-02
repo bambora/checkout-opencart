@@ -22,12 +22,12 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     /**
      * @var string
      */
-    private $module_version = '1.2.6';
+    private $module_version = '1.3.0';
 
     /**
      * @var array
      */
-    private $data = array();
+    private $data = array();    
 
     /**
      * @var array
@@ -62,7 +62,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         $this->initSettings();
         $this->initSettingsContent();
-        $this->populateBreadcrums();
+        $this->populateBreadcrumbs();
         $this->populateSettingValues();
         $this->populateErrorMessages();
         $this->response->setOutput($this->load->view('extension/payment/'.$this->module_name, $this->data));
@@ -152,9 +152,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     }
 
     /**
-     * Populates the page breadcrums
+     * Populates the page breadcrumbs
      */
-    protected function populateBreadcrums()
+    protected function populateBreadcrumbs()
     {
         $this->data['breadcrumbs'] = array();
         if($this->is_oc_3()) {
@@ -383,6 +383,18 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                     $data['transaction'] = array();
                     $data['transaction']['id'] = $transaction->id;
 
+                    $paymentTypesGroupId = $transaction->information->paymenttypes[0]->groupid;
+                    $paymentTypesId = $transaction->information->paymenttypes[0]->id;
+                    if ($paymentTypesGroupId  == 19 && $paymentTypesId == 40 ){ //Collector Bank
+                        $isCollector = true;
+                    } else {
+                        $isCollector = false;
+                    }
+
+                    $data['transaction']['isCollector'] = $isCollector;
+                    $data['text_capture_info_collector'] = $this->language->get('text_capture_info_collector');
+                    $data['text_refund_info_collector'] = $this->language->get('text_refund_info_collector');
+
                     $decimalPoint = $this->language->get('currency_decimal_point');
                     $thousandSeparator = $this->language->get('currency_thousand_separator');
 
@@ -493,14 +505,14 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $operationAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($operation->amount, $operation->currency->minorunits, $decimalPoint, $thousandSeparator);
             $ope['amount'] =  "{$operation->currency->code} {$operationAmount}";
 
-            if (array_key_exists('eci', $operation) && isset($operation->eci)) {
+            if (isset($operation->eci)) {
                 $ope['eci'] = $operation->eci->value;
             } else {
                 $ope['eci'] = "-";
             }
 
             $result[] = $ope;
-            if (array_key_exists('transactionoperations', $operation) && count($operation->transactionoperations) > 0) {
+            if (isset($operation->transactionoperations) && count($operation->transactionoperations) > 0) {
                 $result = array_merge($result, $this->createTransactionOperations($operation->transactionoperations, $decimalPoint, $thousandSeparator));
             }
         }

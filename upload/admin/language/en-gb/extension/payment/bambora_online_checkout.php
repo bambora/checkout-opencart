@@ -63,6 +63,8 @@ $_['text_void_payment_body'] = 'Are you sure you want to void the payment';
 $_['text_no'] = 'No';
 $_['text_yes'] = 'Yes';
 $_['text_goto_bambora_admin'] = 'Go to Bambora Online Merchant Administration';
+$_['text_capture_info_collector'] = 'With Payment Provider Collector bank only full capture is possible here. For partial capture, please use Bambora Online Merchant Portal.';
+$_['text_refund_info_collector'] = 'With Payment Provider Collector bank only full refund is possible here. For partial refund, please use Bambora Online Merchant Portal.';
 
 //Entry
 $_['entry_status'] = 'Status';
@@ -107,7 +109,7 @@ $_['error_permission'] = 'Warning You do not have permission to modify Bambora O
 $_['error_merchant'] = 'The Merchant number is required!';
 $_['error_access_token'] = 'The Access token is required!';
 $_['error_secret_token'] = 'The Secret token is required!';
-$_['error_get_transaction_db'] = 'Could not retrive the transaction from the database!';
+$_['error_get_transaction_db'] = 'Could not retrieve the transaction from the database!';
 $_['error_get_api_error'] = 'No connection to Bambora';
 $_['error_amount_format'] = 'The amount you entered is in the wrong format. Please try again!';
 $_['error_action_base'] = 'The action could not be perform';

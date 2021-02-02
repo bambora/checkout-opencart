@@ -1,6 +1,6 @@
 {% if getPaymentTransaction_success == true %}
 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-    <h3>{{ text_payment_info }}</h3>    
+    <h3>{{ text_payment_info }}</h3>
     <table class="table table-striped">
         <tr>
             <td>{{ text_transaction_id }}</td>
@@ -45,21 +45,23 @@
     </table>
 
     {% if showActions == true  %}
-        <div class="bambora_online_checkout_action_container">   
+        <div class="bambora_online_checkout_action_container">
             <div class="input-group">
                 <div class="input-group-addon">{{ transaction.currencyCode }}</div>
                 {% if transaction.availableForCapture > 0 %}
-                    <input type="text" data-toggle="tooltip" title="{{ text_tooltip }}" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForCapture }}" />
+                    <input type="text" data-toggle="tooltip" {% if transaction.isCollector  == true %} readonly {% endif %} title="{{ text_tooltip }}" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForCapture }}" />
                 {% else %}
-                    <input type="text" data-toggle="tooltip" title="{{ text_tooltip }}" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForRefund }}" />
+                    <input type="text" data-toggle="tooltip" title="{{ text_tooltip }}"   {% if transaction.isCollector  %} readonly {% endif %} id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForRefund }}" />
                 {% endif %}
             </div>
             <div id="bambora_online_checkout_format_error" class="alert alert-danger" style="display:none">{{ error_amount_format }}</div>
-            {% if transaction.availableForCapture > 0 %}              
+            {% if transaction.availableForCapture > 0 %}
+                {% if transaction.isCollector  == true %} {{ text_capture_info_collector }} <br />{% endif %}
                 <a class="bambora-button btn btn-success" id="btn-bambora-online-checkout-capture">{{ text_btn_capture }}</a>
                 <span class="bambora-button btn btn-success" id="img-loading-capture" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
             {% endif %}
             {% if transaction.availableForRefund > 0 %}
+                {% if transaction.isCollector  == true %} {{ text_refund_info_collector }} <br />{% endif %}
                 <a class="bambora-button btn btn-warning" id="btn-bambora-online-checkout-refund">{{ text_btn_refund }}</a>
                 <span class="bambora-button btn btn-warning" id="img-loading-refund" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
             {% endif %}
@@ -94,11 +96,12 @@
 </div>
 
 <div class="col-lg-3 text-center hidden-xs hidden-sm hidden-md">
-    <a href="https://admin.epay.eu/Account/Login" title="{{ text_goto_bambora_admin }}" target="_blank">
-        <img class="bambora-logo" src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/bambora-logo.svg" />
+    <a href="https://merchant.bambora.com" title="{{ text_goto_bambora_admin }}" target="_blank">
+        <img class="bambora-logo" src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/bambora-logo.svg" style="padding-bottom: 10px;" />
+
     </a>
     <div>
-        <a href="https://admin.epay.eu/Account/Login"  title="{{ text_goto_bambora_admin }}" target="_blank">{{ text_goto_bambora_admin }}</a>
+        <a href="https://merchant.bambora.com"  title="{{ text_goto_bambora_admin }}" target="_blank">{{ text_goto_bambora_admin }}</a>
     </div>
 </div>
 
@@ -107,7 +110,7 @@
     $("#btn-bambora-online-checkout-capture").bind('click', function() {
         if (validateInputField()) {
             var confirmBodyText = '{{ text_capture_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
-            confirm('{{ text_capture_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() {  
+            confirm('{{ text_capture_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() {
                 $.ajax({
                     type:'POST',
                     dataType: 'html',
@@ -127,11 +130,11 @@
             $("#bambora_online_checkout_format_error").toggle();
         }
     });
-    
+
     $("#btn-bambora-online-checkout-refund").bind('click', function() {
         if (validateInputField()) {
             var confirmBodyText = '{{ text_refund_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
-            confirm('{{ text_refund_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() { 
+            confirm('{{ text_refund_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() {
                 $.ajax({
                     type:'POST',
                     dataType: 'html',
@@ -175,9 +178,9 @@
             return false;
         }
 
-        return true;        
+        return true;
     }
-    
+
     function handleBeforeSend(type) {
         $('#btn-bambora-online-checkout-' + type).hide();
         $('#img-loading-' + type).show();
@@ -197,8 +200,8 @@
     }
 
     function confirm(heading, body, btnNoText, btnYesText, callback) {
-        var confirmModal = 
-          $('<div class="modal fade">' +        
+        var confirmModal =
+          $('<div class="modal fade">' +
               '<div class="modal-dialog">' +
               '<div class="modal-content">' +
               '<div class="modal-header">' +
@@ -211,11 +214,11 @@
               '</div>' +
 
               '<div class="modal-footer">' +
-                '<a class="btn" data-dismiss="modal">' + 
-                  btnNoText + 
+                '<a class="btn" data-dismiss="modal">' +
+                  btnNoText +
                 '</a>' +
-                '<a id="btnYes" class="btn btn-success">' + 
-                  btnYesText + 
+                '<a id="btnYes" class="btn btn-success">' +
+                  btnYesText +
                 '</a>' +
               '</div>' +
               '</div>' +
@@ -227,7 +230,7 @@
             confirmModal.modal('hide');
         }); 
         confirmModal.modal('show');    
-    };  
+    }
     
     $("#bambora_online_checkout_amount").keydown(function (e) {
         var digit = String.fromCharCode(e.which || e.keyCode);
@@ -247,7 +250,7 @@
             $("#bambora_online_checkout_format_error").fadeOut('slow');
         }
     });
-    $('#bambora-online-checkout-error-message').click(function(){ 
+    $('#bambora-online-checkout-error-message').click(function(){
         $('#bambora-online-checkout-error-message').fadeOut('slow');
     });
 
