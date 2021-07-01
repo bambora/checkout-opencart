@@ -14,9 +14,10 @@
  */
 class ModelExtensionPaymentBamboraOnlineCheckout extends Model
 {
+
     const CHECKOUT_API_ENDPOINT = 'https://api.v1.checkout.bambora.com/sessions';
     const ZERO_API_MERCHANT_ENDPOINT = 'https://merchant-v1.api-eu.bambora.com';
-
+    const ZERO_API_DATA_ENDPOINT = 'https://data-v1.api-eu.bambora.com';
     /**
      * @var string
      */

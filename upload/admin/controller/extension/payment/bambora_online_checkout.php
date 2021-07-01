@@ -93,6 +93,12 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'entry_order_status_completed',
             'entry_geo_zone',
             'entry_sort_order',
+            'entry_allow_low_value_exemptions',
+            'entry_limit_for_low_value_exemption',
+           // Common
+             'text_yes',
+             'text_no',
+
            //Help
             'help_status',
             'help_merchant',
@@ -111,6 +117,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'help_order_status_completed',
             'help_geo_zone',
             'help_sort_order',
+            'help_allow_low_value_exemptions',
+            'help_limit_for_low_value_exemption',
         );
         foreach ($keys as $key) {
             $this->data[$key] = $this->language->get($key);
@@ -213,6 +221,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'order_status_completed',
             'geo_zone',
             'sort_order',
+            'allow_low_value_exemptions',
+            'limit_for_low_value_exemption',
          );
 
         $defaultValues = array(
@@ -225,7 +235,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'rounding_mode' => '1',
             'payment_method_title' => 'Bambora Online Checkout',
             'payment_method_update' => '0',
-            'order_status_completed' => '5'
+            'order_status_completed' => '5',
+            'allow_low_value_exemptions' => '0',
         );
 
         // Loop through configuration fields and populate them
@@ -438,6 +449,14 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                     $data['transaction']['currencyCode'] = $transaction->currency->code;
                     $data['transaction']['orderId'] = $orderId;
 
+                    if (isset($transaction->information->ecis)) {
+                        $data['transaction']['eci'] = $this->model_extension_payment_bambora_online_checkout->getLowestECI($transaction->information->ecis);
+                    }
+                    if (isset($transaction->information->exemptions)) {
+                        $data['transaction']['exemptions'] = $this->model_extension_payment_bambora_online_checkout->getDistinctExemptions($transaction->information->exemptions);
+                    }
+
+
                     $availableForCapture = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($transaction->available->capture, $transaction->currency->minorunits);
                     $data['transaction']['availableForCapture'] = $availableForCapture;
 
@@ -493,28 +512,38 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     {
         $result = array();
         foreach ($transactionOperation as $operation) {
-            $ope = array();
-            if($this->is_oc_3()) {
-                $ope['createdDate'] = $operation->createddate;
-            } else {
+
+            $eventText = $this->model_extension_payment_bambora_online_checkout->getEventText($operation);
+
+            if ($eventText['description'] != null){
+                $eventInfoExtra = '';
+
+                if ($operation->status != 'approved'){
+                    $eventInfoExtra = $this->model_extension_payment_bambora_online_checkout->getEventExtra($operation);
+                    $eventInfoExtra = '<div style="color:#ec6459;">'. $eventInfoExtra . '</div>';
+                }
+
+                $ope = array();
+                $ope['title'] = $eventText['title'];
+                $ope['description'] = $eventText['description'].$eventInfoExtra;
+
+                if($this->is_oc_3()) {
+                    $ope['createdDate'] = $operation->createddate;
+                } else {
                 $ope['createdDate'] = date($this->language->get('date_format'), strtotime($operation->createddate));
             }
 
             $ope['action'] = $operation->action;
 
-            $operationAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($operation->amount, $operation->currency->minorunits, $decimalPoint, $thousandSeparator);
-            $ope['amount'] =  "{$operation->currency->code} {$operationAmount}";
-
-            if (isset($operation->eci)) {
-                $ope['eci'] = $operation->eci->value;
-            } else {
-                $ope['eci'] = "-";
+                $operationAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($operation->amount, $operation->currency->minorunits, $decimalPoint, $thousandSeparator);
+                $ope['amount'] =  "{$operation->currency->code} {$operationAmount}";
+                $result[] = $ope;
             }
 
-            $result[] = $ope;
             if (isset($operation->transactionoperations) && count($operation->transactionoperations) > 0) {
                 $result = array_merge($result, $this->createTransactionOperations($operation->transactionoperations, $decimalPoint, $thousandSeparator));
             }
+
         }
 
         return $result;

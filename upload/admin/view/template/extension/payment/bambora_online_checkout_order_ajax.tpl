@@ -42,6 +42,17 @@
             <td><?php echo $text_transaction_status; ?></td>
             <td class="text-right"><?php echo $transaction['status']; ?></td>
         </tr>
+        <tr>
+            <td> <?php echo $text_transaction_operations_eci; ?> </td>
+            <td class="text-right"><?php echo $transaction['eci']; ?></td>
+        </tr>
+       <?php if (isset($transaction['exemptions'])) { ?>
+        <tr>
+            <td>Exemption(s):</td>
+            <td class="text-right"><?php echo $transaction['exemptions']; ?></td>
+        </tr>
+        <?php } ?>
+
     </table>
 
     <?php if($showActions == true) { ?>
@@ -78,16 +89,18 @@
             <th><?php echo $text_transaction_operations_date; ?></th>
             <th><?php echo $text_transaction_operations_action; ?></th>
             <th><?php echo $text_transaction_operations_amount; ?></th>
-            <th><?php echo $text_transaction_operations_eci; ?></th>
         </tr>
 <?php if(count($transaction['operations']) > 0) {
         foreach($transaction['operations'] as $operation) { ?>
             <tr>
                 <td><?php echo $operation['createdDate']; ?></td>
-                <td><?php echo $operation['action']; ?></td>
+                <td><strong><?php echo $operation['title']; ?></strong></td>
                 <td><?php echo $operation['amount']; ?></td>
-                <td><?php echo $operation['eci']; ?></td>
             </tr>
+            <tr>
+                <td colspan="3"><i><?php echo $operation['description']; ?></i></td>
+            </tr>
+
 <?php } } ?>
     </table>
 </div>

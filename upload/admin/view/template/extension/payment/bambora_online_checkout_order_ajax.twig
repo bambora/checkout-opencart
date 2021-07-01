@@ -42,6 +42,16 @@
             <td>{{ text_transaction_status }}</td>
             <td class="text-right">{{ transaction.status }}</td>
         </tr>
+        <tr>
+            <td> {{ text_transaction_operations_eci }}</td>
+            <td class="text-right">{{ transaction.eci }}</td>
+        </tr>
+        {% if transaction.exemptions  is not null %}
+        <tr>
+            <td>Exemption(s)</td>
+            <td class="text-right">{{ transaction.exemptions }}</td>
+        </tr>
+        {% endif %}
     </table>
 
     {% if showActions == true  %}
@@ -80,15 +90,16 @@
             <th>{{ text_transaction_operations_date }}</th>
             <th>{{ text_transaction_operations_action }}</th>
             <th>{{ text_transaction_operations_amount }}</th>
-            <th>{{ text_transaction_operations_eci }}</th>
         </tr>
 {% if transaction.operations|length > 0 %}
         {% for operation in transaction.operations %}
             <tr>
                 <td>{{ operation.createdDate|date(date_format) }}</td>
-                <td>{{ operation.action }}</td>
+                <td><strong>{{ operation.title }}</strong></td>
                 <td>{{ operation.amount }}</td>
-                <td>{{ operation.eci }}</td>
+            </tr>
+            <tr>
+                <td colspan="3"><i>{{ operation.description }}</i></td>
             </tr>
         {% endfor %}
 {% endif %}

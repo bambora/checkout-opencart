@@ -255,6 +255,35 @@ echo $column_left;
               <input type="text" name="bambora_online_checkout_sort_order" value="<?php echo $bambora_online_checkout_sort_order; ?>" placeholder="<?php echo $entry_sort_order; ?>" id="input-sort-order" class="form-control" />
             </div>
           </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-allow_low_value_exemptions"><span data-toggle="tooltip" title="<?php echo $help_allow_low_value_exemptions; ?>"><?php echo $entry_allow_low_value_exemptions; ?></span></label>
+                    <select name="bambora_online_checkout_allow_low_value_exemptions" id="input-allow_low_value_exemptions" class="form-control">
+
+                        <?php if ($bambora_online_checkout_allow_low_value_exemptions) { ?>
+
+                        <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
+                        <option value="0"><?php echo $text_disabled; ?></option>
+
+                        <?php }else { ?>
+
+                        <option value="1"><?php echo $text_enabled; ?></option>
+                        <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
+
+                        <?php } ?>
+
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-limit_for_low_value_exemption"><span data-toggle="tooltip" title="<?php echo $help_limit_for_low_value_exemption; ?>"><?php echo $entry_limit_for_low_value_exemption; ?></span></label>
+                <div class="col-sm-10">
+                    <input type="text" name="bambora_online_checkout_limit_for_low_value_exemption" value="<?php echo $bambora_online_checkout_limit_for_low_value_exemption; ?>" placeholder="<?php echo $entry_limit_for_low_value_exemption; ?>" id="input-limit_for_low_value_exemption" class="form-control" />
+                </div>
+                <div class="col-sm-12">
+                    <a href="https://developer.bambora.com/europe/checkout/psd2/lowvalueexemption"  target="_blank">More information regarding Low Value Exemption here.</a>
+                </div>
+            </div>
+
         </form>
       </div>
     </div>

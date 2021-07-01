@@ -43,7 +43,7 @@ $_['text_transaction_captured'] = 'Captured';
 $_['text_transaction_refunded'] = 'Refunded';
 $_['text_transaction_acquirer'] = 'Acquirer';
 $_['text_transaction_status'] = 'Status';
-$_['text_transaction_operations'] = 'Transaction Operations';
+$_['text_transaction_operations'] = 'Transaction History';
 $_['text_transaction_operations_date'] = 'Date';
 $_['text_transaction_operations_action'] = 'Action';
 $_['text_transaction_operations_amount'] = 'Amount';
@@ -84,7 +84,8 @@ $_['entry_total'] = 'Total';
 $_['entry_order_status_completed'] = 'Order status after completion';
 $_['entry_geo_zone'] = 'Geo Zone';
 $_['entry_sort_order'] = 'Sort Order';
-
+$_['entry_allow_low_value_exemptions'] = 'Enable Low Value Exemption';
+$_['entry_limit_for_low_value_exemption'] = 'Max Amount for Low Value Exemption';
 // Help
 $_['help_status'] = 'Enable / Disable the Bambora Online Checkout payment gateway';
 $_['help_merchant'] = 'The number identifying your Bambora merchant account.';
@@ -103,6 +104,8 @@ $_['help_total'] = 'The checkout total the order must reach before this payment 
 $_['help_order_status_completed'] = 'Choose order state on paid orders.';
 $_['help_geo_zone'] = 'Define the geographic zones the payment module is displayed';
 $_['help_sort_order'] = 'The displayed order of the payment method';
+$_['help_allow_low_value_exemptions'] = 'Allow you as a merchant to skip Strong Customer Authentication(SCA) when the value of the order is below your defined limit. Note: the liability will be on you as a merchant.';
+$_['help_limit_for_low_value_exemption'] = 'Any amount below this max amount might skip SCA if the issuer would allow it. Recommended amount is about €30 in your local currency. ';
 
 //Error
 $_['error_permission'] = 'Warning You do not have permission to modify Bambora Online Checkout!';
@@ -115,7 +118,7 @@ $_['error_amount_format'] = 'The amount you entered is in the wrong format. Plea
 $_['error_action_base'] = 'The action could not be perform';
 $_['error_module_not_loaded'] = 'Please enable the module';
 $_['error_order_id_not_supplied'] = 'Order id not supplied to method';
-
+$_['error_limit_for_low_value_exemption'] = 'The amount you entered for low value exemption is in the wrong format. Please try again!';
 
 //Format
 $_['date_format'] = 'm/d/Y';

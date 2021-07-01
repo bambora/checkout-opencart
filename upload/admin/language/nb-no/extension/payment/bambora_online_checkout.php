@@ -84,7 +84,8 @@ $_['entry_total'] = 'Totalt';
 $_['entry_order_status_completed'] = 'Ordrestatus etter fullføring';
 $_['entry_geo_zone'] = 'Geografisk sone';
 $_['entry_sort_order'] = 'Sortering';
-
+$_['entry_allow_low_value_exemptions'] = 'Allow Low Value Exemptions';
+$_['entry_limit_for_low_value_exemption'] = 'Limit for Low Value Exemptions';
 // Help
 $_['help_status'] = 'Aktiver/Deaktiver \'Bambora Online Checkout\'-betalingsmodul.';
 $_['help_merchant'] = 'Nummer som identifiserer deres Bambora-konto.';
@@ -115,6 +116,7 @@ $_['error_amount_format'] = 'Beløpet er i ugyldig format. Forsøk igjen.';
 $_['error_action_base'] = 'Handlingen kunne ikke utføres.';
 $_['error_module_not_loaded'] = 'Modulen må aktiveres.';
 $_['error_order_id_not_supplied'] = 'Ordre-id mangler.';
+$_['error_limit_for_low_value_exemption'] = 'The amount you entered for low value exemptions is in the wrong format. Please try again!';
 
 //Format
 $_['date_format'] = 'd.m.Y';

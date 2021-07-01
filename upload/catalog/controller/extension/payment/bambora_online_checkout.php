@@ -268,6 +268,14 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $params['url']['callbacks'] = array();
         $params['url']['callbacks'][] = array('url' => $this->url->link('extension/payment/' . $this->module_name . '/callback', '', true));
 
+
+        $allow_low_value = $this->config->get($this->getConfigBaseName() . '_allow_low_value_exemptions');
+        if ( $allow_low_value){
+            if ($params['order']['amount'] < $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($this->config->get($this->getConfigBaseName() . '_limit_for_low_value_exemption'), $minorunits)){
+                $params['securityexemption'] = "lowvaluepayment";
+                $params['securitylevel'] = "none";
+            }
+        }
         return $params;
     }
 
@@ -476,24 +484,24 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     /**
      * Validate the request get parameteres
      *
-     * @param mixed $getParameteres
+     * @param mixed $getParameters
      * @param mixed $message
      * @return boolean
      */
-    protected function validateRequest($getParameteres, &$message)
+    protected function validateRequest($getParameters, &$message)
     {
         // Check exists txnid!
-        if (empty($getParameteres["txnid"])) {
+        if (empty($getParameters["txnid"])) {
             $message = "No GET(txnid) was supplied to the system!";
             return false;
         }
         // Check exists orderid!
-        if (empty($getParameteres["orderid"])) {
+        if (empty($getParameters["orderid"])) {
             $message = "No GET(orderid) was supplied to the system!";
             return false;
         }
         // Check exists hash!
-        if (empty($getParameteres["hash"])) {
+        if (empty($getParameters["hash"])) {
             $message = "No GET(hash) was supplied to the system!";
             return false;
         }
@@ -501,12 +509,12 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $merchantMd5Key = $this->config->get($this->getConfigBaseName() . '_md5');
         if(!empty($merchantMd5Key)) {
             $concatenatedValues  = '';
-            foreach ($getParameteres as $key => $value) {
+            foreach ($getParameters as $key => $value) {
                 if ('hash' === $key) break;
                 $concatenatedValues .= $value;
             }
             $genstamp = md5($concatenatedValues . $merchantMd5Key);
-            if (!hash_equals($genstamp, $getParameteres["hash"])) {
+            if (!hash_equals($genstamp, $getParameters["hash"])) {
                 $message = "Hash validation failed - Please check your MD5 key";
                 return false;
             }
@@ -523,13 +531,13 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
      * @param mixed $transaction
      * @return boolean
      */
-    protected function validateCallback($getParameteres, &$message, &$transaction)
+    protected function validateCallback($getParameters, &$message, &$transaction)
     {
-        if (!$this->validateRequest($getParameteres, $message)) {
+        if (!$this->validateRequest($getParameters, $message)) {
             return false;
         }
 
-        $transactionId = $getParameteres["txnid"];
+        $transactionId = $getParameters["txnid"];
         $transactionResponse = $this->model_extension_payment_bambora_online_checkout->getTransaction($transactionId);
 
         if (!isset($transactionResponse) || !$transactionResponse->meta->result) {
