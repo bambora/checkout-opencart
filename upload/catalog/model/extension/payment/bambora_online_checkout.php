@@ -26,7 +26,7 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     /**
      * @var string
      */
-    private $module_version = '1.3.0';
+    private $module_version = '1.4.0';
 
     /**
      * Returns method data

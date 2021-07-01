@@ -22,12 +22,12 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     /**
      * @var string
      */
-    private $module_version = '1.3.0';
+    private $module_version = '1.4.0';
 
     /**
      * @var array
      */
-    private $data = array();    
+    private $data = array();
 
     /**
      * @var array
@@ -530,10 +530,10 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 if($this->is_oc_3()) {
                     $ope['createdDate'] = $operation->createddate;
                 } else {
-                $ope['createdDate'] = date($this->language->get('date_format'), strtotime($operation->createddate));
-            }
+                    $ope['createdDate'] = date($this->language->get('date_format'), strtotime($operation->createddate));
+                }
 
-            $ope['action'] = $operation->action;
+                $ope['action'] = $operation->action;
 
                 $operationAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($operation->amount, $operation->currency->minorunits, $decimalPoint, $thousandSeparator);
                 $ope['amount'] =  "{$operation->currency->code} {$operationAmount}";
