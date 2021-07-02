@@ -37,7 +37,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     /**
      * @var array();
      */
-    private $errorFields = array('merchant', 'access_token', 'secret_token', 'permission');
+    private $errorFields = array('merchant', 'access_token', 'secret_token', 'permission', 'limit_for_low_value_exemption');
 
     /**
      * Inits the module admin section
@@ -283,8 +283,15 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $this->errors['permission'] = $this->language->get('error_permission');
         } else {
             foreach ($this->errorFields as $error) {
-                if ($error != 'permission' && !$this->request->post[$this->getConfigBaseName() . '_' . $error]) {
+                if ($error != 'permission' && $error != 'limit_for_low_value_exemption' && !$this->request->post[$this->getConfigBaseName() . '_' . $error]) {
                     $this->errors[$error] = $this->language->get('error_' . $error);
+                }
+                if ($error == 'limit_for_low_value_exemption') {
+                    $value = $this->request->post[$this->getConfigBaseName() . '_' . $error];
+                    $enabled = $this->request->post[$this->getConfigBaseName() . '_allow_low_value_exemptions'];
+                    if (!is_numeric($value) && $enabled){
+                        $this->errors[$error] = $this->language->get('error_' . $error);
+                    }
                 }
             }
         }

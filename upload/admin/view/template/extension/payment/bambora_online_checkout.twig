@@ -304,6 +304,9 @@
                     <div class="col-sm-10">
                         <input type="text" name="payment_bambora_online_checkout_limit_for_low_value_exemption" value="{{ payment_bambora_online_checkout_limit_for_low_value_exemption }}" placeholder="{{ entry_limit_for_low_value_exemption }}" id="input-limit_for_low_value_exemption" class="form-control" />
                     </div>
+                    {% if error_limit_for_low_value_exemption %}
+                        <div class="text-danger">{{ error_limit_for_low_value_exemption }}</div>
+                    {% endif %}
                     <br/>
                     <div class="col-sm-12">
                         <a href="https://developer.bambora.com/europe/checkout/psd2/lowvalueexemption"  target="_blank">More information regarding Low Value Exemptions here.</a>

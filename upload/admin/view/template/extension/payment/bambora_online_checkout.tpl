@@ -279,6 +279,9 @@ echo $column_left;
                 <div class="col-sm-10">
                     <input type="text" name="bambora_online_checkout_limit_for_low_value_exemption" value="<?php echo $bambora_online_checkout_limit_for_low_value_exemption; ?>" placeholder="<?php echo $entry_limit_for_low_value_exemption; ?>" id="input-limit_for_low_value_exemption" class="form-control" />
                 </div>
+                <?php if ($error_limit_for_low_value_exemption) { ?>
+                 <div class="text-danger"><?php echo $error_limit_for_low_value_exemption; ?></div>
+                <?php } ?>
                 <div class="col-sm-12">
                     <a href="https://developer.bambora.com/europe/checkout/psd2/lowvalueexemption"  target="_blank">More information regarding Low Value Exemption here.</a>
                 </div>
