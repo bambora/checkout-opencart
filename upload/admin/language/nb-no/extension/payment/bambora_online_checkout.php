@@ -84,8 +84,8 @@ $_['entry_total'] = 'Totalt';
 $_['entry_order_status_completed'] = 'Ordrestatus etter fullføring';
 $_['entry_geo_zone'] = 'Geografisk sone';
 $_['entry_sort_order'] = 'Sortering';
-$_['entry_allow_low_value_exemptions'] = 'Allow Low Value Exemptions';
-$_['entry_limit_for_low_value_exemption'] = 'Limit for Low Value Exemptions';
+$_['entry_allow_low_value_exemptions'] = 'Enable Low Value Exemption';
+$_['entry_limit_for_low_value_exemption'] = 'Max Amount for Low Value Exemption';
 // Help
 $_['help_status'] = 'Aktiver/Deaktiver \'Bambora Online Checkout\'-betalingsmodul.';
 $_['help_merchant'] = 'Nummer som identifiserer deres Bambora-konto.';
@@ -104,6 +104,8 @@ $_['help_total'] = 'Ordretotal som må innfris før betalingsvalget vises.';
 $_['help_order_status_completed'] = 'Velg ordrestatus for ordrer som er bekreftet av Bambora.';
 $_['help_geo_zone'] = 'Angi geografiske soner som modulen skal vises for.';
 $_['help_sort_order'] = 'Visningsrekkefølge for betalingsvalget.';
+$_['help_allow_low_value_exemptions'] = 'Allow you as a merchant to let the customer attempt to skip Strong Customer Authentication(SCA) when the value of the order is below your defined limit.';
+$_['help_limit_for_low_value_exemption'] = 'Any amount below this max amount might skip SCA if the issuer would allow it. Recommended amount is about €30 in your local currency.';
 
 //Error
 $_['error_permission'] = 'Advarsel: Du har ikke rettigheter til å endre på Bambora Online Checkout.';

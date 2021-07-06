@@ -104,8 +104,8 @@ $_['help_total'] = 'The checkout total the order must reach before this payment 
 $_['help_order_status_completed'] = 'Choose order state on paid orders.';
 $_['help_geo_zone'] = 'Define the geographic zones the payment module is displayed';
 $_['help_sort_order'] = 'The displayed order of the payment method';
-$_['help_allow_low_value_exemptions'] = 'Allow you as a merchant to skip Strong Customer Authentication(SCA) when the value of the order is below your defined limit. Note: the liability will be on you as a merchant.';
-$_['help_limit_for_low_value_exemption'] = 'Any amount below this max amount might skip SCA if the issuer would allow it. Recommended amount is about €30 in your local currency. ';
+$_['help_allow_low_value_exemptions'] = 'Allow you as a merchant to let the customer attempt to skip Strong Customer Authentication(SCA) when the value of the order is below your defined limit.';
+$_['help_limit_for_low_value_exemption'] = 'Any amount below this max amount might skip SCA if the issuer would allow it. Recommended amount is about €30 in your local currency.';
 
 //Error
 $_['error_permission'] = 'Warning You do not have permission to modify Bambora Online Checkout!';

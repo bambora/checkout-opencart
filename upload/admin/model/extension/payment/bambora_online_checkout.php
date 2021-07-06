@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2017. All rights reserved Bambora Online.
  *
@@ -15,8 +16,8 @@
 class ModelExtensionPaymentBamboraOnlineCheckout extends Model
 {
     const ZERO_API_TRANSACTION_ENDPOINT = 'https://transaction-v1.api-eu.bambora.com';
-     const ZERO_API_MERCHANT_ENDPOINT = 'https://merchant-v1.api-eu.bambora.com';
-     const ZERO_API_DATA_ENDPOINT = 'https://data-v1.api-eu.bambora.com';
+    const ZERO_API_MERCHANT_ENDPOINT = 'https://merchant-v1.api-eu.bambora.com';
+    const ZERO_API_DATA_ENDPOINT = 'https://data-v1.api-eu.bambora.com';
     /**
      * @var string
      */
@@ -217,7 +218,7 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
      */
     public function getModuleHeaderInformation()
     {
-        $headerInformation = 'OpenCart/' . VERSION . ' Module/' . $this->module_version . ' PHP/'. phpversion();
+        $headerInformation = 'OpenCart/' . VERSION . ' Module/' . $this->module_version . ' PHP/' . phpversion();
 
         return $headerInformation;
     }
@@ -273,12 +274,12 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     public function getCurrencyMinorunits($currencyCode)
     {
         $currencyArray = array(
-        'TTD' => 0, 'KMF' => 0, 'ADP' => 0, 'TPE' => 0, 'BIF' => 0,
-        'DJF' => 0, 'MGF' => 0, 'XPF' => 0, 'GNF' => 0, 'BYR' => 0,
-        'PYG' => 0, 'JPY' => 0, 'CLP' => 0, 'XAF' => 0, 'TRL' => 0,
-        'VUV' => 0, 'CLF' => 0, 'KRW' => 0, 'XOF' => 0, 'RWF' => 0,
-        'IQD' => 3, 'TND' => 3, 'BHD' => 3, 'JOD' => 3, 'OMR' => 3,
-        'KWD' => 3, 'LYD' => 3);
+            'TTD' => 0, 'KMF' => 0, 'ADP' => 0, 'TPE' => 0, 'BIF' => 0,
+            'DJF' => 0, 'MGF' => 0, 'XPF' => 0, 'GNF' => 0, 'BYR' => 0,
+            'PYG' => 0, 'JPY' => 0, 'CLP' => 0, 'XAF' => 0, 'TRL' => 0,
+            'VUV' => 0, 'CLF' => 0, 'KRW' => 0, 'XOF' => 0, 'RWF' => 0,
+            'IQD' => 3, 'TND' => 3, 'BHD' => 3, 'JOD' => 3, 'OMR' => 3,
+            'KWD' => 3, 'LYD' => 3);
         return key_exists($currencyCode, $currencyArray) ? $currencyArray[$currencyCode] : 2;
     }
 
@@ -291,7 +292,7 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
 
     public function getConfigBaseName()
     {
-        if($this->is_oc_3()) {
+        if ($this->is_oc_3()) {
             return "payment_{$this->module_name}";
         } else {
             return $this->module_name;
@@ -302,15 +303,16 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
     {
         return !version_compare(VERSION, '3', '<');
     }
-    
+
     public function getDistinctExemptions($exemptions)
-    {   if (isset($exemptions)){
+    {
+        if (isset($exemptions)) {
             $exemptionValues = null;
             foreach ($exemptions as $exemption) {
                 $exemptionValues[] = $exemption->value;
             }
-            return implode( ",", array_unique($exemptionValues));
-        }   else {
+            return implode(",", array_unique($exemptionValues));
+        } else {
             return null;
         }
     }
@@ -323,13 +325,14 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
         return min($eciValues);
     }
 
-    public function getEventExtra($operation){
+    public function getEventExtra($operation)
+    {
         $source = $operation->actionsource;
         $actionCode = $operation->actioncode;
         $responseCode = $this->getResponseCodeData($source, $actionCode);
         $merchantLabel = "";
-        if (isset($responseCode->responsecode)){
-            $merchantLabel = $responseCode->responsecode->merchantlabel  ." - ". $source . " " . $actionCode;
+        if (isset($responseCode->responsecode)) {
+            $merchantLabel = $responseCode->responsecode->merchantlabel . " - " . $source . " " . $actionCode;
         }
         return $merchantLabel;
     }
@@ -340,7 +343,8 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
      * @param integer $paymentGroupId
      * @return string
      */
-    public function getCardAuthenticationBrandName( $paymentGroupId) {
+    public function getCardAuthenticationBrandName($paymentGroupId)
+    {
         switch ($paymentGroupId) {
             case 1:
                 return "Dankort Secured by Nets";
@@ -365,7 +369,8 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
      *
      * @return string
      */
-    public  function get3DSecureText(  $eciLevel) {
+    public function get3DSecureText($eciLevel)
+    {
         switch ($eciLevel) {
             case "7":
             case "00":
@@ -394,49 +399,48 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
      *
      * @return array
      */
-    public function getEventText(  $operation ) {
-
-        $action                = strtolower( $operation->action );
-        $subAction             = strtolower( $operation->subaction );
-        $approved              = $operation->status == 'approved';
+    public function getEventText($operation)
+    {
+        $action = strtolower($operation->action);
+        $subAction = strtolower($operation->subaction);
+        $approved = $operation->status == 'approved';
         $threeDSecureBrandName = "";
-        $eventInfo             = array();
+        $eventInfo = array();
 
-
-        if ( $action === "authorize" ) {
-            if ( isset( $operation->paymenttype->id ) ) {
-                $threeDSecureBrandName =  $this->getCardAuthenticationBrandName( $operation->paymenttype->id );
+        if ($action === "authorize") {
+            if (isset($operation->paymenttype->id)) {
+                $threeDSecureBrandName = $this->getCardAuthenticationBrandName($operation->paymenttype->id);
             }
             // Temporary renaming for Lindorff to Collector Bank require until implemented in Acquire
             $thirdPartyName = $operation->acquirername;
-            $thirdPartyName = strtolower( $thirdPartyName ) !== "lindorff"
+            $thirdPartyName = strtolower($thirdPartyName) !== "lindorff"
                 ? $thirdPartyName
                 : "Collector Bank";
 
-            switch ( $subAction ) {
+            switch ($subAction) {
                 case "threed":
                 {
-                    $title       = $approved ? 'Payment completed (' . $threeDSecureBrandName . ')' : 'Payment failed (' . $threeDSecureBrandName . ')';
-                    $eci         = $operation->eci->value;
-                    $statusText  = $approved
+                    $title = $approved ? 'Payment completed (' . $threeDSecureBrandName . ')' : 'Payment failed (' . $threeDSecureBrandName . ')';
+                    $eci = $operation->eci->value;
+                    $statusText = $approved
                         ? "completed successfully"
                         : "failed";
                     $description = "";
-                    if ( $eci === "7" ) {
+                    if ($eci === "7") {
                         $description = 'Authentication was either not attempted or unsuccessful. Either the card does not support' .
                             $threeDSecureBrandName . ' or the issuing bank does not handle it as a ' .
                             $threeDSecureBrandName . ' payment. Payment ' . $statusText . ' at ECI level ' . $eci;
                     }
-                    if ( $eci === "6" ) {
+                    if ($eci === "6") {
                         $description = 'Authentication was attempted but failed. Either cardholder or card issuing bank is not enrolled for ' .
                             $threeDSecureBrandName . '. Payment ' . $statusText . ' at ECI level ' . $eci;
                     }
-                    if ( $eci === "5" ) {
+                    if ($eci === "5") {
                         $description = $approved
                             ? 'Payment was authenticated at ECI level ' . $eci . ' via ' . $threeDSecureBrandName . ' and ' . $statusText
                             : 'Payment was did not authenticate via ' . $threeDSecureBrandName . ' and ' . $statusText;
                     }
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
 
                     return $eventInfo;
@@ -446,28 +450,23 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
                     $title = $approved
                         ? 'Payment completed'
                         : 'Payment failed';
-
                     $description = $approved
                         ? 'Payment was completed and authorized via SSL.'
                         : 'Authorization was attempted via SSL, but failed.';
-
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
 
                     return $eventInfo;
                 }
-
                 case "recurring":
                 {
                     $title = $approved
                         ? 'Subscription payment completed'
                         : 'Subscription payment failed';
-
                     $description = $approved
                         ? 'Payment was completed and authorized on a subscription.'
                         : 'Authorization was attempted on a subscription, but failed.';
-
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
 
                     return $eventInfo;
@@ -478,64 +477,56 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
                     $title = $approved
                         ? 'Payment updated'
                         : 'Payment update failed';
-
                     $description = $approved
                         ? 'The payment was successfully updated.'
                         : 'The payment update failed.';
-
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
 
                     return $eventInfo;
                 }
-
                 case "return":
                 {
-                    $title      = $approved
+                    $title = $approved
                         ? 'Payment completed'
                         : 'Payment failed';
                     $statusText = $approved
                         ? 'successful'
                         : 'failed';
-
-                    $description              = 'Returned from ' . $thirdPartyName . ' authentication with a ' . $statusText . ' authorization.';
-                    $eventInfo['title']       = $title;
+                    $description = 'Returned from ' . $thirdPartyName . ' authentication with a ' . $statusText . ' authorization.';
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
 
                     return $eventInfo;
 
                 }
-
                 case "redirect":
                 {
-                    $statusText               = $approved
+                    $statusText = $approved
                         ? "Successfully"
                         : "Unsuccessfully";
-                    $eventInfo['title']       = 'Redirect to ' . $thirdPartyName;
+                    $eventInfo['title'] = 'Redirect to ' . $thirdPartyName;
                     $eventInfo['description'] = $statusText . ' redirected to ' . $thirdPartyName . ' for authentication.';
 
                     return $eventInfo;
-
                 }
             }
         }
-        if ( $action === "capture" ) {
-            $captureMultiText = ( ($subAction === "multi" || $subAction === "multiinstant") && $operation->currentbalance > 0 )
+        if ($action === "capture") {
+            $captureMultiText = (($subAction === "multi" || $subAction === "multiinstant") && $operation->currentbalance > 0)
                 ? 'Further captures are possible.'
                 : 'Further captures are no longer possible.';
 
-            switch ( $subAction ) {
+            switch ($subAction) {
                 case "full":
                 {
                     $title = $approved
                         ? 'Captured full amount'
                         : 'Capture failed';
-
                     $description = $approved
                         ? 'The full amount was successfully captured.'
                         : 'The capture attempt failed.';
-
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
 
                     return $eventInfo;
@@ -545,12 +536,10 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
                     $title = $approved
                         ? 'Instantly captured full amount'
                         : 'Instant capture failed';
-
                     $description = $approved
                         ? 'The full amount was successfully captured.'
                         : 'The instant capture attempt failed.';
-
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
 
                     return $eventInfo;
@@ -561,36 +550,34 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
                     $title = $approved
                         ? 'Captured partial amount'
                         : 'Capture failed';
-
                     $description = $approved
                         ? 'The partial amount was successfully captured. ' . $captureMultiText
                         : 'The partial capture attempt failed.';
-
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
+
                     return $eventInfo;
                 }
                 case "partlyinstant":
                 case "multiinstant":
                 {
-                    $title                    = $approved
+                    $title = $approved
                         ? 'Instantly captured partial amount'
                         : 'Instant capture failed';
-                    $description              = $approved
+                    $description = $approved
                         ? 'The partial amount was successfully captured. ' . $captureMultiText
                         : 'The instant partial capture attempt failed.';
 
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
+
                     return $eventInfo;
                 }
             }
         }
 
-        if ( $action === "credit" ) {
-            $currentBalance = $operation->currentbalance;
-            $amount = $operation->amount;
-            switch ( $subAction ) {
+        if ($action === "credit") {
+            switch ($subAction) {
                 case "full":
                 {
                     $title = $approved
@@ -599,8 +586,7 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
                     $description = $approved
                         ? 'The full amount was successfully refunded.'
                         : 'The refund attempt failed.';
-
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
                     return $eventInfo;
                 }
@@ -611,35 +597,31 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
                         ? 'Refunded partial amount'
                         : 'Refund failed';
 
-
                     $refundMultiText = $subAction === "multi"
                         ? "Further refunds are possible."
                         : "Further refunds are no longer possible.";
-
 
                     $description = $approved
                         ? 'The amount was successfully refunded. ' . $refundMultiText
                         : 'The partial refund attempt failed.';
 
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
                     return $eventInfo;
                 }
             }
         }
-        if ( $action === "delete" ) {
-            switch ( $subAction ) {
+        if ($action === "delete") {
+            switch ($subAction) {
                 case "instant":
                 {
                     $title = $approved
                         ? 'Canceled'
                         : 'Cancellation failed';
-
                     $description = $approved
                         ? 'The payment was canceled.'
                         : 'The cancellation failed.';
-
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
                     return $eventInfo;
                 }
@@ -648,12 +630,10 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
                     $title = $approved
                         ? 'Cancellation scheduled'
                         : 'Cancellation scheduling failed';
-
                     $description = $approved
                         ? 'The payment was canceled.'
                         : 'The cancellation failed.';
-
-                    $eventInfo['title']       = $title;
+                    $eventInfo['title'] = $title;
                     $eventInfo['description'] = $description;
 
                     return $eventInfo;
@@ -665,8 +645,4 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
 
         return $eventInfo;
     }
-
-
-
-
 }

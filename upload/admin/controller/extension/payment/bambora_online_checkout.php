@@ -463,16 +463,12 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                         $data['transaction']['exemptions'] = $this->model_extension_payment_bambora_online_checkout->getDistinctExemptions($transaction->information->exemptions);
                     }
 
-
                     $availableForCapture = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($transaction->available->capture, $transaction->currency->minorunits);
                     $data['transaction']['availableForCapture'] = $availableForCapture;
-
                     $availableForRefund = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($transaction->available->credit, $transaction->currency->minorunits);
                     $data['transaction']['availableForRefund'] = $availableForRefund;
                     $data['transaction']['canVoid'] = $transaction->candelete;
-
                     $data['showActions'] = $availableForCapture > 0 || $availableForRefund > 0 || $transaction->candelete;
-
                     $transactionOperationsResponse = $this->model_extension_payment_bambora_online_checkout->getTransactionOperations($dbTransaction['transaction_id']);
                     $data['transaction']['operations'] = array();
                     if ($transactionOperationsResponse && $transactionOperationsResponse->meta->result === true) {
@@ -519,9 +515,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     {
         $result = array();
         foreach ($transactionOperation as $operation) {
-
             $eventText = $this->model_extension_payment_bambora_online_checkout->getEventText($operation);
-
             if ($eventText['description'] != null){
                 $eventInfoExtra = '';
 
@@ -529,24 +523,19 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                     $eventInfoExtra = $this->model_extension_payment_bambora_online_checkout->getEventExtra($operation);
                     $eventInfoExtra = '<div style="color:#ec6459;">'. $eventInfoExtra . '</div>';
                 }
-
                 $ope = array();
                 $ope['title'] = $eventText['title'];
-                $ope['description'] = $eventText['description'].$eventInfoExtra;
-
-                if($this->is_oc_3()) {
+                $ope['description'] = $eventText['description'] . $eventInfoExtra;
+                if ($this->is_oc_3()) {
                     $ope['createdDate'] = $operation->createddate;
                 } else {
                     $ope['createdDate'] = date($this->language->get('date_format'), strtotime($operation->createddate));
                 }
-
                 $ope['action'] = $operation->action;
-
                 $operationAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($operation->amount, $operation->currency->minorunits, $decimalPoint, $thousandSeparator);
                 $ope['amount'] =  "{$operation->currency->code} {$operationAmount}";
                 $result[] = $ope;
             }
-
             if (isset($operation->transactionoperations) && count($operation->transactionoperations) > 0) {
                 $result = array_merge($result, $this->createTransactionOperations($operation->transactionoperations, $decimalPoint, $thousandSeparator));
             }
