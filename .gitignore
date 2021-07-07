@@ -292,3 +292,5 @@ nts
 upload/admin/view/template/extension/.DS_Store
 
 upload/catalog/model/extension/.DS_Store
+
+upload/admin/controller/extension/.DS_Store

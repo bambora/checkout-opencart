@@ -22,7 +22,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     /**
      * @var string
      */
-    private $module_version = '1.4.0';
+    private $module_version = '1.4.1';
 
     /**
      * @var array
