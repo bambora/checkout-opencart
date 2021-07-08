@@ -1,7 +1,7 @@
 # Bambora Online Checkout - OpenCart
 
 ## Supported OpenCart versions
- * The module is only tested on OpenCart 2.3.x and 3.0.x
+ * The module is only tested on OpenCart 3.0.x
 
 ## Supported Payment Gateways
  * Bambora Online Checkout
@@ -16,4 +16,4 @@
  * When done go to the module configuration page and enter your merchant credentials.
  
 
-Documentation: http://dev.bambora.com/shopping-carts/guides/shopping-carts/opencart
+Documentation: https://developer.bambora.com/europe/shopping-carts/shopping-carts/opencart
