@@ -525,7 +525,11 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 }
                 $ope = array();
                 $ope['title'] = $eventText['title'];
+                $ope['title'] = str_replace("CollectorBank", "Walley", $ope['title']);
+
                 $ope['description'] = $eventText['description'] . $eventInfoExtra;
+
+                $ope['description'] = str_replace("CollectorBank", "Walley", $ope['description']);
                 if ($this->is_oc_3()) {
                     $ope['createdDate'] = $operation->createddate;
                 } else {

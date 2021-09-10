@@ -411,11 +411,11 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
             if (isset($operation->paymenttype->id)) {
                 $threeDSecureBrandName = $this->getCardAuthenticationBrandName($operation->paymenttype->id);
             }
-            // Temporary renaming for Lindorff to Collector Bank require until implemented in Acquire
+            // Temporary renaming for Lindorff & Collector Bank to Walley require until implemented in Acquire
             $thirdPartyName = $operation->acquirername;
-            $thirdPartyName = strtolower($thirdPartyName) !== "lindorff"
+            $thirdPartyName = strtolower($thirdPartyName) !== ("lindorff" || "collectorbank")
                 ? $thirdPartyName
-                : "Collector Bank";
+                : "Walley";
 
             switch ($subAction) {
                 case "threed":

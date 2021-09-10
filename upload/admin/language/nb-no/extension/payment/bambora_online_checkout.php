@@ -63,8 +63,8 @@ $_['text_void_payment_body'] = 'Er du sikker på at du vil annullere betalingen'
 $_['text_no'] = 'Nei';
 $_['text_yes'] = 'Ja';
 $_['text_goto_bambora_admin'] = 'Gå til \'Bambora Online Merchant\'-administrasjonen';
-$_['text_capture_info_collector'] = 'Med Collector bank er bare full belast mulig her. For delvis belast, bruk Bambora Online Merchant Portal.';
-$_['text_refund_info_collector'] = 'Med Collector bank er bare full refunder mulig her. For delvis refunder, bruk Bambora Online Merchant Portal.';
+$_['text_capture_info_collector'] = 'Med Walley er bare full belast mulig her. For delvis belast, bruk Bambora Online Merchant Portal.';
+$_['text_refund_info_collector'] = 'Med Walley er bare full refunder mulig her. For delvis refunder, bruk Bambora Online Merchant Portal.';
 
 //Entry
 $_['entry_status'] = 'Status';
