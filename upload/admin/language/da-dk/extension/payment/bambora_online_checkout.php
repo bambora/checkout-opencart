@@ -16,6 +16,9 @@
 // Heading
 $_['heading_title'] = 'Bambora Online Checkout';
 
+// Image
+$_['text_bambora_online_checkout'] = '<a href="https://bambora.com" target="blank"><img src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg" alt="Bambora" title="Bambora" style="max-width:100px; max-height:46px;" /></a>';
+
 //Text
 $_['text_edit'] = 'Edit Bambora Online Checkout';
 $_['text_extension'] = 'Extensions';
@@ -60,6 +63,7 @@ $_['text_tooltip'] = 'Eksempel: 1234.56';
 $_['text_goto_bambora_admin'] = 'G&aring; til Bambora Online Merchant Administration';
 $_['text_capture_info_collector'] = 'Med Walley er kun fuld h&aelig;vning muligt. For delvis h&aelig;vning, benyt Bambora Online Merchant Portal.';
 $_['text_refund_info_collector'] = 'Med Walley er kun fuld kreditering mulig. For delvis kreditering, benyt Bambora Online Merchant Portal.';
+$_['text_info_worldline'] = 'Bambora vil fremover være kendt som Worldline. Sammen sikrer vi tilliden til digitale betalinger.';
 
 
 //Entry

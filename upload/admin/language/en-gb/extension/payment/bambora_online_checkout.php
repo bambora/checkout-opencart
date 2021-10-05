@@ -17,7 +17,7 @@
 $_['heading_title'] = 'Bambora Online Checkout';
 
 // Image
-$_['text_bambora_online_checkout'] = '<a href="https://bambora.com" target="blank"><img src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/bambora-logo.svg" alt="Bambora" title="Bambora" style="max-width:100px; max-height:46px;" /></a>';
+$_['text_bambora_online_checkout'] = '<a href="https://bambora.com" target="blank"><img src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg" alt="Bambora" title="Bambora" style="max-width:100px; max-height:46px;" /></a>';
 
 //Text
 $_['text_edit'] = 'Edit Bambora Online Checkout';
@@ -65,6 +65,7 @@ $_['text_yes'] = 'Yes';
 $_['text_goto_bambora_admin'] = 'Go to Bambora Online Merchant Administration';
 $_['text_capture_info_collector'] = 'With Payment Provider Walley only full capture is possible here. For partial capture, please use Bambora Online Merchant Portal.';
 $_['text_refund_info_collector'] = 'With Payment Provider Walley only full refund is possible here. For partial refund, please use Bambora Online Merchant Portal.';
+$_['text_info_worldline'] = 'Bambora will now be known as Worldline. Together, we create digital payments for a trusted world.';
 
 //Entry
 $_['entry_status'] = 'Status';

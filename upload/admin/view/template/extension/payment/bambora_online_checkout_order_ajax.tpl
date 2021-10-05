@@ -107,9 +107,11 @@
 
 <div class="col-lg-3 text-center hidden-xs hidden-sm hidden-md">
     <a href="https://merchant.bambora.com" title="<?php echo $text_goto_bambora_admin; ?>" target="_blank">
-        <img class="bambora-logo" src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/bambora-logo.svg" style="padding-bottom: 10px;" />
+        <img class="bambora-logo" src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg" style="padding-bottom: 10px;" />
 
     </a>
+    <br/>
+    <div class="worldline-info"><?php echo $text_info_worldline; ?></div>
     <div>
         <a href="https://merchant.bambora.com"  title="<?php echo $text_goto_bambora_admin; ?>" target="_blank"><?php echo $text_goto_bambora_admin; ?></a>
     </div>

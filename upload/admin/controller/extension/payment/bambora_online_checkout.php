@@ -394,6 +394,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                     $data['text_yes'] = $this->language->get('text_yes');
                     $data['text_tooltip'] = $this->language->get('text_tooltip');
                     $data['text_goto_bambora_admin'] = $this->language->get('text_goto_bambora_admin');
+                    $data['text_info_worldline'] = $this->language->get('text_info_worldline');
                     $data['error_amount_format'] = $this->language->get('error_amount_format');
                     $data['error_action_base'] = $this->language->get('error_action_base');
                     $date['date_format'] = $this->language->get('date_format');
