@@ -6,6 +6,12 @@
             <td><?php echo $text_transaction_id; ?></td>
             <td class="text-right"><?php echo $transaction['id']; ?></td>
         </tr>
+        <?php if (isset($transaction['acquirerReference'])) { ?>
+        <tr>
+            <td><?php echo $text_transaction_acquirer_reference; ?></td>
+            <td class="text-right"><?php echo $transaction['acquirerReference']; ?></td>
+        </tr>
+        <?php } ?>
         <tr>
             <td><?php echo $text_transaction_authorized; ?></td>
             <td class="text-right"><?php echo $transaction['authorized']; ?></td>

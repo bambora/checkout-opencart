@@ -42,6 +42,7 @@ $_['text_transaction_surcharge_fee'] = 'Surcharge fee';
 $_['text_transaction_captured'] = 'Captured';
 $_['text_transaction_refunded'] = 'Refunded';
 $_['text_transaction_acquirer'] = 'Acquirer';
+$_['text_transaction_acquirer_reference'] = 'Acquirer Reference';
 $_['text_transaction_status'] = 'Status';
 $_['text_transaction_operations'] = 'Transaction History';
 $_['text_transaction_operations_date'] = 'Date';

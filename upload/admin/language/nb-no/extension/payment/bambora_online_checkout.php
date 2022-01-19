@@ -42,6 +42,7 @@ $_['text_transaction_surcharge_fee'] = 'Transaksjonsgebyr';
 $_['text_transaction_captured'] = 'Belastet';
 $_['text_transaction_refunded'] = 'Refundert';
 $_['text_transaction_acquirer'] = 'Innløser';
+$_['text_transaction_acquirer_reference'] = 'Innløser referens';
 $_['text_transaction_status'] = 'Status';
 $_['text_transaction_operations'] = 'Transaksjonslogg';
 $_['text_transaction_operations_date'] = 'Dato';

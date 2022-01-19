@@ -376,6 +376,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                     $data['text_transaction_captured'] = $this->language->get('text_transaction_captured');
                     $data['text_transaction_refunded'] = $this->language->get('text_transaction_refunded');
                     $data['text_transaction_acquirer'] = $this->language->get('text_transaction_acquirer');
+                    $data['text_transaction_acquirer_reference'] = $this->language->get('text_transaction_acquirer_reference');
                     $data['text_transaction_status'] = $this->language->get('text_transaction_status');
                     $data['text_transaction_operations'] = $this->language->get('text_transaction_operations');
                     $data['text_transaction_operations_date'] = $this->language->get('text_transaction_operations_date');
@@ -439,6 +440,11 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                         $data['transaction']['cardNumber'] = $transaction->information->primaryaccountnumbers[0]->number;
                     } else {
                         $data['transaction']['cardNumber'] = "";
+                    }
+                    if(is_array($transaction->information->acquirerreferences) && count($transaction->information->acquirerreferences) > 0) {
+                        $data['transaction']['acquirerReference'] = $transaction->information->acquirerreferences[0]->reference;
+                    } else {
+                        $data['transaction']['acquirerReference'] = "";
                     }
 
                     $surchargeFeeAmount = $this->model_extension_payment_bambora_online_checkout->convertPriceFromMinorunits($transaction->total->feeamount, $transaction->currency->minorunits, $decimalPoint, $thousandSeparator);

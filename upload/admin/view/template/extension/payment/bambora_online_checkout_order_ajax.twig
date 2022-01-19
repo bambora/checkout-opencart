@@ -6,6 +6,13 @@
             <td>{{ text_transaction_id }}</td>
             <td class="text-right">{{ transaction.id }}</td>
         </tr>
+        {% if transaction.acquirerReference  is not null %}
+        <tr>
+            <td>{{ text_transaction_acquirer_reference }}</td>
+            <td class="text-right">{{ transaction.acquirerReference }}</td>
+        </tr>
+        {% endif %}
+
         <tr>
             <td>{{ text_transaction_authorized }}</td>
             <td class="text-right">{{ transaction.authorized }}</td>

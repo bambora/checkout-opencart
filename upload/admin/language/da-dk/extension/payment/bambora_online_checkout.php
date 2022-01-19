@@ -40,6 +40,7 @@ $_['text_transaction_surcharge_fee'] = 'Betalings gebyr';
 $_['text_transaction_captured'] = 'H&aelig;vet';
 $_['text_transaction_refunded'] = 'Refunderet';
 $_['text_transaction_acquirer'] = 'Indl&oslashser';
+$_['text_transaction_acquirer_reference'] = 'Indl&oslashser referens';
 $_['text_transaction_status'] = 'Status';
 $_['text_transaction_operations'] = 'Transaktions operationer';
 $_['text_transaction_operations_date'] = 'Dato';
