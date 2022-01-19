@@ -47,6 +47,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $this->language->load('extension/payment/'.$this->module_name);
         $this->document->setTitle($this->language->get('heading_title'));
         $this->load->model('setting/setting');
+        $script = 'https://static.bambora.com/checkout-sdk-web'.
+            '/latest/checkout-sdk-web.min.js';
+        $this->document->addScript($script);
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && ($this->validate())) {
 
