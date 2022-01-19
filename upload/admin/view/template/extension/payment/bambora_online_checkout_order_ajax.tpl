@@ -2,6 +2,12 @@
 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
     <h3><?php echo $text_payment_info; ?></h3>
     <table class="table table-striped">
+
+        <?php if (isset($transaction['card_image'])) { ?>
+        <tr>
+            <td><?php echo $transaction['card_image']; ?></td>
+        </tr>
+        <?php } ?>
         <tr>
             <td><?php echo $text_transaction_id; ?></td>
             <td class="text-right"><?php echo $transaction['id']; ?></td>

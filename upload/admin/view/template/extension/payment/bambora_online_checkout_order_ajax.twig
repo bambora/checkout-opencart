@@ -2,6 +2,11 @@
 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
     <h3>{{ text_payment_info }}</h3>
     <table class="table table-striped">
+        {% if transaction.card_image  is not null %}
+        <tr>
+            <td>{{ transaction.card_image }}</td>
+        </tr>
+        {% endif %}
         <tr>
             <td>{{ text_transaction_id }}</td>
             <td class="text-right">{{ transaction.id }}</td>

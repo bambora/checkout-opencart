@@ -488,6 +488,23 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                         }
                     }
                     $data['getPaymentTransaction_success'] = true;
+
+                    $card_group_id       = $transaction->information->paymenttypes[0]->groupid;
+                    $card_name           = $transaction->information->paymenttypes[0]->displayname;
+
+                    $card_image = '<img src="https://d3r1pwhfz7unl9.cloudfront.net/paymentlogos/' . $card_group_id . '.svg" alt="' . $card_name . '" title="' . $card_name . '" />';
+                    if ( isset( $transactionOperationsResponse->transactionoperations[0]->transactionoperations[0]->acquirerdata[0]->key) ) {
+                        if ( $transactionOperationsResponse->transactionoperations[0]->transactionoperations[0]->acquirerdata[0]->key == "nordeaepaymentfi.customerbank" ) {
+                            $bank_name = $transactionOperationsResponse->transactionoperations[0]->transactionoperations[0]->acquirerdata[0]->value;
+                        }
+                    }
+                    if ( isset( $bank_name ) && $bank_name != "" ) {
+                        $card_image .= '</td><td class="text-right"><img style="max-height:25px;" src="https://d3r1pwhfz7unl9.cloudfront.net/paymentlogos/bank-' . $bank_name . '.svg" alt="' . $bank_name . '" title="' . $bank_name . '" />';
+                    }else{
+                        $card_image .= '</td><td class="text-right"></td>';
+                    }
+                    $data['transaction']['card_image'] = $card_image;
+
                 } else {
                     $data['getPaymentTransaction_success'] = false;
                     $errorMessage = $transactionResponse ? $transactionResponse->meta->message->merchant : $this->language->get('error_getTransaction_api_error');
