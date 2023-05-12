@@ -347,7 +347,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $line['unitprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($lineTotalPrice/$product['quantity'], $minorunits);
             $line['unitpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($lineTotalPriceInclVat/$product['quantity'], $minorunits);
             $line['unitpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($lineTaxAmount/$product['quantity'], $minorunits);
-            $line['vat'] = $lineTaxAmount > 0 ? ($lineTaxAmount / $product['total']) * 100 : 0;
+			$line['vat']                 = round( $lineTaxAmount > 0 ? ( $lineTaxAmount / $product['total'] ) * 100 : 0, 2, $this->model_extension_payment_bambora_online_checkout->getRoundingMode() );
             $params[] = $line;
             $lineNumber++;
         }
@@ -365,9 +365,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             }
         }
 
-        if (isset($shipping) && isset($this->cart->session->data['shipping_method'])) {
-            $shippingMethod = $this->cart->session->data['shipping_method'];
-            if (!empty($shippingMethod['cost']) && $shippingMethod['cost'] > 0) {
+		if ( isset( $shipping ) && isset( $this->session->data['shipping_method'] ) ) {
+			$shippingMethod = $this->session->data['shipping_method'];
+			if ( ! empty( $shippingMethod['cost'] ) && $shippingMethod['cost'] > 0 ) {
                 //Add shipping
                 $shipping = array();
                 $shipping['id'] = $this->language->get('text_shipping_id');
@@ -382,23 +382,22 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 foreach ($shippingTaxArray as $shippingTax) {
                     $shippingTaxAmount += $shippingTax['amount'];
                 }
-                $shippintTotalPrice = $shippingMethod['cost'];
-                $shippingWithTax = $shippintTotalPrice + $shippingTaxAmount;
+				$shippingTotalPrice = $shippingMethod['cost'];
+				$shippingWithTax    = $shippingTotalPrice + $shippingTaxAmount;
                 //Format for currency
-                $shippingTaxAmount = $this->formatForCurrency($shippingTaxAmount);
-                $shippintTotalPrice = $this->formatForCurrency($shippintTotalPrice);
-                $shippingWithTax = $this->formatForCurrency($shippingWithTax);
+				$shippingTaxAmount  = $this->formatForCurrency( $shippingTaxAmount );
+				$shippingTotalPrice = $this->formatForCurrency( $shippingTotalPrice );
+				$shippingWithTax    = $this->formatForCurrency( $shippingWithTax );
 
-                $shipping['totalprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippintTotalPrice, $minorunits);
-                $shipping['totalpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingWithTax, $minorunits);
-                $shipping['totalpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingTaxAmount, $minorunits);
-                $shipping['unitprice'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippintTotalPrice, $minorunits);
-                $shipping['unitpriceinclvat'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingWithTax, $minorunits);
-                $shipping['unitpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($shippingTaxAmount, $minorunits);
-                $shipping['vat'] = $shippingTaxAmount > 0 ? ($shippingTaxAmount / $shippingMethod['cost']) * 100 : 0;
-
-                $params[] = $shipping;
-                $lineNumber++;
+				$shipping['totalprice']          = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits( $shippingTotalPrice, $minorunits );
+				$shipping['totalpriceinclvat']   = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits( $shippingWithTax, $minorunits );
+				$shipping['totalpricevatamount'] = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits( $shippingTaxAmount, $minorunits );
+				$shipping['unitprice']           = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits( $shippingTotalPrice, $minorunits );
+				$shipping['unitpriceinclvat']    = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits( $shippingWithTax, $minorunits );
+				$shipping['unitpricevatamount']  = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits( $shippingTaxAmount, $minorunits );
+				$shipping['vat']                 = round( $shippingTaxAmount > 0 ? ( $shippingTaxAmount / $shippingMethod['cost'] ) * 100 : 0, 2, $this->model_extension_payment_bambora_online_checkout->getRoundingMode() );
+				$params[]                        = $shipping;
+				$lineNumber ++;
             }
         }
 

@@ -242,6 +242,21 @@ class ModelExtensionPaymentBamboraOnlineCheckout extends Model
         }
         return $amount;
     }
+	/**
+	 * Get selected rounding mode for PHP
+	 * @return int
+	 */
+	public function getRoundingMode() {
+		$rounding = $this->config->get( $this->getConfigBaseName() . '_rounding_mode' );
+
+		$roundingmode = match ( $rounding ) {
+			'up' => PHP_ROUND_HALF_UP,
+			'down' => PHP_ROUND_HALF_DOWN,
+			default => PHP_ROUND_HALF_EVEN,
+		};
+
+		return $roundingmode;
+	}
 
     /**
      * Convert Price From MinorUnits
