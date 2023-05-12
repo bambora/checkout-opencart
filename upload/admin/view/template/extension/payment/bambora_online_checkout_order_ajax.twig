@@ -1,288 +1,316 @@
 {% if getPaymentTransaction_success == true %}
-<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-    <h3>{{ text_payment_info }}</h3>
-    <table class="table table-striped">
-        {% if transaction.card_image  is not null %}
-        <tr>
-            <td>{{ transaction.card_image }}</td>
-        </tr>
-        {% endif %}
-        <tr>
-            <td>{{ text_transaction_id }}</td>
-            <td class="text-right">{{ transaction.id }}</td>
-        </tr>
-        {% if transaction.acquirerReference  is not null %}
-        <tr>
-            <td>{{ text_transaction_acquirer_reference }}</td>
-            <td class="text-right">{{ transaction.acquirerReference }}</td>
-        </tr>
-        {% endif %}
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+        <h3>{{ text_payment_info }}</h3>
+        <table class="table table-striped">
+            {% if transaction.card_image  is not null %}
+                <tr>
+                    <td>{{ transaction.card_image }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td>{{ text_transaction_id }}</td>
+                <td class="text-right">{{ transaction.id }}</td>
+            </tr>
+            {% if transaction.acquirerReference  is not null %}
+                <tr>
+                    <td>{{ text_transaction_acquirer_reference }}</td>
+                    <td class="text-right">{{ transaction.acquirerReference }}</td>
+                </tr>
+            {% endif %}
 
-        <tr>
-            <td>{{ text_transaction_authorized }}</td>
-            <td class="text-right">{{ transaction.authorized }}</td>
-        </tr>
-        <tr>
-            <td>{{ text_transaction_date }}</td>
-            <td class="text-right">{{ transaction.date|date(date_format) }}</td>
-        </tr>
-        <tr>
-            <td>{{ text_transaction_payment_type }}</td>
-            <td class="text-right">{{ transaction.paymentType }}</td>
-        </tr>
-        <tr>
-            <td>{{ text_transaction_card_number }}</td>
-            <td class="text-right">{{ transaction.cardNumber }}</td>
-        </tr>
-        <tr>
-            <td>{{ text_transaction_surcharge_fee }}</td>
-            <td class="text-right">{{ transaction.surchargeFee }}</td>
-        </tr>
-        <tr>
-            <td>{{ text_transaction_captured }}</td>
-            <td class="text-right">{{ transaction.captured }}</td>
-        </tr>
-        <tr>
-            <td>{{ text_transaction_refunded }}</td>
-            <td class="text-right">{{ transaction.refunded }}</td>
-        </tr>
-        <tr>
-            <td>{{ text_transaction_acquirer }}</td>
-            <td class="text-right">{{ transaction.acquirer }}</td>
-        </tr>
-        <tr>
-            <td>{{ text_transaction_status }}</td>
-            <td class="text-right">{{ transaction.status }}</td>
-        </tr>
-        <tr>
-            <td> {{ text_transaction_operations_eci }}</td>
-            <td class="text-right">{{ transaction.eci }}</td>
-        </tr>
-        {% if transaction.exemptions  is not null %}
-        <tr>
-            <td>Exemption(s)</td>
-            <td class="text-right">{{ transaction.exemptions }}</td>
-        </tr>
-        {% endif %}
-    </table>
+            <tr>
+                <td>{{ text_transaction_authorized }}</td>
+                <td class="text-right">{{ transaction.authorized }}</td>
+            </tr>
+            <tr>
+                <td>{{ text_transaction_date }}</td>
+                <td class="text-right">{{ transaction.date|date(date_format) }}</td>
+            </tr>
+            <tr>
+                <td>{{ text_transaction_payment_type }}</td>
+                <td class="text-right">{{ transaction.paymentType }}</td>
+            </tr>
+            <tr>
+                <td>{{ text_transaction_card_number }}</td>
+                <td class="text-right">{{ transaction.cardNumber }}</td>
+            </tr>
+            <tr>
+                <td>{{ text_transaction_surcharge_fee }}</td>
+                <td class="text-right">{{ transaction.surchargeFee }}</td>
+            </tr>
+            <tr>
+                <td>{{ text_transaction_captured }}</td>
+                <td class="text-right">{{ transaction.captured }}</td>
+            </tr>
+            <tr>
+                <td>{{ text_transaction_refunded }}</td>
+                <td class="text-right">{{ transaction.refunded }}</td>
+            </tr>
+            <tr>
+                <td>{{ text_transaction_acquirer }}</td>
+                <td class="text-right">{{ transaction.acquirer }}</td>
+            </tr>
+            <tr>
+                <td>{{ text_transaction_status }}</td>
+                <td class="text-right">{{ transaction.status }}</td>
+            </tr>
+            <tr>
+                <td> {{ text_transaction_operations_eci }}</td>
+                <td class="text-right">{{ transaction.eci }}</td>
+            </tr>
+            {% if transaction.exemptions  is not null %}
+                <tr>
+                    <td>Exemption(s)</td>
+                    <td class="text-right">{{ transaction.exemptions }}</td>
+                </tr>
+            {% endif %}
+        </table>
 
-    {% if showActions == true  %}
-        <div class="bambora_online_checkout_action_container">
-            <div class="input-group">
-                <div class="input-group-addon">{{ transaction.currencyCode }}</div>
+        {% if showActions == true %}
+            <div class="bambora_online_checkout_action_container">
+                <div class="input-group">
+                    <div class="input-group-addon">{{ transaction.currencyCode }}</div>
+                    {% if transaction.availableForCapture > 0 %}
+                        <input type="text"
+                               data-toggle="tooltip" {% if transaction.isCollector  == true %} readonly {% endif %}
+                               title="{{ text_tooltip }}"
+                               id="bambora_online_checkout_amount"
+                               name="bambora_online_checkout_amount"
+                               value="{{ transaction.availableForCapture }}"/>
+                    {% else %}
+                        <input type="text" data-toggle="tooltip"
+                               title="{{ text_tooltip }}" {% if transaction.isCollector %} readonly {% endif %}
+                               id="bambora_online_checkout_amount"
+                               name="bambora_online_checkout_amount"
+                               value="{{ transaction.availableForRefund }}"/>
+                    {% endif %}
+                </div>
+                <div id="bambora_online_checkout_format_error"
+                     class="alert alert-danger"
+                     style="display:none">{{ error_amount_format }}</div>
                 {% if transaction.availableForCapture > 0 %}
-                    <input type="text" data-toggle="tooltip" {% if transaction.isCollector  == true %} readonly {% endif %} title="{{ text_tooltip }}" id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForCapture }}" />
-                {% else %}
-                    <input type="text" data-toggle="tooltip" title="{{ text_tooltip }}"   {% if transaction.isCollector  %} readonly {% endif %} id="bambora_online_checkout_amount" name="bambora_online_checkout_amount" value="{{ transaction.availableForRefund }}" />
+                    {% if transaction.isCollector  == true %} {{ text_capture_info_collector }}
+                        <br/>{% endif %}
+                    <a class="bambora-button btn btn-success"
+                       id="btn-bambora-online-checkout-capture">{{ text_btn_capture }}</a>
+                    <span class="bambora-button btn btn-success"
+                          id="img-loading-capture" style="display:none;"><i
+                                class="fa fa-cog fa-spin fa-lg"></i></span>
+                {% endif %}
+                {% if transaction.availableForRefund > 0 %}
+                    {% if transaction.isCollector  == true %} {{ text_refund_info_collector }}
+                        <br/>{% endif %}
+                    <a class="bambora-button btn btn-warning"
+                       id="btn-bambora-online-checkout-refund">{{ text_btn_refund }}</a>
+                    <span class="bambora-button btn btn-warning"
+                          id="img-loading-refund" style="display:none;"><i
+                                class="fa fa-cog fa-spin fa-lg"></i></span>
+                {% endif %}
+                {% if transaction.canVoid == true %}
+                    <a class="bambora-button btn btn-danger"
+                       id="btn-bambora-online-checkout-void">{{ text_btn_void }}</a>
+                    <span class="bambora-button btn btn-danger" id="img-loading-void"
+                          style="display:none;"><i
+                                class="fa fa-cog fa-spin fa-lg"></i></span>
                 {% endif %}
             </div>
-            <div id="bambora_online_checkout_format_error" class="alert alert-danger" style="display:none">{{ error_amount_format }}</div>
-            {% if transaction.availableForCapture > 0 %}
-                {% if transaction.isCollector  == true %} {{ text_capture_info_collector }} <br />{% endif %}
-                <a class="bambora-button btn btn-success" id="btn-bambora-online-checkout-capture">{{ text_btn_capture }}</a>
-                <span class="bambora-button btn btn-success" id="img-loading-capture" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
-            {% endif %}
-            {% if transaction.availableForRefund > 0 %}
-                {% if transaction.isCollector  == true %} {{ text_refund_info_collector }} <br />{% endif %}
-                <a class="bambora-button btn btn-warning" id="btn-bambora-online-checkout-refund">{{ text_btn_refund }}</a>
-                <span class="bambora-button btn btn-warning" id="img-loading-refund" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
-            {% endif %}
-            {% if transaction.canVoid == true %}
-                <a class="bambora-button btn btn-danger" id="btn-bambora-online-checkout-void">{{ text_btn_void }}</a>
-                <span class="bambora-button btn btn-danger" id="img-loading-void" style="display:none;"><i class="fa fa-cog fa-spin fa-lg"></i></span>
-            {% endif %}
-        </div>
-    {% endif %}
-</div>
-
-<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
-<h3>{{ text_transaction_operations }}</h3>
-    <table class="table table-striped">
-        <tr>
-            <th>{{ text_transaction_operations_date }}</th>
-            <th>{{ text_transaction_operations_action }}</th>
-            <th>{{ text_transaction_operations_amount }}</th>
-        </tr>
-{% if transaction.operations|length > 0 %}
-        {% for operation in transaction.operations %}
-            <tr>
-                <td>{{ operation.createdDate|date(date_format) }}</td>
-                <td><strong>{{ operation.title }}</strong></td>
-                <td>{{ operation.amount }}</td>
-            </tr>
-            <tr>
-                <td colspan="3"><i>{{ operation.description }}</i></td>
-            </tr>
-        {% endfor %}
-{% endif %}
-    </table>
-</div>
-
-<div class="col-lg-3 text-center hidden-xs hidden-sm hidden-md">
-    <a href="https://merchant.bambora.com" title="{{ text_goto_bambora_admin }}" target="_blank">
-        <img class="bambora-logo" src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg" style="padding-bottom: 10px;" />
-
-    </a>
-    <br/>
-    <div class="worldline-info">{{ text_info_worldline }} </div>
-    <div>
-        <a href="https://merchant.bambora.com"  title="{{ text_goto_bambora_admin }}" target="_blank">{{ text_goto_bambora_admin }}</a>
+        {% endif %}
     </div>
-</div>
 
-<script type="text/javascript"><!--
-    var amountInputField = $("#bambora_online_checkout_amount");
-    $("#btn-bambora-online-checkout-capture").bind('click', function() {
-        if (validateInputField()) {
-            var confirmBodyText = '{{ text_capture_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
-            confirm('{{ text_capture_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() {
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+        <h3>{{ text_transaction_operations }}</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>{{ text_transaction_operations_date }}</th>
+                <th>{{ text_transaction_operations_action }}</th>
+                <th>{{ text_transaction_operations_amount }}</th>
+            </tr>
+            {% if transaction.operations|length > 0 %}
+                {% for operation in transaction.operations %}
+                    <tr>
+                        <td>{{ operation.createdDate|date(date_format) }}</td>
+                        <td><strong>{{ operation.title }}</strong></td>
+                        <td>{{ operation.amount }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><i>{{ operation.description }}</i></td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+
+    <div class="col-lg-3 text-center hidden-xs hidden-sm hidden-md">
+        <a href="https://merchant.bambora.com" title="{{ text_goto_bambora_admin }}"
+           target="_blank">
+            <img class="bambora-logo"
+                 src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg"
+                 style="padding-bottom: 10px;"/>
+
+        </a>
+        <br/>
+        <div class="worldline-info">{{ text_info_worldline }} </div>
+        <div>
+            <a href="https://merchant.bambora.com"
+               title="{{ text_goto_bambora_admin }}"
+               target="_blank">{{ text_goto_bambora_admin }}</a>
+        </div>
+    </div>
+
+    <script type="text/javascript"><!--
+        var amountInputField = $("#bambora_online_checkout_amount");
+        $("#btn-bambora-online-checkout-capture").bind('click', function () {
+            if (validateInputField()) {
+                var confirmBodyText = '{{ text_capture_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
+                confirm('{{ text_capture_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function () {
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'html',
+                        data: {
+                            'transactionId': '{{ transaction.id }}',
+                            'captureAmount': amountInputField.val(),
+                            'currencyCode': '{{ transaction.currencyCode }}'
+                        },
+                        url: 'index.php?route=extension/payment/bambora_online_checkout/capture&user_token={{ user_token }}',
+                        beforeSend: handleBeforeSend('capture'),
+                        success: function (json) {
+                            handleSuccess('capture', json);
+                        }
+                    });
+                });
+            } else {
+                $("#bambora_online_checkout_format_error").toggle();
+            }
+        });
+
+        $("#btn-bambora-online-checkout-refund").bind('click', function () {
+            if (validateInputField()) {
+                var confirmBodyText = '{{ text_refund_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
+                confirm('{{ text_refund_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function () {
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'html',
+                        data: {
+                            'transactionId': '{{ transaction.id }}',
+                            'refundAmount': amountInputField.val(),
+                            'currencyCode': '{{ transaction.currencyCode }}'
+                        },
+                        url: 'index.php?route=extension/payment/bambora_online_checkout/refund&user_token={{ user_token }}',
+                        beforeSend: handleBeforeSend('refund'),
+                        success: function (json) {
+                            handleSuccess('refund', json);
+                        }
+                    });
+                });
+            } else {
+                $("#bambora_online_checkout_format_error").toggle();
+            }
+        });
+
+        $("#btn-bambora-online-checkout-void").bind('click', function () {
+            confirm('{{ text_void_payment_header }}', '{{ text_void_payment_body }}', '{{ text_no }}', '{{ text_yes }}', function () {
                 $.ajax({
-                    type:'POST',
+                    type: 'POST',
                     dataType: 'html',
                     data: {
                         'transactionId': '{{ transaction.id }}',
-                        'captureAmount': amountInputField.val(),
-                        'currencyCode': '{{ transaction.currencyCode }}'
                     },
-                    url: 'index.php?route=extension/payment/bambora_online_checkout/capture&user_token={{ user_token }}',
-                    beforeSend: handleBeforeSend('capture'),
-                    success: function(json) {
-                        handleSuccess('capture', json);
+                    url: 'index.php?route=extension/payment/bambora_online_checkout/void&user_token={{ user_token }}',
+                    beforeSend: handleBeforeSend('void'),
+                    success: function (json) {
+                        handleSuccess('void', json);
                     }
                 });
-            });
-        } else {
-            $("#bambora_online_checkout_format_error").toggle();
-        }
-    });
-
-    $("#btn-bambora-online-checkout-refund").bind('click', function() {
-        if (validateInputField()) {
-            var confirmBodyText = '{{ text_refund_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
-            confirm('{{ text_refund_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function() {
-                $.ajax({
-                    type:'POST',
-                    dataType: 'html',
-                    data: {
-                        'transactionId': '{{ transaction.id }}',
-                        'refundAmount': amountInputField.val(),
-                        'currencyCode': '{{ transaction.currencyCode }}'
-                    },
-                    url: 'index.php?route=extension/payment/bambora_online_checkout/refund&user_token={{ user_token }}',
-                    beforeSend: handleBeforeSend('refund'),
-                    success: function(json) {
-                        handleSuccess('refund', json);
-                    }
-                });
-            });
-        } else {
-            $("#bambora_online_checkout_format_error").toggle();
-        }
-    });
-
-    $("#btn-bambora-online-checkout-void").bind('click', function() {
-        confirm('{{ text_void_payment_header }}', '{{ text_void_payment_body }}', '{{ text_no }}', '{{ text_yes }}', function() {
-            $.ajax({
-                type:'POST',
-                dataType: 'html',
-                data: {
-                    'transactionId': '{{ transaction.id }}',
-                },
-                url: 'index.php?route=extension/payment/bambora_online_checkout/void&user_token={{ user_token }}',
-                beforeSend: handleBeforeSend('void'),
-                success: function(json) {
-                    handleSuccess('void', json);
-                }
             });
         });
-    });
 
-    function validateInputField() {
-        var reg = new RegExp(/^(?:[\d]+([,.]?[\d]{0,3}))$/);
-        if (amountInputField.length > 0 && !reg.test(amountInputField.val())) {
-            return false;
-        }
-
-        return true;
-    }
-
-    function handleBeforeSend(type) {
-        $('#btn-bambora-online-checkout-' + type).hide();
-        $('#img-loading-' + type).show();
-    }
-
-    function handleSuccess(type, json) {
-        $('#img-loading-' + type).hide();
-        data = JSON.parse(json);
-        if(data.meta.result === true) {
-            $('#bambora-online-checkout-error-message').hide();
-            getTransactionInformation();
-        } else {
-            $('#btn-bambora-online-checkout-' + type).show();
-            $('#bambora-online-checkout-error-message').text('{{ error_action_base }}'+ ': ' + data.meta.message.merchant);
-            $('#bambora-online-checkout-error-message').show();
-        }
-    }
-
-    function confirm(heading, body, btnNoText, btnYesText, callback) {
-        var confirmModal =
-          $('<div class="modal fade">' +
-              '<div class="modal-dialog">' +
-              '<div class="modal-content">' +
-              '<div class="modal-header">' +
-                '<a class="close" data-dismiss="modal" >&times;</a>' +
-                '<h3>' + heading +'</h3>' +
-              '</div>' +
-
-              '<div class="modal-body">' +
-                '<p>' + body + '</p>' +
-              '</div>' +
-
-              '<div class="modal-footer">' +
-                '<a class="btn" data-dismiss="modal">' +
-                  btnNoText +
-                '</a>' +
-                '<a id="btnYes" class="btn btn-success">' +
-                  btnYesText +
-                '</a>' +
-              '</div>' +
-              '</div>' +
-              '</div>' +
-            '</div>'
-        );
-        confirmModal.find('#btnYes').click(function(event) {
-            callback();
-            confirmModal.modal('hide');
-        }); 
-        confirmModal.modal('show');    
-    }
-    
-    $("#bambora_online_checkout_amount").keydown(function (e) {
-        var digit = String.fromCharCode(e.which || e.keyCode);
-        if (e.which !== 8 && e.which !== 46 && !(e.which >= 37 && e.which <= 40) && e.which !== 110 && e.which !== 188
-            && e.which !== 190 && e.which !== 35 && e.which !== 36 && !(e.which >= 96 && e.which <= 106)) {
-            var reg = new RegExp(/^(?:\d+(?:,\d{0,3})*(?:\.\d{0,2})?|\d+(?:\.\d{0,3})*(?:,\d{0,2})?)$/);
-            if (reg.test(digit)) {
-                return;
-            } else {
+        function validateInputField() {
+            var reg = new RegExp(/^(?:[\d]+([,.]?[\d]{0,3}))$/);
+            if (amountInputField.length > 0 && !reg.test(amountInputField.val())) {
                 return false;
             }
-        }
-    });
 
-    amountInputField.focus(function () {
-        if ($("#bambora_online_checkout_format_error").css("display") !== "none") {
-            $("#bambora_online_checkout_format_error").fadeOut('slow');
+            return true;
         }
-    });
-    $('#bambora-online-checkout-error-message').click(function(){
-        $('#bambora-online-checkout-error-message').fadeOut('slow');
-    });
 
-    $('[data-toggle="tooltip"]').tooltip();
-//-->
-</script>
+        function handleBeforeSend(type) {
+            $('#btn-bambora-online-checkout-' + type).hide();
+            $('#img-loading-' + type).show();
+        }
+
+        function handleSuccess(type, json) {
+            $('#img-loading-' + type).hide();
+            data = JSON.parse(json);
+            if (data.meta.result === true) {
+                $('#bambora-online-checkout-error-message').hide();
+                getTransactionInformation();
+            } else {
+                $('#btn-bambora-online-checkout-' + type).show();
+                $('#bambora-online-checkout-error-message').text('{{ error_action_base }}' + ': ' + data.meta.message.merchant);
+                $('#bambora-online-checkout-error-message').show();
+            }
+        }
+
+        function confirm(heading, body, btnNoText, btnYesText, callback) {
+            var confirmModal =
+                $('<div class="modal fade">' +
+                    '<div class="modal-dialog">' +
+                    '<div class="modal-content">' +
+                    '<div class="modal-header">' +
+                    '<a class="close" data-dismiss="modal" >&times;</a>' +
+                    '<h3>' + heading + '</h3>' +
+                    '</div>' +
+
+                    '<div class="modal-body">' +
+                    '<p>' + body + '</p>' +
+                    '</div>' +
+
+                    '<div class="modal-footer">' +
+                    '<a class="btn" data-dismiss="modal">' +
+                    btnNoText +
+                    '</a>' +
+                    '<a id="btnYes" class="btn btn-success">' +
+                    btnYesText +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+                );
+            confirmModal.find('#btnYes').click(function (event) {
+                callback();
+                confirmModal.modal('hide');
+            });
+            confirmModal.modal('show');
+        }
+
+        $("#bambora_online_checkout_amount").keydown(function (e) {
+            var digit = String.fromCharCode(e.which || e.keyCode);
+            if (e.which !== 8 && e.which !== 46 && !(e.which >= 37 && e.which <= 40) && e.which !== 110 && e.which !== 188
+                && e.which !== 190 && e.which !== 35 && e.which !== 36 && !(e.which >= 96 && e.which <= 106)) {
+                var reg = new RegExp(/^(?:\d+(?:,\d{0,3})*(?:\.\d{0,2})?|\d+(?:\.\d{0,3})*(?:,\d{0,2})?)$/);
+                if (reg.test(digit)) {
+
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        amountInputField.focus(function () {
+            if ($("#bambora_online_checkout_format_error").css("display") !== "none") {
+                $("#bambora_online_checkout_format_error").fadeOut('slow');
+            }
+        });
+        $('#bambora-online-checkout-error-message').click(function () {
+            $('#bambora-online-checkout-error-message').fadeOut('slow');
+        });
+
+        $('[data-toggle="tooltip"]').tooltip();
+        //-->
+    </script>
 
 {% else %}
-<div class="alert alert-danger" style="margin-left:10px; margin-right:10px;">{{ text_getPaymentTransaction_error }}</div>
+    <div class="alert alert-danger"
+         style="margin-left:10px; margin-right:10px;">{{ text_getPaymentTransaction_error }}</div>
 {% endif %}
