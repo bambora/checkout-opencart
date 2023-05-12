@@ -4,19 +4,26 @@
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <p id="bambora-online-checkout-error_text"></p>
     </div>
-    <h3><?php echo $text_title; ?></h3>
-    <p><?php echo $text_payment; ?></p>
+    <h3><?php
+        echo $text_title; ?></h3>
+    <p><?php
+        echo $text_payment; ?></p>
     <div class="bambora-online-checkout-paymentlogos col-sm-9 col-xs-12">
-		<?php foreach ( $bambora_online_checkout_allowed_payment_type_ids as $paymentTypeId ) { ?>
+        <?php
+        foreach ($bambora_online_checkout_allowed_payment_type_ids as $paymentTypeId) { ?>
 
-            <img src="https://d3r1pwhfz7unl9.cloudfront.net/paymentlogos/<?php echo $paymentTypeId; ?>.svg"/>
-		<?php } ?>
+            <img src="https://d3r1pwhfz7unl9.cloudfront.net/paymentlogos/<?php
+            echo $paymentTypeId; ?>.svg"/>
+            <?php
+        } ?>
     </div>
     <div class="buttons">
         <div class="pull-right">
-            <input type="button" value="<?php echo $button_confirm; ?>"
+            <input type="button" value="<?php
+            echo $button_confirm; ?>"
                    id="button-confirm"
-                   data-loading-text="<?php echo $text_loading; ?>"
+                   data-loading-text="<?php
+                   echo $text_loading; ?>"
                    class="btn btn-primary"/>
         </div>
     </div>

@@ -15,7 +15,9 @@
  * @license   Bambora Online
  *
  */
-class ModelExtensionTotalBamboraOnlineCheckoutFee extends Model {
-	public function getTotal( $total ) {
-	}
+class ModelExtensionTotalBamboraOnlineCheckoutFee extends Model
+{
+    public function getTotal($total)
+    {
+    }
 }

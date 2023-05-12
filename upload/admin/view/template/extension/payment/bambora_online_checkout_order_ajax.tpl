@@ -1,157 +1,226 @@
-<?php if ( $getPaymentTransaction_success ) { ?>
+<?php
+
+if ($getPaymentTransaction_success) { ?>
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-        <h3><?php echo $text_payment_info; ?></h3>
+        <h3><?php
+            echo $text_payment_info; ?></h3>
         <table class="table table-striped">
 
-			<?php if ( isset( $transaction['card_image'] ) ) { ?>
+            <?php
+            if (isset($transaction['card_image'])) { ?>
                 <tr>
-                    <td><?php echo $transaction['card_image']; ?></td>
+                    <td><?php
+                        echo $transaction['card_image']; ?></td>
                 </tr>
-			<?php } ?>
+                <?php
+            } ?>
             <tr>
-                <td><?php echo $text_transaction_id; ?></td>
-                <td class="text-right"><?php echo $transaction['id']; ?></td>
+                <td><?php
+                    echo $text_transaction_id; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['id']; ?></td>
             </tr>
-			<?php if ( isset( $transaction['acquirerReference'] ) ) { ?>
+            <?php
+            if (isset($transaction['acquirerReference'])) { ?>
                 <tr>
-                    <td><?php echo $text_transaction_acquirer_reference; ?></td>
-                    <td class="text-right"><?php echo $transaction['acquirerReference']; ?></td>
+                    <td><?php
+                        echo $text_transaction_acquirer_reference; ?></td>
+                    <td class="text-right"><?php
+                        echo $transaction['acquirerReference']; ?></td>
                 </tr>
-			<?php } ?>
+                <?php
+            } ?>
             <tr>
-                <td><?php echo $text_transaction_authorized; ?></td>
-                <td class="text-right"><?php echo $transaction['authorized']; ?></td>
+                <td><?php
+                    echo $text_transaction_authorized; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['authorized']; ?></td>
             </tr>
             <tr>
-                <td><?php echo $text_transaction_date; ?></td>
-                <td class="text-right"><?php echo $transaction['date']; ?></td>
+                <td><?php
+                    echo $text_transaction_date; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['date']; ?></td>
             </tr>
             <tr>
-                <td><?php echo $text_transaction_payment_type; ?></td>
-                <td class="text-right"><?php echo $transaction['paymentType']; ?></td>
+                <td><?php
+                    echo $text_transaction_payment_type; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['paymentType']; ?></td>
             </tr>
             <tr>
-                <td><?php echo $text_transaction_card_number; ?></td>
-                <td class="text-right"><?php echo $transaction['cardNumber']; ?></td>
+                <td><?php
+                    echo $text_transaction_card_number; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['cardNumber']; ?></td>
             </tr>
             <tr>
-                <td><?php echo $text_transaction_surcharge_fee; ?></td>
-                <td class="text-right"><?php echo $transaction['surchargeFee']; ?></td>
+                <td><?php
+                    echo $text_transaction_surcharge_fee; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['surchargeFee']; ?></td>
             </tr>
             <tr>
-                <td><?php echo $text_transaction_captured; ?></td>
-                <td class="text-right"><?php echo $transaction['captured']; ?></td>
+                <td><?php
+                    echo $text_transaction_captured; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['captured']; ?></td>
             </tr>
             <tr>
-                <td><?php echo $text_transaction_refunded; ?></td>
-                <td class="text-right"><?php echo $transaction['refunded']; ?></td>
+                <td><?php
+                    echo $text_transaction_refunded; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['refunded']; ?></td>
             </tr>
             <tr>
-                <td><?php echo $text_transaction_acquirer; ?></td>
-                <td class="text-right"><?php echo $transaction['acquirer']; ?></td>
+                <td><?php
+                    echo $text_transaction_acquirer; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['acquirer']; ?></td>
             </tr>
             <tr>
-                <td><?php echo $text_transaction_status; ?></td>
-                <td class="text-right"><?php echo $transaction['status']; ?></td>
+                <td><?php
+                    echo $text_transaction_status; ?></td>
+                <td class="text-right"><?php
+                    echo $transaction['status']; ?></td>
             </tr>
             <tr>
-                <td> <?php echo $text_transaction_operations_eci; ?> </td>
-                <td class="text-right"><?php echo $transaction['eci']; ?></td>
+                <td> <?php
+                    echo $text_transaction_operations_eci; ?> </td>
+                <td class="text-right"><?php
+                    echo $transaction['eci']; ?></td>
             </tr>
-			<?php if ( isset( $transaction['exemptions'] ) ) { ?>
+            <?php
+            if (isset($transaction['exemptions'])) { ?>
                 <tr>
                     <td>Exemption(s):</td>
-                    <td class="text-right"><?php echo $transaction['exemptions']; ?></td>
+                    <td class="text-right"><?php
+                        echo $transaction['exemptions']; ?></td>
                 </tr>
-			<?php } ?>
+                <?php
+            } ?>
 
         </table>
 
-		<?php if ( $showActions ) { ?>
+        <?php
+        if ($showActions) { ?>
             <div class="bambora_online_checkout_action_container">
                 <div class="input-group">
-                    <div class="input-group-addon"><?php echo $transaction['currencyCode']; ?></div>
-					<?php if ( $transaction['availableForCapture'] > 0 ) { ?>
+                    <div class="input-group-addon"><?php
+                        echo $transaction['currencyCode']; ?></div>
+                    <?php
+                    if ($transaction['availableForCapture'] > 0) { ?>
                         <input type="text" data-toggle="tooltip"
-                               title="<?php echo $text_tooltip; ?>"
+                               title="<?php
+                               echo $text_tooltip; ?>"
                                id="bambora_online_checkout_amount"
                                name="bambora_online_checkout_amount"
-                               value="<?php echo $transaction['availableForCapture']; ?>"/>
-					<?php } else { ?>
+                               value="<?php
+                               echo $transaction['availableForCapture']; ?>"/>
+                        <?php
+                    } else { ?>
                         <input type="text" data-toggle="tooltip"
-                               title="<?php echo $text_tooltip; ?>"
+                               title="<?php
+                               echo $text_tooltip; ?>"
                                id="bambora_online_checkout_amount"
                                name="bambora_online_checkout_amount"
-                               value="<?php echo $transaction['availableForRefund']; ?>"/>
-					<?php } ?>
+                               value="<?php
+                               echo $transaction['availableForRefund']; ?>"/>
+                        <?php
+                    } ?>
                 </div>
                 <div id="bambora_online_checkout_format_error"
                      class="alert alert-danger"
-                     style="display:none"><?php echo $error_amount_format; ?></div>
-				<?php if ( $transaction['availableForCapture'] > 0 ) { ?>
+                     style="display:none"><?php
+                    echo $error_amount_format; ?></div>
+                <?php
+                if ($transaction['availableForCapture'] > 0) { ?>
                     <a class="bambora-button btn btn-success"
-                       id="btn-bambora-online-checkout-capture"><?php echo $text_btn_capture; ?></a>
+                       id="btn-bambora-online-checkout-capture"><?php
+                        echo $text_btn_capture; ?></a>
                     <span class="bambora-button btn btn-success"
                           id="img-loading-capture" style="display:none;"><i
                                 class="fa fa-cog fa-spin fa-lg"></i></span>
-				<?php } ?>
-				<?php if ( $transaction['availableForRefund'] > 0 ) { ?>
+                    <?php
+                } ?>
+                <?php
+                if ($transaction['availableForRefund'] > 0) { ?>
                     <a class="bambora-button btn btn-warning"
-                       id="btn-bambora-online-checkout-refund"><?php echo $text_btn_refund; ?></a>
+                       id="btn-bambora-online-checkout-refund"><?php
+                        echo $text_btn_refund; ?></a>
                     <span class="bambora-button btn btn-warning"
                           id="img-loading-refund" style="display:none;"><i
                                 class="fa fa-cog fa-spin fa-lg"></i></span>
-				<?php } ?>
-				<?php if ( $transaction['canVoid'] ) { ?>
+                    <?php
+                } ?>
+                <?php
+                if ($transaction['canVoid']) { ?>
                     <a class="bambora-button btn btn-danger"
-                       id="btn-bambora-online-checkout-void"><?php echo $text_btn_void; ?></a>
+                       id="btn-bambora-online-checkout-void"><?php
+                        echo $text_btn_void; ?></a>
                     <span class="bambora-button btn btn-danger" id="img-loading-void"
                           style="display:none;"><i
                                 class="fa fa-cog fa-spin fa-lg"></i></span>
-				<?php } ?>
+                    <?php
+                } ?>
             </div>
-		<?php } ?>
+            <?php
+        } ?>
     </div>
 
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
-        <h3><?php echo $text_transaction_operations; ?></h3>
+        <h3><?php
+            echo $text_transaction_operations; ?></h3>
         <table class="table table-striped">
             <tr>
-                <th><?php echo $text_transaction_operations_date; ?></th>
-                <th><?php echo $text_transaction_operations_action; ?></th>
-                <th><?php echo $text_transaction_operations_amount; ?></th>
+                <th><?php
+                    echo $text_transaction_operations_date; ?></th>
+                <th><?php
+                    echo $text_transaction_operations_action; ?></th>
+                <th><?php
+                    echo $text_transaction_operations_amount; ?></th>
             </tr>
-			<?php if ( count( $transaction['operations'] ) > 0 ) {
-				foreach ( $transaction['operations'] as $operation ) { ?>
+            <?php
+            if (count($transaction['operations']) > 0) {
+                foreach ($transaction['operations'] as $operation) { ?>
                     <tr>
-                        <td><?php echo $operation['createdDate']; ?></td>
-                        <td><strong><?php echo $operation['title']; ?></strong></td>
-                        <td><?php echo $operation['amount']; ?></td>
+                        <td><?php
+                            echo $operation['createdDate']; ?></td>
+                        <td><strong><?php
+                                echo $operation['title']; ?></strong></td>
+                        <td><?php
+                            echo $operation['amount']; ?></td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <i><?php echo $operation['description']; ?></i></td>
+                            <i><?php
+                                echo $operation['description']; ?></i></td>
                     </tr>
 
-				<?php }
-			} ?>
+                    <?php
+                }
+            } ?>
         </table>
     </div>
 
     <div class="col-lg-3 text-center hidden-xs hidden-sm hidden-md">
         <a href="https://merchant.bambora.com"
-           title="<?php echo $text_goto_bambora_admin; ?>" target="_blank">
+           title="<?php
+           echo $text_goto_bambora_admin; ?>" target="_blank">
             <img class="bambora-logo"
                  src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg"
                  style="padding-bottom: 10px;"/>
 
         </a>
         <br/>
-        <div class="worldline-info"><?php echo $text_info_worldline; ?></div>
+        <div class="worldline-info"><?php
+            echo $text_info_worldline; ?></div>
         <div>
             <a href="https://merchant.bambora.com"
-               title="<?php echo $text_goto_bambora_admin; ?>"
-               target="_blank"><?php echo $text_goto_bambora_admin; ?></a>
+               title="<?php
+               echo $text_goto_bambora_admin; ?>"
+               target="_blank"><?php
+                echo $text_goto_bambora_admin; ?></a>
         </div>
     </div>
 
@@ -307,7 +376,10 @@
         $('[data-toggle="tooltip"]').tooltip();
         //-->
     </script>
-<?php } else { ?>
+    <?php
+} else { ?>
     <div class="alert alert-danger"
-         style="margin-left:10px; margin-right:10px;"><?php echo $text_getPaymentTransaction_error; ?></div>
-<?php } ?>
+         style="margin-left:10px; margin-right:10px;"><?php
+        echo $text_getPaymentTransaction_error; ?></div>
+    <?php
+} ?>
