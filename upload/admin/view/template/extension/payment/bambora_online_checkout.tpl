@@ -332,12 +332,12 @@ echo $column_left;
                                for="input-geo-zone"><span data-toggle="tooltip"
                                                           title="<?php echo $help_geo_zone; ?>"><?php echo $entry_geo_zone; ?></span></label>
                         <div class="col-sm-10">
-                            <select name="bambora_online_checkout_geo_zone"
+                            <select name="bambora_online_checkout_geo_zone_id"
                                     id="input-geo-zone" class="form-control">
                                 <option value="0"><?php echo $text_all_zones; ?></option>
 
 								<?php foreach ( $geo_zones as $geo_zone ) {
-									if ( $geo_zone['geo_zone_id'] == $bambora_online_checkout_geo_zone ) { ?>
+									if ( $geo_zone['geo_zone_id'] == $bambora_online_checkout_geo_zone_id ) { ?>
 
                                         <option value="<?php echo $geo_zone['geo_zone_id']; ?>"
                                                 selected="selected"><?php echo $geo_zone['name']; ?></option>

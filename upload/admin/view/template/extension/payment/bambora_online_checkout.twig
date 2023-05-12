@@ -358,12 +358,12 @@
                                for="input-geo-zone"><span data-toggle="tooltip"
                                                           title="{{ help_geo_zone }}">{{ entry_geo_zone }}</span></label>
                         <div class="col-sm-10">
-                            <select name="payment_bambora_online_checkout_geo_zone"
+                            <select name="payment_bambora_online_checkout_geo_zone_id"
                                     id="input-geo-zone" class="form-control">
                                 <option value="0">{{ text_all_zones }}</option>
 
                                 {% for geo_zone in geo_zones %}
-                                    {% if geo_zone.geo_zone_id == payment_bambora_online_checkout_geo_zone %}
+                                    {% if geo_zone.geo_zone_id == payment_bambora_online_checkout_geo_zone_id %}
 
                                         <option value="{{ geo_zone.geo_zone_id }}"
                                                 selected="selected">{{ geo_zone.name }}</option>

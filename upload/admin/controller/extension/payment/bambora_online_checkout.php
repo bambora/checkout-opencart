@@ -260,7 +260,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller {
 			'payment_method_update',
 			'total',
 			'order_status_completed',
-			'geo_zone',
+			'geo_zone_id',
 			'sort_order',
 			'allow_low_value_exemptions',
 			'limit_for_low_value_exemption',
