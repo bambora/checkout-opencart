@@ -16,9 +16,9 @@
  */
 
 // Text
-$_['text_title'] = "Bambora Online Checkout";
+$_['text_title'] = "Worldline Checkout";
 $_['text_loading'] = "Indl&aelig;ser...";
-$_['text_payment'] = "Ved at klikke p&aring; <b>Betal nu</b> vil du blive videre f&oslashrt til Bambora Online Checkout betalingsvinduet";
+$_['text_payment'] = "Ved at klikke p&aring; <b>Betal nu</b> vil du blive videre f&oslashrt til Worldline Checkout betalingsvinduet";
 $_['button_confirm'] = "Betal nu";
 $_['text_shipping_id'] = "forsendelse";
 $_['text_coupon_id'] = "kupon";
@@ -31,7 +31,7 @@ $_['payment_card'] = "Betalingstype:";
 
 $_['pcs'] = "stk.";
 $_['surcharge_fee'] = "Transaktionsgebyr:";
-$_['accept_order_text'] = "Afventer betalingsbekr&aelig;ftigelse fra Bambora";
+$_['accept_order_text'] = "Afventer betalingsbekr&aelig;ftigelse fra Worldline";
 
 //Format
 $_['date_format'] = 'd/m/Y';

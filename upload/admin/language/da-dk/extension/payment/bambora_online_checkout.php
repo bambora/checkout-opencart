@@ -16,15 +16,15 @@
  */
 
 // Heading
-$_['heading_title'] = 'Bambora Online Checkout';
+$_['heading_title'] = 'Worldline Checkout';
 
 // Image
-$_['text_bambora_online_checkout'] = '<a href="https://bambora.com" target="blank"><img src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg" alt="Bambora" title="Bambora" style="max-width:100px; max-height:46px;" /></a>';
+$_['text_bambora_online_checkout'] = '<a href="https://worldline.com" target="blank"><img src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg" alt="Worldline" title="Worldline" style="max-width:100px; max-height:46px;" /></a>';
 
 //Text
-$_['text_edit'] = 'Edit Bambora Online Checkout';
+$_['text_edit'] = 'Edit Worldline Checkout';
 $_['text_extension'] = 'Extensions';
-$_['text_success'] = 'Success: You have modified Bambora Online Checkout settings!';
+$_['text_success'] = 'Success: You have modified the Worldline Checkout settings!';
 $_['text_enabled'] = 'Enabled';
 $_['text_disabled'] = 'Disabled';
 $_['text_window_state_fullscreen'] = 'Full Screen';
@@ -63,9 +63,9 @@ $_['text_void_payment_body'] = 'Er du sikker p&aring; at du vil annullere betali
 $_['text_no'] = 'Nej';
 $_['text_yes'] = 'Ja';
 $_['text_tooltip'] = 'Eksempel: 1234.56';
-$_['text_goto_bambora_admin'] = 'G&aring; til Bambora Online Merchant Administration';
-$_['text_capture_info_collector'] = 'Med Walley er kun fuld h&aelig;vning muligt. For delvis h&aelig;vning, benyt Bambora Online Merchant Portal.';
-$_['text_refund_info_collector'] = 'Med Walley er kun fuld kreditering mulig. For delvis kreditering, benyt Bambora Online Merchant Portal.';
+$_['text_goto_bambora_admin'] = 'G&aring; til Merchant Administration';
+$_['text_capture_info_collector'] = 'Med Walley er kun fuld h&aelig;vning muligt. For delvis h&aelig;vning, benyt Merchant Portal.';
+$_['text_refund_info_collector'] = 'Med Walley er kun fuld kreditering mulig. For delvis kreditering, benyt Merchant Portal.';
 $_['text_info_worldline'] = 'Bambora vil fremover være kendt som Worldline. Sammen sikrer vi tilliden til digitale betalinger.';
 
 
@@ -90,11 +90,11 @@ $_['entry_sort_order'] = 'Sort Order';
 $_['entry_allow_low_value_exemptions'] = 'Allow Low Value Exemptions';
 $_['entry_limit_for_low_value_exemption'] = 'Limit for Low Value Exemptions';
 // Help
-$_['help_status'] = 'Enable / Disable the Bambora Online Checkout payment gateway';
-$_['help_merchant'] = 'The number identifying your Bambora merchant account.';
-$_['help_access_token'] = 'The Access token for the API user received from the Bambora administration.';
-$_['help_secret_token'] = 'The Secret token for the API user received from the Bambora administration.';
-$_['help_md5'] = 'The MD5 key is used to stamp data sent between OpenCart and Bambora to prevent it from being tampered with. The MD5 key is optional but if used here, must be the same as in the Bambora administration.';
+$_['help_status'] = 'Enable / Disable the Worldline Checkout payment gateway';
+$_['help_merchant'] = 'The number identifying your Worldline merchant account.';
+$_['help_access_token'] = 'The Access token for the API user received from the Worldline administration.';
+$_['help_secret_token'] = 'The Secret token for the API user received from the Worldline administration.';
+$_['help_md5'] = 'The MD5 key is used to stamp data sent between OpenCart and Worldline to prevent it from being tampered with. The MD5 key is optional but if used here, must be the same as in the Worldline administration.';
 $_['help_window_state'] = 'Set to Overlay for the Payment Window to open as a overlayed window on top of the store. The store will be visible behind the payment window. Set to Full Screen to open the payment window in the same window but in full-screen. The store will not be visible in this setting.';
 $_['help_window_id'] = 'The ID of the payment window to use.';
 $_['help_surcharge'] = 'Enable to add surcharge to the order';
@@ -102,7 +102,7 @@ $_['help_instant_capture'] = 'Capture the payments at the same time they are aut
 $_['help_immediate_redirect_to_accept'] = 'Immediately redirect your customer back to you shop after the payment completed.';
 $_['help_rounding_mode'] = 'Please select how you want the rounding of the amount sent to the payment system';
 $_['help_payment_method_title'] = 'The title of the payment method displayed to the customers.';
-$_['help_payment_method_update'] = 'Update the payment method title on the order with the one chosen in payment window (t.ex. to \'Bambora - Visa (Debit / Domestic)\'), overwriting the title defined above.';
+$_['help_payment_method_update'] = 'Update the payment method title on the order with the one chosen in payment window (t.ex. to \'Worldline - Visa (Debit / Domestic)\'), overwriting the title defined above.';
 $_['help_total'] = 'The checkout total the order must reach before this payment method becomes active.';
 $_['help_order_status_completed'] = 'Choose order state on paid orders.';
 $_['help_geo_zone'] = 'Define the geographic zones the payment module is displayed';
@@ -111,12 +111,12 @@ $_['help_allow_low_value_exemptions'] = 'Allow you as a merchant to let the cust
 $_['help_limit_for_low_value_exemption'] = 'Any amount below this max amount might skip SCA if the issuer would allow it. Recommended amount is about €30 in your local currency.';
 
 //Error
-$_['error_permission'] = 'Warning You do not have permission to modify Bambora Online Checkout!';
+$_['error_permission'] = 'Warning You do not have permission to modify Worldline Checkout!';
 $_['error_merchant'] = 'The Merchant number is required!';
 $_['error_access_token'] = 'The Access token is required!';
 $_['error_secret_token'] = 'The Secret token is required!';
 $_['error_get_transaction_db'] = 'Transaktionen kunne ikke findes i databasen';
-$_['error_get_api_error'] = 'Kunne ikke forbinde til Bambora';
+$_['error_get_api_error'] = 'Kunne ikke forbinde til Worldline';
 $_['error_amount_format'] = 'Bel&oslashbet du har indtastet er forkert formateret. Pr&oslashv igen!';
 $_['error_action_base'] = 'Handlingen kunne ikke udf&oslashres';
 $_['error_module_not_loaded'] = 'Aktiver venligst modulet';

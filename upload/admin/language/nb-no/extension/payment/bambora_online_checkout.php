@@ -16,16 +16,16 @@
  */
 
 // Heading
-$_['heading_title'] = 'Bambora Online Checkout';
+$_['heading_title'] = 'Worldline Checkout';
 
 // Image
-$_['text_bambora_online_checkout'] = '<a href="https://bambora.com" target="blank"><img src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg" alt="Bambora" title="Bambora" style="max-width:100px; max-height:46px;" /></a>';
+$_['text_bambora_online_checkout'] = '<a href="https://worldline.com" target="blank"><img src="https://d3r1pwhfz7unl9.cloudfront.net/bambora/worldline-logo.svg" alt="Worldline" title="Worldline" style="max-width:100px; max-height:46px;" /></a>';
 
 //Text
-$_['text_edit'] = 'Rediger \'Bambora Online Checkout\'';
+$_['text_edit'] = 'Rediger \'Worldline Checkout\'';
 $_['text_extension'] = 'Utvidelser';
 $_['text_home'] = 'Hjem';
-$_['text_success'] = 'Vellykket: Innstillinger for \'Bambora Online Checkout\' ble lagret.';
+$_['text_success'] = 'Vellykket: Innstillinger for \'Worldline Checkout\' ble lagret.';
 $_['text_enabled'] = 'Aktivert';
 $_['text_disabled'] = 'Deaktivert';
 $_['text_window_state_fullscreen'] = 'Fullskjerm';
@@ -65,9 +65,9 @@ $_['text_void_payment_header'] = 'Annuller betalingen?';
 $_['text_void_payment_body'] = 'Er du sikker på at du vil annullere betalingen';
 $_['text_no'] = 'Nei';
 $_['text_yes'] = 'Ja';
-$_['text_goto_bambora_admin'] = 'Gå til \'Bambora Online Merchant\'-administrasjonen';
-$_['text_capture_info_collector'] = 'Med Walley er bare full belast mulig her. For delvis belast, bruk Bambora Online Merchant Portal.';
-$_['text_refund_info_collector'] = 'Med Walley er bare full refunder mulig her. For delvis refunder, bruk Bambora Online Merchant Portal.';
+$_['text_goto_bambora_admin'] = 'Gå til \'Merchant\'-administrasjonen';
+$_['text_capture_info_collector'] = 'Med Walley er bare full belast mulig her. For delvis belast, bruk Merchant Portal.';
+$_['text_refund_info_collector'] = 'Med Walley er bare full refunder mulig her. For delvis refunder, bruk Merchant Portal.';
 
 //Entry
 $_['entry_status'] = 'Status';
@@ -90,11 +90,11 @@ $_['entry_sort_order'] = 'Sortering';
 $_['entry_allow_low_value_exemptions'] = 'Enable Low Value Exemption';
 $_['entry_limit_for_low_value_exemption'] = 'Max Amount for Low Value Exemption';
 // Help
-$_['help_status'] = 'Aktiver/Deaktiver \'Bambora Online Checkout\'-betalingsmodul.';
-$_['help_merchant'] = 'Nummer som identifiserer deres Bambora-konto.';
-$_['help_access_token'] = 'Tilgangskode for API-bruker, generert i \'Bambora Online Merchant\'-administrasjonen.';
-$_['help_secret_token'] = 'Hemmelig kode API-bruker, generert i \'Bambora Online Merchant\'-administrasjonen.';
-$_['help_md5'] = 'MD5-nøkkel brukes til å «stemple» data som sendes mellom OpenCart og Bambora, for å forhindre manipulering.  MD5-nøkkel er valgfri, men når den brukes må den være identisk med den i \'Bambora Online Merchant\'-administrasjonen.';
+$_['help_status'] = 'Aktiver/Deaktiver \'WorldlineCheckout\'-betalingsmodul.';
+$_['help_merchant'] = 'Nummer som identifiserer deres Worldline-konto.';
+$_['help_access_token'] = 'Tilgangskode for API-bruker, generert i \'Merchant\'-administrasjonen.';
+$_['help_secret_token'] = 'Hemmelig kode API-bruker, generert i \'Merchant\'-administrasjonen.';
+$_['help_md5'] = 'MD5-nøkkel brukes til å «stemple» data som sendes mellom OpenCart og Worldline, for å forhindre manipulering.  MD5-nøkkel er valgfri, men når den brukes må den være identisk med den i \'Merchant\'-administrasjonen.';
 $_['help_window_state'] = 'Velg \'Overliggende\' for å åpne betalingsvinduet som et overliggende vindu, «flytende» over nettbutikken. Nettbutikken vil da være synlig bak betalingsvinduet. Velg \'Fullskjerm\' for å åpne betalingsvinduet i samme nettleservindu, men bruker da hele vinduet. Nettbutikken vil ikke vises med denne innstillingen.';
 $_['help_window_id'] = 'Id-nummer for betalingsvinduet som skal brukes.';
 $_['help_surcharge'] = 'Aktiver for å legge til transaksjonsgebyr på bestillingen.';
@@ -102,21 +102,21 @@ $_['help_instant_capture'] = 'Belast betalinger samtidig som de autoriseres. I n
 $_['help_immediate_redirect_to_accept'] = 'Sender kundene direkte tilbake til nettbutikken etter at betalingen er fullført.';
 $_['help_rounding_mode'] = 'Velg hvilken avrunding som ønskes brukt på beløp som sendes til betalingssystemet.';
 $_['help_payment_method_title'] = 'Tittel på betalingsvalget, som vises til kundene i kassen m.m.';
-$_['help_payment_method_update'] = 'Oppdater tittel på betalingsvalget på ordren med det som er valgt i betalingsvinduet (f.eks. til \'Bambora - Visa (Debit / Domestic)\'), ved å overskrive tittel som er angitt ovenfor.';
+$_['help_payment_method_update'] = 'Oppdater tittel på betalingsvalget på ordren med det som er valgt i betalingsvinduet (f.eks. til \'Worldline - Visa (Debit / Domestic)\'), ved å overskrive tittel som er angitt ovenfor.';
 $_['help_total'] = 'Ordretotal som må innfris før betalingsvalget vises.';
-$_['help_order_status_completed'] = 'Velg ordrestatus for ordrer som er bekreftet av Bambora.';
+$_['help_order_status_completed'] = 'Velg ordrestatus for ordrer som er bekreftet av Worldline.';
 $_['help_geo_zone'] = 'Angi geografiske soner som modulen skal vises for.';
 $_['help_sort_order'] = 'Visningsrekkefølge for betalingsvalget.';
 $_['help_allow_low_value_exemptions'] = 'Allow you as a merchant to let the customer attempt to skip Strong Customer Authentication(SCA) when the value of the order is below your defined limit.';
 $_['help_limit_for_low_value_exemption'] = 'Any amount below this max amount might skip SCA if the issuer would allow it. Recommended amount is about €30 in your local currency.';
 
 //Error
-$_['error_permission'] = 'Advarsel: Du har ikke rettigheter til å endre på Bambora Online Checkout.';
+$_['error_permission'] = 'Advarsel: Du har ikke rettigheter til å endre på Worldline Checkout.';
 $_['error_merchant'] = '\'Merchant number\' må fylles inn.';
 $_['error_access_token'] = '\'Access token\' må fylles inn.';
 $_['error_secret_token'] = '\'Secret token\' må fylles inn.';
 $_['error_get_transaction_db'] = 'Transaksjonen ble ikke funnet i databasen.';
-$_['error_get_api_error'] = 'Kunne ikke koble til Bambora.';
+$_['error_get_api_error'] = 'Kunne ikke koble til Worldline.';
 $_['error_amount_format'] = 'Beløpet er i ugyldig format. Forsøk igjen.';
 $_['error_action_base'] = 'Handlingen kunne ikke utføres.';
 $_['error_module_not_loaded'] = 'Modulen må aktiveres.';

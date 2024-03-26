@@ -99,7 +99,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 
         if (!isset($paymentTypeResponse) || !$paymentTypeResponse->meta->result) {
             $errorMessage = "Get allowed payment types failed for order: {$orderId} Reason: ";
-            $errorMessage .= isset($paymentTypeResponse) ? $paymentTypeResponse->meta->message->merchant : "Could not connect to Bambora";
+            $errorMessage .= isset($paymentTypeResponse) ? $paymentTypeResponse->meta->message->merchant : "Could not connect to Worldline";
             $this->model_extension_payment_bambora_online_checkout->bamboraLog(
                 $errorMessage
             );
@@ -798,7 +798,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                     $this->getConfigBaseName() . '_payment_method_update'
                 ) === "1" && !empty($paymentTypeDisplayName)) {
                 $this->db->query(
-                    "UPDATE `" . DB_PREFIX . "order` SET `payment_method` = 'Bambora Online Checkout - " . $this->db->escape(
+                    "UPDATE `" . DB_PREFIX . "order` SET `payment_method` = 'Worldline Checkout - " . $this->db->escape(
                         $paymentTypeDisplayName
                     ) . "' WHERE `order_id` = '" . $orderId . "';"
                 );
@@ -858,7 +858,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         );
 
         if (!isset($transactionResponse) || !$transactionResponse->meta->result) {
-            $message = isset($transactionResponse) ? $transactionResponse->meta->message->merchant : "Connection to Bambora Failed";
+            $message = isset($transactionResponse) ? $transactionResponse->meta->message->merchant : "Connection to Worldline Failed";
 
             return false;
         }
