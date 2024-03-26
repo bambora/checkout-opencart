@@ -27,7 +27,7 @@
                    class="btn btn-primary"/>
         </div>
     </div>
-
+    <link rel="preload" href="https://static.bambora.com/checkout-sdk-web/latest/checkout-sdk-web.min.js" as="script">
     <script src="https://static.bambora.com/checkout-sdk-web/latest/checkout-sdk-web.min.js"></script>
 
 

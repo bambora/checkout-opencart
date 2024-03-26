@@ -21,26 +21,26 @@ echo $column_left;
             <ul class="breadcrumb">
                 <?php
                 foreach ($breadcrumbs as $breadcrumb) { ?>
-                    <li>
-                        <a href="<?php
+                <li>
+                    <a href="<?php
                         echo $breadcrumb['href']; ?>"><?php
                             echo $breadcrumb['text']; ?></a>
-                    </li>
-                    <?php
+                </li>
+                <?php
                 } ?>
             </ul>
         </div>
     </div>
     <div class="container-fluid">
         <?php
-        if ($error_permission) { ?>
-            <div class="alert alert-danger alert-dismissible"><i
-                        class="fa fa-exclamation-circle"></i> <?php
+        if (isset($error_permission) && $error_permission) { ?>
+        <div class="alert alert-danger alert-dismissible"><i
+                    class="fa fa-exclamation-circle"></i> <?php
                 echo $error_permission; ?>
-                <button type="button" class="close" data-dismiss="alert">&times;
-                </button>
-            </div>
-            <?php
+            <button type="button" class="close" data-dismiss="alert">&times;
+            </button>
+        </div>
+        <?php
         } ?>
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -66,24 +66,24 @@ echo $column_left;
                                     id="select-status" class="form-control">
 
                                 <?php
-                                if ($bambora_online_checkout_status) { ?>
+                                if (isset($bambora_online_checkout_status) && $bambora_online_checkout_status) { ?>
 
-                                    <option value="1"
-                                            selected="selected"><?php
+                                <option value="1"
+                                        selected="selected"><?php
                                         echo $text_enabled; ?></option>
-                                    <option value="0"><?php
+                                <option value="0"><?php
                                         echo $text_disabled; ?></option>
 
-                                    <?php
+                                <?php
                                 } else { ?>
 
-                                    <option value="1"><?php
+                                <option value="1"><?php
                                         echo $text_enabled; ?></option>
-                                    <option value="0"
-                                            selected="selected"><?php
+                                <option value="0"
+                                        selected="selected"><?php
                                         echo $text_disabled; ?></option>
 
-                                    <?php
+                                <?php
                                 } ?>
 
                             </select>
@@ -104,10 +104,10 @@ echo $column_left;
                                    echo $entry_merchant; ?>"
                                    id="input-merchant" class="form-control"/>
                             <?php
-                            if ($error_merchant) { ?>
-                                <div class="text-danger"><?php
+                            if (isset($error_merchant)) { ?>
+                            <div class="text-danger"><?php
                                     echo $error_merchant; ?></div>
-                                <?php
+                            <?php
                             } ?>
                         </div>
                     </div>
@@ -126,10 +126,10 @@ echo $column_left;
                                    echo $entry_access_token; ?>"
                                    id="input-accesstoken" class="form-control"/>
                             <?php
-                            if ($error_access_token) { ?>
-                                <div class="text-danger"><?php
+                            if (isset($error_access_token)) { ?>
+                            <div class="text-danger"><?php
                                     echo $error_access_token; ?></div>
-                                <?php
+                            <?php
                             } ?>
                         </div>
                     </div>
@@ -148,10 +148,10 @@ echo $column_left;
                                    echo $entry_secret_token; ?>"
                                    id="input-secrettoken" class="form-control"/>
                             <?php
-                            if ($error_secret_token) { ?>
-                                <div class="text-danger"><?php
+                            if (isset($error_secret_token)) { ?>
+                            <div class="text-danger"><?php
                                     echo $error_secret_token; ?></div>
-                                <?php
+                            <?php
                             } ?>
                         </div>
                     </div>
@@ -181,24 +181,24 @@ echo $column_left;
                                     id="input-window-state" class="form-control">
 
                                 <?php
-                                if ($bambora_online_checkout_window_state == 1) { ?>
+                                if (isset($bambora_online_checkout_window_state) && $bambora_online_checkout_window_state == 1) { ?>
 
-                                    <option value="1"
-                                            selected="selected"><?php
+                                <option value="1"
+                                        selected="selected"><?php
                                         echo $text_window_state_fullscreen; ?></option>
-                                    <option value="2"><?php
+                                <option value="2"><?php
                                         echo $text_window_state_overlay; ?></option>
 
-                                    <?php
+                                <?php
                                 } else { ?>
 
-                                    <option value="1"><?php
+                                <option value="1"><?php
                                         echo $text_window_state_fullscreen; ?></option>
-                                    <option value="2"
-                                            selected="selected"><?php
+                                <option value="2"
+                                        selected="selected"><?php
                                         echo $text_window_state_overlay; ?></option>
 
-                                    <?php
+                                <?php
                                 } ?>
                             </select>
                         </div>
@@ -231,24 +231,24 @@ echo $column_left;
                                     id="input-instant-capture" class="form-control">
 
                                 <?php
-                                if ($bambora_online_checkout_instant_capture) { ?>
+                                if (isset($bambora_online_checkout_instant_capture) && $bambora_online_checkout_instant_capture) { ?>
 
-                                    <option value="1"
-                                            selected="selected"><?php
+                                <option value="1"
+                                        selected="selected"><?php
                                         echo $text_enabled; ?></option>
-                                    <option value="0"><?php
+                                <option value="0"><?php
                                         echo $text_disabled; ?></option>
 
-                                    <?php
+                                <?php
                                 } else { ?>
 
-                                    <option value="1"><?php
+                                <option value="1"><?php
                                         echo $text_enabled; ?></option>
-                                    <option value="0"
-                                            selected="selected"><?php
+                                <option value="0"
+                                        selected="selected"><?php
                                         echo $text_disabled; ?></option>
 
-                                    <?php
+                                <?php
                                 } ?>
 
                             </select>
@@ -267,24 +267,24 @@ echo $column_left;
                                     class="form-control">
 
                                 <?php
-                                if ($bambora_online_checkout_immediate_redirect_to_accept) { ?>
+                                if (isset($bambora_online_checkout_immediate_redirect_to_accept) && $bambora_online_checkout_immediate_redirect_to_accept) { ?>
 
-                                    <option value="1"
-                                            selected="selected"><?php
+                                <option value="1"
+                                        selected="selected"><?php
                                         echo $text_enabled; ?></option>
-                                    <option value="0"><?php
+                                <option value="0"><?php
                                         echo $text_disabled; ?></option>
 
-                                    <?php
+                                <?php
                                 } else { ?>
 
-                                    <option value="1"><?php
+                                <option value="1"><?php
                                         echo $text_enabled; ?></option>
-                                    <option value="0"
-                                            selected="selected"><?php
+                                <option value="0"
+                                        selected="selected"><?php
                                         echo $text_disabled; ?></option>
 
-                                    <?php
+                                <?php
                                 } ?>
                             </select>
                         </div>
@@ -300,50 +300,50 @@ echo $column_left;
                                     id="input-rounding-mode" class="form-control">
 
                                 <?php
-                                if ($bambora_online_checkout_rounding_mode == 1) { ?>
+                                if (isset($bambora_online_checkout_rounding_mode) && $bambora_online_checkout_rounding_mode == 1) { ?>
 
-                                    <option value="default"
-                                            selected="selected"><?php
+                                <option value="default"
+                                        selected="selected"><?php
                                         echo $text_rounding_mode_default; ?></option>
-                                    <option value="up"><?php
+                                <option value="up"><?php
                                         echo $text_rounding_mode_always_up; ?></option>
-                                    <option value="down"><?php
+                                <option value="down"><?php
                                         echo $text_rounding_mode_always_down; ?></option>
 
-                                    <?php
-                                } elseif ($bambora_online_checkout_rounding_mode == 2) { ?>
+                                <?php
+                                } elseif (isset($bambora_online_checkout_rounding_mode) && $bambora_online_checkout_rounding_mode == 2) { ?>
 
-                                    <option value="default"><?php
+                                <option value="default"><?php
                                         echo $text_rounding_mode_default; ?></option>
-                                    <option value="up"
-                                            selected="selected"><?php
+                                <option value="up"
+                                        selected="selected"><?php
                                         echo $text_rounding_mode_always_up; ?></option>
-                                    <option value="down"><?php
+                                <option value="down"><?php
                                         echo $text_roundingmode_alwaysdown; ?></option>
 
-                                    <?php
-                                } elseif ($bambora_online_checkout_rounding_mode == 3) { ?>
+                                <?php
+                                } elseif (isset($bambora_online_checkout_rounding_mode) && $bambora_online_checkout_rounding_mode == 3) { ?>
 
-                                    <option value="default"><?php
+                                <option value="default"><?php
                                         echo $text_rounding_mode_default; ?></option>
-                                    <option value="up"><?php
+                                <option value="up"><?php
                                         echo $text_rounding_mode_always_up; ?></option>
-                                    <option value="down"
-                                            selected="selected"><?php
+                                <option value="down"
+                                        selected="selected"><?php
                                         echo $text_rounding_mode_always_down; ?></option>
 
-                                    <?php
+                                <?php
                                 } else { ?>
 
-                                    <option value="default"
-                                            selected="selected"><?php
+                                <option value="default"
+                                        selected="selected"><?php
                                         echo $text_rounding_mode_default; ?></option>
-                                    <option value="up"><?php
+                                <option value="up"><?php
                                         echo $text_rounding_mode_always_up; ?></option>
-                                    <option value="down"><?php
+                                <option value="down"><?php
                                         echo $text_rounding_mode_always_down; ?></option>
 
-                                    <?php
+                                <?php
                                 } ?>
 
                             </select>
@@ -375,29 +375,29 @@ echo $column_left;
                                     echo $help_payment_method_update; ?>"><?php
                                 echo $entry_payment_method_update; ?></span></label>
                         <div class="col-sm-10">
-                            <select name="payment_bambora_online_checkout_payment_method_update"
+                            <select name="bambora_online_checkout_payment_method_update"
                                     id="input-payment-method-update"
                                     class="form-control">
 
                                 <?php
-                                if ($payment_bambora_online_checkout_payment_method_update) { ?>
+                                if (isset($bambora_online_checkout_payment_method_update) && $bambora_online_checkout_payment_method_update) { ?>
 
-                                    <option value="1"
-                                            selected="selected"><?php
+                                <option value="1"
+                                        selected="selected"><?php
                                         echo $text_yes; ?></option>
-                                    <option value="0"><?php
+                                <option value="0"><?php
                                         echo $text_no; ?></option>
 
-                                    <?php
+                                <?php
                                 } else { ?>
 
-                                    <option value="1"><?php
+                                <option value="1"><?php
                                         echo $text_yes; ?></option>
-                                    <option value="0"
-                                            selected="selected"><?php
+                                <option value="0"
+                                        selected="selected"><?php
                                         echo $text_no; ?></option>
 
-                                    <?php
+                                <?php
                                 } ?>
 
                             </select>
@@ -432,20 +432,20 @@ echo $column_left;
 
                                 <?php
                                 foreach ($order_statuses as $order_status) {
-                                    if ($order_status['order_status_id'] == $bambora_online_checkout_order_status_completed) { ?>
-                                        <option value="<?php
+                                    if (isset($bambora_online_checkout_order_status_completed) && $order_status['order_status_id'] == $bambora_online_checkout_order_status_completed) { ?>
+                                <option value="<?php
                                         echo $order_status['order_status_id']; ?>"
-                                                selected="selected"><?php
+                                        selected="selected"><?php
                                             echo $order_status['name']; ?></option>
 
-                                        <?php
+                                <?php
                                     } else { ?>
 
-                                        <option value="<?php
+                                <option value="<?php
                                         echo $order_status['order_status_id']; ?>"><?php
                                             echo $order_status['name']; ?></option>
 
-                                        <?php
+                                <?php
                                     }
                                 } ?>
                             </select>
@@ -465,21 +465,21 @@ echo $column_left;
 
                                 <?php
                                 foreach ($geo_zones as $geo_zone) {
-                                    if ($geo_zone['geo_zone_id'] == $bambora_online_checkout_geo_zone_id) { ?>
+                                    if (isset($bambora_online_checkout_geo_zone_id) && $geo_zone['geo_zone_id'] == $bambora_online_checkout_geo_zone_id) { ?>
 
-                                        <option value="<?php
+                                <option value="<?php
                                         echo $geo_zone['geo_zone_id']; ?>"
-                                                selected="selected"><?php
+                                        selected="selected"><?php
                                             echo $geo_zone['name']; ?></option>
 
-                                        <?php
+                                <?php
                                     } else { ?>
 
-                                        <option value="<?php
+                                <option value="<?php
                                         echo $geo_zone['geo_zone_id']; ?>"><?php
                                             echo $geo_zone['name']; ?></option>
 
-                                        <?php
+                                <?php
                                     }
                                 } ?>
 
@@ -512,59 +512,60 @@ echo $column_left;
                                 class="form-control">
 
                             <?php
-                            if ($bambora_online_checkout_allow_low_value_exemptions) { ?>
+                            if (isset($bambora_online_checkout_allow_low_value_exemptions) && $bambora_online_checkout_allow_low_value_exemptions) { ?>
 
-                                <option value="1"
-                                        selected="selected"><?php
+                            <option value="1"
+                                    selected="selected"><?php
                                     echo $text_enabled; ?></option>
-                                <option value="0"><?php
+                            <option value="0"><?php
                                     echo $text_disabled; ?></option>
 
-                                <?php
+                            <?php
                             } else { ?>
 
-                                <option value="1"><?php
+                            <option value="1"><?php
                                     echo $text_enabled; ?></option>
-                                <option value="0"
-                                        selected="selected"><?php
+                            <option value="0"
+                                    selected="selected"><?php
                                     echo $text_disabled; ?></option>
 
-                                <?php
+                            <?php
                             } ?>
 
                         </select>
                     </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label"
-                       for="input-limit_for_low_value_exemption"><span
-                            data-toggle="tooltip"
-                            title="<?php
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"
+                               for="input-limit_for_low_value_exemption"><span
+                                    data-toggle="tooltip"
+                                    title="<?php
                             echo $help_limit_for_low_value_exemption; ?>"><?php
                         echo $entry_limit_for_low_value_exemption; ?></span></label>
-                <div class="col-sm-10">
-                    <input type="text"
-                           name="bambora_online_checkout_limit_for_low_value_exemption"
-                           value="<?php
+                        <div class="col-sm-10">
+                            <input type="text"
+                                   name="bambora_online_checkout_limit_for_low_value_exemption"
+                                   value="<?php
                            echo $bambora_online_checkout_limit_for_low_value_exemption; ?>"
-                           placeholder="<?php
+                                   placeholder="<?php
                            echo $entry_limit_for_low_value_exemption; ?>"
-                           id="input-limit_for_low_value_exemption"
-                           class="form-control"/>
-                </div>
-                <?php
-                if ($error_limit_for_low_value_exemption) { ?>
-                    <div class="text-danger"><?php
-                        echo $error_limit_for_low_value_exemption; ?></div>
-                    <?php
-                } ?>
-                <div class="col-sm-12">
-                    <a href="https://developer.bambora.com/europe/checkout/psd2/lowvalueexemption"
-                       target="_blank">More information regarding Low Value Exemption
-                        here.</a>
-                </div>
-            </div>
-
+                                   id="input-limit_for_low_value_exemption"
+                                   class="form-control"/>
+                        </div>
+                        <?php
+                if (isset($error_limit_for_low_value_exemption) && $error_limit_for_low_value_exemption) { ?>
+                        <div class="text-danger">
+                            <?php
+                        echo $error_limit_for_low_value_exemption; ?>
+                        </div>
+                        <?php
+                } ?>    <br/>
+                        <div class="col-sm-12">
+                            <a href="https://developer.bambora.com/europe/checkout/psd2/lowvalueexemption"
+                               target="_blank">More information regarding Low Value Exemptions
+                                here.</a>
+                        </div>
+                    </div>
             </form>
         </div>
     </div>
