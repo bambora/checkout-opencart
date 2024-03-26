@@ -1,4 +1,4 @@
-# Bambora Online Checkout - OpenCart
+# Wordline Checkout - OpenCart
 
 ## Supported OpenCart versions
 
@@ -6,7 +6,7 @@
 
 ## Supported Payment Gateways
 
-* Bambora Online Checkout
+* Worldline Checkout
 
 ## Installation instructions
 
@@ -16,8 +16,7 @@
     * Github: https://github.com/bambora/checkout-opencart/releases/latest
 * Go to Extensions->Installer in the OpenCart backoffice.
 * Upload the module
-* When done go to Extensions->Extensions and install the Bambora Online Checkout
-  module.
+* When done go to Extensions->Extensions and install the Worldline Checkout module.
 * When done go to the module configuration page and enter your merchant credentials.
 
 Documentation: https://developer.bambora.com/europe/shopping-carts/shopping-carts/opencart
