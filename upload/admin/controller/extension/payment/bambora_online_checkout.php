@@ -25,7 +25,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
     /**
      * @var string
      */
-    private $module_version = '1.5.0';
+    private $module_version = '1.6.0';
 
     /**
      * @var array
@@ -347,7 +347,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             'instant_capture' => '0',
             'immediate_redirect_to_accept' => '0',
             'rounding_mode' => '1',
-            'payment_method_title' => 'Bambora Online Checkout',
+            'payment_method_title' => 'Worldline Checkout',
             'payment_method_update' => '0',
             'order_status_completed' => '5',
             'allow_low_value_exemptions' => '0',
@@ -882,7 +882,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 $json['meta'] = $captureResponse->meta;
             } else {
                 $json['meta']['result'] = false;
-                $errorMessage = "Connection to Bambora Failed";
+                $errorMessage = "Connection to Worldline Failed";
                 $json['meta']['message']['merchant'] = $errorMessage;
                 $this->model_extension_payment_bambora_online_checkout->bamboraLog(
                     'Capture Failed: ' . $errorMessage
@@ -930,7 +930,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 $json['meta'] = $refundResponse->meta;
             } else {
                 $json['meta']['result'] = false;
-                $errorMessage = "Connection to Bambora Failed";
+                $errorMessage = "Connection to Worldline Failed";
                 $json['meta']['message']['merchant'] = $errorMessage;
                 $this->model_extension_payment_bambora_online_checkout->bamboraLog(
                     'Refund Failed: ' . $errorMessage
@@ -965,7 +965,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 $json['meta'] = $voidResponse->meta;
             } else {
                 $json['meta']['result'] = false;
-                $errorMessage = "Connection to Bambora Failed";
+                $errorMessage = "Connection to Worldline Failed";
                 $json['meta']['message']['merchant'] = $errorMessage;
                 $this->model_extension_payment_bambora_online_checkout->bamboraLog(
                     'Void Failed: ' . $errorMessage
