@@ -90,7 +90,7 @@ $_['entry_sort_order'] = 'Sortering';
 $_['entry_allow_low_value_exemptions'] = 'Enable Low Value Exemption';
 $_['entry_limit_for_low_value_exemption'] = 'Max Amount for Low Value Exemption';
 // Help
-$_['help_status'] = 'Aktiver/Deaktiver \'WorldlineCheckout\'-betalingsmodul.';
+$_['help_status'] = 'Aktiver/Deaktiver \'Worldline Checkout\'-betalingsmodul.';
 $_['help_merchant'] = 'Nummer som identifiserer deres Worldline-konto.';
 $_['help_access_token'] = 'Tilgangskode for API-bruker, generert i \'Merchant\'-administrasjonen.';
 $_['help_secret_token'] = 'Hemmelig kode API-bruker, generert i \'Merchant\'-administrasjonen.';
