@@ -427,7 +427,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $shipping = null;
         $orderTotalDiscount = null;
         $orderTotalVoucher = null;
-	    $orderTotal = null;
+        $orderTotal = null;
         foreach ($orderTotals as $total) {
             if ($total['code'] === "coupon") {
                 $orderTotalDiscount = $total;
@@ -436,7 +436,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             } elseif ($total['code'] === "shipping") {
                 $shipping = $total;
             } elseif ($total['code'] === "total"){
-				$orderTotal = $total;
+                $orderTotal = $total;
             }
         }
 
@@ -581,9 +581,9 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
 	    return $params;
     }
 
-	protected function createRoundingFee($orderTotal, $minorunits, $params, $lineNumber)
+    protected function createRoundingFee($orderTotal, $minorunits, $params, $lineNumber)
     {
-		$ocTotal = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotal['value'], $minorunits);
+        $ocTotal = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotal['value'], $minorunits);
         $bamboraTotal = 0;
         foreach ( $params as $orderLine ) {
             $bamboraTotal += $orderLine['quantity'] * $orderLine['unitpriceinclvat'];
