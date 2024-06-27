@@ -427,6 +427,7 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
         $shipping = null;
         $orderTotalDiscount = null;
         $orderTotalVoucher = null;
+	    $orderTotal = null;
         foreach ($orderTotals as $total) {
             if ($total['code'] === "coupon") {
                 $orderTotalDiscount = $total;
@@ -434,6 +435,8 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
                 $orderTotalVoucher = $total;
             } elseif ($total['code'] === "shipping") {
                 $shipping = $total;
+            } elseif ($total['code'] === "total"){
+				$orderTotal = $total;
             }
         }
 
@@ -568,10 +571,41 @@ class ControllerExtensionPaymentBamboraOnlineCheckout extends Controller
             $voucher['unitpricevatamount'] = 0;
             $voucher['vat'] = 0;
             $params[] = $voucher;
+	        $lineNumber++;
         }
 
-        return $params;
+        $roundingOrderline = $this->createRoundingFee( $orderTotal, $minorunits, $params, $lineNumber );
+        if ( $roundingOrderline ) {
+            $params[] = $roundingOrderline;
+        }
+	    return $params;
     }
+
+	protected function createRoundingFee($orderTotal, $minorunits, $params, $lineNumber)
+    {
+		$ocTotal = $this->model_extension_payment_bambora_online_checkout->convertPriceToMinorunits($orderTotal['value'], $minorunits);
+        $bamboraTotal = 0;
+        foreach ( $params as $orderLine ) {
+            $bamboraTotal += $orderLine['quantity'] * $orderLine['unitpriceinclvat'];
+        }
+        if ( $ocTotal != $bamboraTotal ) {
+            $roundingOrderline                        = array();
+            $roundingOrderline['id']                  = $this->language->get('adjustment');
+            $roundingOrderline['totalprice']          = $ocTotal - $bamboraTotal;
+            $roundingOrderline['totalpriceinclvat']   = $ocTotal - $bamboraTotal;
+            $roundingOrderline['totalpricevatamount'] = 0;
+            $roundingOrderline['text']                = $this->language->get('Rounding adjustment');
+            $roundingOrderline['unitprice']           = $ocTotal - $bamboraTotal;
+            $roundingOrderline['unitpriceinclvat']    = $ocTotal - $bamboraTotal;
+            $roundingOrderline['unitpricevatamount']  = 0;
+            $roundingOrderline['quantity']            = 1;
+            $roundingOrderline['description']         = $this->language->get('Rounding adjustment');
+            $roundingOrderline['linenumber']          = $lineNumber++;
+            $roundingOrderline['unit']                = $this->language->get('pcs');
+            $roundingOrderline['vat']                 = 0.0;
+            return $roundingOrderline;
+		}
+	}
 
     /**
      * Calculate the total line tax amount
