@@ -1,0 +1,86 @@
+<div class="alert alert-danger" id="worldlineonlinecheckout-error-message"
+    style="display:none;"></div>
+<fieldset>
+  <legend>{{ text_payment_info }}</legend>
+  <div id="payment-worldlineonlinecheckout-transaction">
+</fieldset>
+
+<script type="text/javascript">
+    function getTransactionInformation() {
+        $('#worldlineonlinecheckout-error-message').click(function (e) {
+            $('#worldlineonlinecheckout-error-message').fadeOut('slow');
+        });
+        $.ajax({
+            url: '{{ worldline_ajax_endpoint }}.getPaymentTransaction&user_token={{ user_token }}',
+            dataType: 'html',
+            data: {
+                order_id: '{{ order_id }}'
+            },
+            beforeSend: function () {
+                $('#payment-worldlineonlinecheckout-transaction').html('<i class="worldlineonlinecheckout-loading fa fa-spinner fa-spin fa-5x" style="text-align: center; margin: 0 auto; width: 100%; font-size: 5em;"></i>');
+            },
+            success: function (html) {
+                $('#payment-worldlineonlinecheckout-transaction').html(html);
+            }
+        });
+    }
+
+    getTransactionInformation();
+</script>
+<style>
+.input-group-addon {
+    padding: 6px 8px;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #F5F8F9;
+    border-top: 1px solid #C7D6DB;
+    border-left: 1px solid #C7D6DB;
+    border-right: 1px solid #C7D6DB;
+    border-radius: 3px 3px 0 0 !important;
+}
+
+.input-group input {
+    display: block;
+    width: 100%;
+    height: 31px;
+    padding: 6px 8px;
+    font-size: 12px;
+    line-height: 1.42857;
+    color: #555;
+    background-color: #F5F8F9;
+    background-image: none;
+    border: 1px solid #C7D6DB;
+    margin: 0 !important;
+    border-radius: 0 3px 3px 3px !important;
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.worldlineonlinecheckout-button {
+    margin: 3px 3px 3px 0;
+}
+
+.worldlineonlinecheckout-logo {
+    width: 300px;
+    max-width: 100%;
+}
+
+.worldlineonlinecheckout-transaction-paymenttype {
+    display: flex;
+    align-items: center;
+}
+
+.worldlineonlinecheckout-transaction-paymenttype img {
+    max-width: 34px;
+    margin-left: 10px;
+}
+
+.worldlineonlinecheckout-transaction-history {
+    margin-top: 20px;
+}
+
+</style>

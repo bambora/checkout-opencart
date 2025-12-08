@@ -1,0 +1,216 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="float-end">
+                <button type="submit" form="form-payment" data-bs-toggle="tooltip"
+                        title="{{ button_save }}" class="btn btn-primary"><i
+                            class="fa-solid fa-save"></i></button>
+                <a href="{{ back }}" data-bs-toggle="tooltip"
+                  title="{{ button_back }}" class="btn btn-light"><i
+                            class="fa-solid fa-reply"></i></a></div>
+            <h1>{{ heading_title }}</h1>
+            <ol class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+              <i class="fa-solid fa-pencil"></i>
+              {{ text_edit }} - v.{{ module_version }}
+            </div>
+            <div class="card-body">
+                <form id="form-payment" action="{{ save }}" method="post" data-oc-toggle="ajax">
+                  <div class="row mb-3">
+                    <label for="input-status" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_status }}">{{ entry_status }}</label>
+                    <div class="col-sm-10">
+                      <div class="form-check form-switch form-switch-lg">
+                        <input type="hidden" name="payment_worldlineonlinecheckout_status" value="0"/>
+                        <input type="checkbox" name="payment_worldlineonlinecheckout_status" value="1" id="input-status" class="form-check-input"{% if payment_worldlineonlinecheckout_status %} checked{% endif %}/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3 required">
+                    <label for="input-merchant" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_merchant }}">{{ entry_merchant }}</label>
+                    <div class="col-sm-10">
+                      <input type="text"
+                              name="payment_worldlineonlinecheckout_merchant"
+                              value="{{ payment_worldlineonlinecheckout_merchant }}"
+                              placeholder="{{ entry_merchant }}"
+                              id="input-merchant" class="form-control"/>
+                      <div id="error-merchant" class="invalid-feedback"></div>
+                    </div>
+                  </div>
+                  <div class="row mb-3 required">
+                    <label for="input-access-token" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_access_token }}">{{ entry_access_token }}</label>
+                    <div class="col-sm-10">
+                      <input type="text"
+                              name="payment_worldlineonlinecheckout_access_token"
+                              value="{{ payment_worldlineonlinecheckout_access_token }}"
+                              placeholder="{{ entry_access_token }}"
+                              id="input-access-token" class="form-control"/>
+                      <div id="error-access-token" class="invalid-feedback"></div>
+                    </div>
+                  </div>
+                  <div class="row mb-3 required">
+                    <label for="input-secret-token" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_secret_token }}">{{ entry_secret_token }}</label>
+                    <div class="col-sm-10">
+                      <input type="password"
+                              name="payment_worldlineonlinecheckout_secret_token"
+                              value="{{ payment_worldlineonlinecheckout_secret_token }}"
+                              placeholder="{{ entry_secret_token }}"
+                              id="input-secret-token" class="form-control"/>
+                      <div id="error-secret-token" class="invalid-feedback"></div>
+                    </div>
+                  </div>
+                  <div class="row mb-3 required">
+                    <label for="input-md5" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_md5 }}">{{ entry_md5 }}</label>
+                    <div class="col-sm-10">
+                      <input type="password"
+                              name="payment_worldlineonlinecheckout_md5"
+                              value="{{ payment_worldlineonlinecheckout_md5 }}"
+                              placeholder="{{ entry_md5 }}"
+                              id="input-md5" class="form-control"/>
+                      <div id="error-md5" class="invalid-feedback"></div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-window-id" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_window_id }}">{{ entry_window_id }}</label>
+                    <div class="col-sm-10">
+                      <input type="number"
+                              name="payment_worldlineonlinecheckout_window_id"
+                              value="{{ payment_worldlineonlinecheckout_window_id }}"
+                              placeholder="{{ entry_window_id }}"
+                              id="input-window-id" class="form-control"/>
+                      <div id="error-window-id" class="invalid-feedback"></div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-payment-method-title" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_payment_method_title }}">{{ entry_payment_method_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text"
+                              name="payment_worldlineonlinecheckout_payment_method_title"
+                              value="{{ payment_worldlineonlinecheckout_payment_method_title }}"
+                              placeholder="{{ entry_payment_method_title }}"
+                              id="input-payment-method-title" class="form-control"/>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-window-state" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_window_state }}">{{ entry_window_state }}</label>
+                    <div class="col-sm-10">
+                      <select name="payment_worldlineonlinecheckout_window_state" id="input-window-state" class="form-select">
+                        {% for key, window_state in window_states %}
+                          <option value="{{ key }}"{% if key == payment_worldlineonlinecheckout_window_state %} selected{% endif %}>{{ window_state }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-instant-capture" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_instant_capture }}">{{ entry_instant_capture }}</label>
+                    <div class="col-sm-10">
+                      <div class="form-check form-switch form-switch-lg">
+                        <input type="hidden" name="payment_worldlineonlinecheckout_instant_capture" value="0"/>
+                        <input type="checkbox" name="payment_worldlineonlinecheckout_instant_capture" value="1" id="input-instant-capture" class="form-check-input"{% if payment_worldlineonlinecheckout_instant_capture %} checked{% endif %}/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-immediate-redirect-to-accept" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_immediate_redirect_to_accept }}">{{ entry_immediate_redirect_to_accept }}</label>
+                    <div class="col-sm-10">
+                      <div class="form-check form-switch form-switch-lg">
+                        <input type="hidden" name="payment_worldlineonlinecheckout_immediate_redirect_to_accept" value="0"/>
+                        <input type="checkbox" name="payment_worldlineonlinecheckout_immediate_redirect_to_accept" value="1" id="input-immediate-redirect-to-accept" class="form-check-input"{% if payment_worldlineonlinecheckout_immediate_redirect_to_accept %} checked{% endif %}/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-surcharge" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_surcharge }}">{{ entry_surcharge }}</label>
+                    <div class="col-sm-10">
+                      <div class="form-check form-switch form-switch-lg">
+                        <input type="hidden" name="payment_worldlineonlinecheckout_surcharge" value="0"/>
+                        <input type="checkbox" name="payment_worldlineonlinecheckout_surcharge" value="1" id="input-surcharge" class="form-check-input"{% if payment_worldlineonlinecheckout_surcharge %} checked{% endif %}/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-payment-method-update" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_payment_method_update }}">{{ entry_payment_method_update }}</label>
+                    <div class="col-sm-10">
+                      <div class="form-check form-switch form-switch-lg">
+                        <input type="hidden" name="payment_worldlineonlinecheckout_payment_method_update" value="0"/>
+                        <input type="checkbox" name="payment_worldlineonlinecheckout_payment_method_update" value="1" id="input-surcharge" class="form-check-input"{% if payment_worldlineonlinecheckout_payment_method_update %} checked{% endif %}/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-allow-low-value-exemptions" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_allow_low_value_exemptions }}">{{ entry_allow_low_value_exemptions }}</label>
+                    <div class="col-sm-10">
+                      <div class="form-check form-switch form-switch-lg">
+                        <input type="hidden" name="payment_worldlineonlinecheckout_allow_low_value_exemptions" value="0"/>
+                        <input type="checkbox" name="payment_worldlineonlinecheckout_allow_low_value_exemptions" value="1" id="input-allow-low-value-exemptions" class="form-check-input"{% if payment_worldlineonlinecheckout_allow_low_value_exemptions %} checked{% endif %}/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-limit-for-low-value-exemption" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_limit_for_low_value_exemption }}">{{ entry_limit_for_low_value_exemption }}</label>
+                    <div class="col-sm-10">
+                      <input type="number"
+                              name="payment_worldlineonlinecheckout_limit_for_low_value_exemption"
+                              value="{{ payment_worldlineonlinecheckout_limit_for_low_value_exemption }}"
+                              placeholder="{{ entry_limit_for_low_value_exemption }}"
+                              id="input-limit-for-low-value-exemption" class="form-control"/>
+                      <div id="error-limit-for-low-value-exemption" class="invalid-feedback"></div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-rounding-mode" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_rounding_mode }}">{{ entry_rounding_mode }}</label>
+                    <div class="col-sm-10">
+                      <select name="payment_worldlineonlinecheckout_rounding_mode" id="input-rounding-mode" class="form-select">
+                        {% for key, rounding_mode in rounding_modes %}
+                          <option value="{{ key }}"{% if  key == payment_worldlineonlinecheckout_rounding_mode %} selected{% endif %}>{{ rounding_mode }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-order-status-completed" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_order_status_completed }}">{{ entry_order_status_completed }}</label>
+                    <div class="col-sm-10">
+                      <select name="payment_worldlineonlinecheckout_order_status_completed" id="input-order-status-completed" class="form-select">
+                        {% for order_status in order_statuses %}
+                          <option value="{{ order_status.order_status_id }}"{% if order_status.order_status_id == payment_worldlineonlinecheckout_order_status_completed %} selected{% endif %}>{{ order_status.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-geo-zone" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_geo_zone }}">{{ entry_geo_zone }}</label>
+                    <div class="col-sm-10">
+                      <select name="payment_worldlineonlinecheckout_geo_zone_id" id="input-geo-zone" class="form-select">
+                        <option value="0">{{ text_all_zones }}</option>
+                        {% for geo_zone in geo_zones %}
+                          <option value="{{ geo_zone.geo_zone_id }}"{% if geo_zone.geo_zone_id == payment_worldlineonlinecheckout_geo_zone_id %} selected{% endif %}>{{ geo_zone.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="input-sort-order" class="col-sm-2 col-form-label" data-bs-toggle="tooltip" title="{{ help_sort_order }}">{{ entry_sort_order }}</label>
+                    <div class="col-sm-10">
+                      <input type="number"
+                              name="payment_worldlineonlinecheckout_sort_order"
+                              value="{{ payment_worldlineonlinecheckout_sort_order }}"
+                              placeholder="{{ entry_sort_order }}"
+                              id="input-sort-order" class="form-control"/>
+                      <div id="error-sort-order" class="invalid-feedback"></div>
+                    </div>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}

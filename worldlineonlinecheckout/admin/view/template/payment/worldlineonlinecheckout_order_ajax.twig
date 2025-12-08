@@ -1,0 +1,330 @@
+{% if getPaymentTransaction_success == true %}
+<div class="table-responsive">
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <td>{{ text_transaction_id }}</td>
+        <td class="text-right">{{ transaction.id }}</td>
+      </tr>
+
+      {% if transaction.acquirerReference %}
+      <tr>
+        <td>{{ text_transaction_acquirer_reference }}</td>
+        <td class="text-right">{{ transaction.acquirerReference }}</td>
+      </tr>
+      {% endif %}
+
+      <tr>
+        <td>{{ text_transaction_authorized }}</td>
+        <td class="text-right">{{ transaction.authorized }}</td>
+      </tr>
+      <tr>
+        <td>{{ text_transaction_date }}</td>
+        <td class="text-right">{{ transaction.date|date(date_format) }}</td>
+      </tr>
+      <tr>
+        <td>{{ text_transaction_payment_type }}</td>
+        <td class="text-right">
+          <div class="worldlineonlinecheckout-transaction-paymenttype">
+          {{ transaction.paymentType }}
+          {% if transaction.card_image %}
+            <img src="{{transaction.static_endpoint}}/assets/paymentlogos/{{ transaction.card_image }}.svg" alt="{{ transaction.card_name }}" title="{{ transaction.card_name }}" />
+          {% endif %}
+          {% if transaction.bank_image %}
+            <img src="{{transaction.static_endpoint}}/assets/paymentlogos/{{ transaction.bank_image }}.svg" alt="{{ transaction.bank_image }}" title="{{ transaction.bank_image }}" />
+          {% endif %}
+          {% if transaction.wallet_image %}
+            <img src="{{transaction.static_endpoint}}/assets/paymentlogos/{{ transaction.wallet_image }}.svg" alt="{{ transaction.wallet_name }}" title="{{ transaction.wallet_name }}" />
+          {% endif %}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>{{ text_transaction_card_number }}</td>
+        <td class="text-right">{{ transaction.cardNumber }}</td>
+      </tr>
+      <tr>
+        <td>{{ text_transaction_surcharge_fee }}</td>
+        <td class="text-right">{{ transaction.surchargeFee }}</td>
+      </tr>
+      <tr>
+        <td>{{ text_transaction_captured }}</td>
+        <td class="text-right">{{ transaction.captured }}</td>
+      </tr>
+      <tr>
+        <td>{{ text_transaction_refunded }}</td>
+        <td class="text-right">{{ transaction.refunded }}</td>
+      </tr>
+      <tr>
+        <td>{{ text_transaction_acquirer }}</td>
+        <td class="text-right">{{ transaction.acquirer }}</td>
+      </tr>
+      <tr>
+        <td>{{ text_transaction_status }}</td>
+        <td class="text-right">{{ transaction.status }}</td>
+      </tr>
+      <tr>
+        <td> {{ text_transaction_operations_eci }}</td>
+        <td class="text-right">{{ transaction.eci }}</td>
+      </tr>
+      {% if transaction.exemptions  is not null %}
+      <tr>
+        <td>Exemption(s)</td>
+        <td class="text-right">{{ transaction.exemptions }}</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+{% if showActions == true %}
+  <div class="col-lg-3">
+    <div class="input-group">
+      <div class="input-group-addon">{{ transaction.currencyCode }}</div>
+      {% if transaction.availableForCapture > 0 %}
+        <input type="text"
+          data-bs-toggle="tooltip" {% if transaction.isCollector  == true %} readonly {% endif %}
+          title="{{ text_tooltip }}"
+          id="worldlineonlinecheckout_amount"
+          name="worldlineonlinecheckout_amount"
+          value="{{ transaction.availableForCapture }}"/>
+      {% else %}
+        <input type="text" data-bs-toggle="tooltip"
+          title="{{ text_tooltip }}" {% if transaction.isCollector %} readonly {% endif %}
+          id="worldlineonlinecheckout_amount"
+          name="worldlineonlinecheckout_amount"
+          value="{{ transaction.availableForRefund }}"/>
+      {% endif %}
+    </div>
+    <div id="worldlineonlinecheckout_format_error"
+      class="alert alert-danger"
+      style="display:none">
+        {{ error_amount_format }}
+    </div>
+    {% if transaction.availableForCapture > 0 %}
+      {% if transaction.isCollector  == true %}
+        {{ text_capture_info_collector }}
+      {% endif %}
+      <a class="worldlineonlinecheckout-button btn btn-success"
+        id="btn-worldlineonlinecheckout-capture">{{ text_btn_capture }}</a>
+      <span class="worldlineonlinecheckout-button btn btn-success"
+        id="img-loading-capture" style="display:none;">
+        <i class="fa fa-cog fa-spin fa-lg"></i>
+      </span>
+    {% endif %}
+    {% if transaction.availableForRefund > 0 %}
+      {% if transaction.isCollector  == true %}
+        {{ text_refund_info_collector }}
+      {% endif %}
+      <a class="worldlineonlinecheckout-button btn btn-warning"
+        id="btn-worldlineonlinecheckout-refund">{{ text_btn_refund }}</a>
+      <span class="worldlineonlinecheckout-button btn btn-warning"
+        id="img-loading-refund" style="display:none;">
+        <i class="fa fa-cog fa-spin fa-lg"></i>
+      </span>
+    {% endif %}
+    {% if transaction.canVoid == true %}
+        <a class="worldlineonlinecheckout-button btn btn-danger"
+          id="btn-worldlineonlinecheckout-void">{{ text_btn_void }}</a>
+        <span class="worldlineonlinecheckout-button btn btn-danger" id="img-loading-void"
+          style="display:none;">
+          <i class="fa fa-cog fa-spin fa-lg"></i>
+        </span>
+    {% endif %}
+  </div>
+{% endif %}
+
+  <div class="worldlineonlinecheckout-transaction-history">
+    <legend>{{ text_transaction_operations }}</legend>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{{ text_transaction_operations_date }}</th>
+          <th>{{ text_transaction_operations_action }}</th>
+          <th>{{ text_transaction_operations_amount }}</th>
+        </tr>
+      </thead>
+      {% if transaction.operations|length > 0 %}
+      <tbody>
+        {% for operation in transaction.operations %}
+          <tr>
+            <td>{{ operation.createdDate|date(date_format) }}</td>
+            <td><strong>{{ operation.title }}</strong></td>
+            <td>{{ operation.amount }}</td>
+          </tr>
+          <tr>
+            <td colspan="3"><i>{{ operation.description }}</i></td>
+          </tr>
+        {% endfor %}
+      <tbody>
+      {% endif %}
+    </table>
+  </div>
+
+  <div class="col-lg-12 text-center hidden-xs hidden-sm hidden-md">
+    <a href="{{ worldline_merchant_endpoint }}" title="{{ text_goto_worldlineonlinecheckout_admin }}"
+      target="_blank">
+      <img class="worldlineonlinecheckout-logo"
+        src="{{transaction.static_endpoint}}/assets/bambora/worldline-logo.svg"
+        style="padding-bottom: 10px;"/>
+    </a>
+    <div class="worldline-info">{{ text_info_worldlineonlinecheckout }}</div>
+    <div>
+      <a href="{{ worldline_merchant_endpoint }}"
+        title="{{ text_goto_worldlineonlinecheckout_admin }}"
+        target="_blank">{{ text_goto_worldlineonlinecheckout_admin }}</a>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function validateInputField() {
+    var reg = new RegExp(/^(?:[\d]+([,.]?[\d]{0,3}))$/);
+    if (amountInputField.length > 0 && !reg.test(amountInputField.val())) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function handleBeforeSend(type) {
+    $('#btn-worldlineonlinecheckout-' + type).hide();
+    $('#img-loading-' + type).show();
+  }
+
+  function handleSuccess(type, json) {
+    $('#img-loading-' + type).hide();
+    data = JSON.parse(json);
+    if (data.meta.result === true) {
+      $('#worldlineonlinecheckout-error-message').hide();
+      getTransactionInformation();
+    } else {
+      $('#btn-worldlineonlinecheckout-' + type).show();
+      $('#worldlineonlinecheckout-error-message').text('{{ error_action_base }}' + ': ' + data.meta.message.merchant);
+      $('#worldlineonlinecheckout-error-message').show();
+    }
+  }
+
+  function confirm(heading, body, btnNoText, btnYesText, callback) {
+    var confirmModal =
+      $(
+        '<div class="modal fade" role="dialog" aria-hidden="true">' +
+          '<div class="modal-dialog" role="document">' +
+            '<div class="modal-content">' +
+              '<div class="modal-header">' +
+                '<h3 class="modal-title">' + heading + '</h3>' +
+              '</div>' +
+              '<div class="modal-body">' +
+                '<p>' + body + '</p>' +
+              '</div>' +
+              '<div class="modal-footer">' +
+                '<button type="button" id="btnNo" class="btn btn-secondary" data-dismiss="modal">' + btnNoText +'</button>' +
+                '<button type="button" id="btnYes" class="btn btn-primary">' + btnYesText + '</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    confirmModal.find('#btnYes').click(function (event) {
+      callback();
+      confirmModal.modal('hide');
+    });
+    confirmModal.find('#btnNo').click(function (event) {
+      confirmModal.modal('hide');
+    });
+
+    confirmModal.modal('show');
+  }
+
+  var amountInputField = $("#worldlineonlinecheckout_amount");
+  amountInputField.focus(function () {
+    if ($("#worldlineonlinecheckout_format_error").css("display") !== "none") {
+      $("#worldlineonlinecheckout_format_error").fadeOut('slow');
+    }
+  });
+
+  $('#worldlineonlinecheckout-error-message').click(function () {
+    $('#worldlineonlinecheckout-error-message').fadeOut('slow');
+  });
+
+  $("#btn-worldlineonlinecheckout-capture").bind('click', function () {
+    if (validateInputField()) {
+      var confirmBodyText = '{{ text_capture_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
+      confirm('{{ text_capture_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function () {
+        $.ajax({
+          type: 'POST',
+          dataType: 'html',
+          data: {
+            'transactionId': '{{ transaction.id }}',
+            'captureAmount': amountInputField.val(),
+            'currencyCode': '{{ transaction.currencyCode }}'
+          },
+          url: '{{ worldline_ajax_endpoint }}.capture&user_token={{ user_token }}',
+          beforeSend: handleBeforeSend('capture'),
+          success: function (json) {
+            handleSuccess('capture', json);
+          }
+        });
+      });
+    } else {
+      $("#worldlineonlinecheckout_format_error").toggle();
+    }
+  });
+
+  $("#btn-worldlineonlinecheckout-refund").bind('click', function () {
+    if (validateInputField()) {
+      var confirmBodyText = '{{ text_refund_payment_body }}' + ' ' + '{{ transaction.currencyCode }}' + ' ' + amountInputField.val() + ' ? ';
+      confirm('{{ text_refund_payment_header }}', confirmBodyText, '{{ text_no }}', '{{ text_yes }}', function () {
+        $.ajax({
+          type: 'POST',
+          dataType: 'html',
+          data: {
+            'transactionId': '{{ transaction.id }}',
+            'refundAmount': amountInputField.val(),
+            'currencyCode': '{{ transaction.currencyCode }}'
+          },
+          url: '{{ worldline_ajax_endpoint }}.refund&user_token={{ user_token }}',
+          beforeSend: handleBeforeSend('refund'),
+          success: function (json) {
+            handleSuccess('refund', json);
+          }
+        });
+      });
+    } else {
+        $("#worldlineonlinecheckout_format_error").toggle();
+    }
+  });
+
+  $("#btn-worldlineonlinecheckout-void").bind('click', function () {
+    confirm('{{ text_void_payment_header }}', '{{ text_void_payment_body }}', '{{ text_no }}', '{{ text_yes }}', function () {
+        $.ajax({
+          type: 'POST',
+          dataType: 'html',
+          data: {
+            'transactionId': '{{ transaction.id }}',
+          },
+          url: '{{ worldline_ajax_endpoint }}.void&user_token={{ user_token }}',
+          beforeSend: handleBeforeSend('void'),
+          success: function (json) {
+            handleSuccess('void', json);
+          }
+        });
+    });
+  });
+
+  $("#worldlineonlinecheckout_amount").keydown(function (e) {
+    var digit = String.fromCharCode(e.which || e.keyCode);
+    if (e.which !== 8 && e.which !== 46 && !(e.which >= 37 && e.which <= 40) && e.which !== 110 && e.which !== 188
+      && e.which !== 190 && e.which !== 35 && e.which !== 36 && !(e.which >= 96 && e.which <= 106)) {
+      var reg = new RegExp(/^(?:\d+(?:,\d{0,3})*(?:\.\d{0,2})?|\d+(?:\.\d{0,3})*(?:,\d{0,2})?)$/);
+      if (reg.test(digit)) {
+
+      } else {
+          return false;
+      }
+    }
+  });
+</script>
+
+{% else %}
+    <div class="alert alert-danger"
+      style="margin-left:10px; margin-right:10px;">{{ text_getPaymentTransaction_error }}</div>
+{% endif %}

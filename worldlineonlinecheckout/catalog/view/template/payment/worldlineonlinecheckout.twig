@@ -1,0 +1,75 @@
+<fieldset>
+  <legend> {{ text_title }} </legend>
+  <p><b> {{ text_payment }} </b></p>
+  <div class="worldlineonlinecheckout-paymentlogos col-sm-9 col-xs-12">
+      {% for paymentTypeId in payment_worldlineonlinecheckout_allowed_payment_type_ids %}
+          <img src="{{ worldline_static_endpoint }}/assets/paymentlogos/{{ paymentTypeId }}.svg"/>
+      {% endfor %}
+  </div>
+  <div class="text-end">
+    <button type="button" id="button-confirm" class="btn btn-primary">{{ button_confirm }}</button>
+  </div>
+</fieldset>
+
+<link rel="preload" href="{{ worldline_static_endpoint }}/checkout-sdk-web/latest/checkout-sdk-web.min.js" as="script">
+<script src="{{ worldline_static_endpoint }}/checkout-sdk-web/latest/checkout-sdk-web.min.js"></script>
+<script type="text/javascript">
+    function showError(error) {
+      $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + error + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+      $('#button-confirm').button('reset');
+    }
+
+    $('#button-confirm').on('click', function () {
+        $.ajax({
+            url: '{{ worldline_ajax_endpoint }}.confirm&language={{ language }}',
+            dataType: 'json',
+            beforeSend: function () {
+                $('#button-confirm').button('loading');
+            },
+            success: function (json) {
+                if (json['error']) {
+                  showError(json['error']);
+                } else if(json['token']) {
+                    var checkoutToken = json['token'];
+                    var windowState = {{ payment_worldlineonlinecheckout_window_state }};
+                    if (windowState === 1) {
+                        new Bambora.RedirectCheckout(checkoutToken);
+                    } else {
+                        var checkout = new Bambora.ModalCheckout(null);
+                        checkout.on(Bambora.Event.Cancel, function (payload) {
+                            $('#button-confirm').button('reset');
+                        });
+                        checkout.on(Bambora.Event.Close, function (payload) {
+                            window.location.href = payload.acceptUrl;
+                        });
+                        checkout.initialize(checkoutToken).then(function () {
+                            checkout.show();
+                        });
+                    }
+                } else {
+                  showError('Unknown error: No token')
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                $('#button-confirm').button('reset');
+            }
+        });
+    });
+</script>
+<style>
+    .worldlineonlinecheckout-paymentlogos {
+        padding-left: 0;
+    }
+
+    .worldlineonlinecheckout-paymentlogos img {
+        display: inline-block;
+        padding: 6px 3px 6px 0;
+        max-width: 53px;
+    }
+
+    #worldlineonlinecheckout-error {
+        display: none;
+    }
+</style>
+

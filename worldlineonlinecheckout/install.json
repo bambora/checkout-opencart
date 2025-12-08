@@ -1,0 +1,8 @@
+{
+    "name": "Worldline Online Checkout",
+    "description": "This extension is for the European Merchants using the Worldline Online Checkout (prev. Bambora Online Checkout) payment system",
+    "code": "worldlineonlinecheckout",
+    "version": "2.0.0",
+    "author": "Worldline",
+    "link": "https://worldline.com/"
+}
